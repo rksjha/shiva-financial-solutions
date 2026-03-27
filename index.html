@@ -327,6 +327,16 @@
 </head>
 <body>
 
+<!-- CROSS-SITE NETWORK BANNER -->
+<div style="background:linear-gradient(90deg,#071220,#0d2b5e 50%,#071220);border-bottom:1px solid rgba(201,168,76,0.30);padding:7px 24px;display:flex;align-items:center;justify-content:center;gap:16px;font-size:12px;color:rgba(255,255,255,0.72);letter-spacing:0.3px;flex-wrap:wrap;font-family:'DM Sans',sans-serif;">
+  <span>SCG Group Network:</span>
+  <a href="https://rksjha.github.io/shiva-financial-solutions/" style="color:#f0b429;font-weight:600;border:1px solid rgba(240,180,41,0.35);padding:3px 10px;border-radius:20px;text-decoration:none;">Financial Solutions</a>
+  <span style="opacity:0.3;">|</span>
+  <a href="https://rksjha.github.io/SHIVACSG/" style="color:#f0b429;font-weight:600;border:1px solid rgba(240,180,41,0.35);padding:3px 10px;border-radius:20px;text-decoration:none;">SCG Main</a>
+  <span style="opacity:0.3;">|</span>
+  <a href="https://openclaw.ai" target="_blank" style="color:#f0b429;font-weight:600;border:1px solid rgba(240,180,41,0.35);padding:3px 10px;border-radius:20px;text-decoration:none;">🦞 AI Assistant</a>
+</div>
+
 <!-- NAV -->
 <nav id="mainNav">
   <a href="#" class="nav-brand">
@@ -340,6 +350,7 @@
   <ul class="nav-center">
     <li><a href="#services">Services</a></li><li><a href="#schemes">Schemes</a></li>
     <li><a href="#process">Our Process</a></li><li><a href="#about">About Us</a></li><li><a href="#contact">Inquiry</a></li>
+    <li><a href="https://rksjha.github.io/SHIVACSG/" target="_blank" style="color:var(--gold);border:1px solid rgba(201,168,76,.4);border-radius:3px;padding:5px 12px;">&#127968; SCG Main</a></li>
   </ul>
   <div class="nav-right">
     <a href="tel:+919979021275" class="nav-phone"><span class="nav-phone-icon">📞</span><span class="phone-text">+91 99790 21275</span></a>
@@ -619,11 +630,11 @@
     </div>
     <div>
       <div class="footer-col-head">About SCG</div>
-      <ul class="footer-links"><li><a href="#about">Rakesh Jha</a></li><li><a href="https://www.shivagroup.org.in" target="_blank">SCG Main Website</a></li><li><a href="#services">Our Services</a></li><li><a href="#process">Our Process</a></li><li><a href="#contact">Free Consultation</a></li><li><a href="https://www.linkedin.com/in/rksjha" target="_blank">LinkedIn</a></li></ul>
+      <ul class="footer-links"><li><a href="#about">Rakesh Jha</a></li><li><a href="https://rksjha.github.io/SHIVACSG/" target="_blank">SCG Main Website</a></li><li><a href="#services">Our Services</a></li><li><a href="#process">Our Process</a></li><li><a href="#contact">Free Consultation</a></li><li><a href="https://www.linkedin.com/in/rksjha" target="_blank">LinkedIn</a></li></ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <div class="footer-copy">© 2025 Shiva Financial Solutions · A Department of <a href="https://www.shivagroup.org.in" target="_blank">Shiva Consultancy Group (SCG)</a>, Ahmedabad. All rights reserved.</div>
+    <div class="footer-copy">© 2026 Shiva Financial Solutions · A Department of <a href="https://www.shivagroup.org.in" target="_blank">Shiva Consultancy Group (SCG)</a>, Ahmedabad. All rights reserved.</div>
     <div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Disclaimer</a></div>
     <div class="footer-social">
       <a href="https://www.linkedin.com/in/rksjha" target="_blank" class="soc-btn">in</a>
@@ -669,6 +680,17 @@ document.querySelectorAll('.svc-card,.sc-card,.tc,.process-step,.why-point,.valu
 function submitForm(btn){
   var name=document.getElementById('f-name').value.trim(), phone=document.getElementById('f-phone').value.trim(), email=document.getElementById('f-email').value.trim(), service=document.getElementById('f-service').value;
   if(!name||!phone||!email||!service){ btn.style.background='#c0392b'; btn.style.color='#fff'; btn.textContent='⚠ Please fill all required fields'; setTimeout(function(){ btn.style.background=''; btn.style.color=''; btn.innerHTML='Submit Inquiry — Get Free Consultation ›'; },2500); return; }
+  // Save submission to localStorage for data collection
+  try {
+    var sub = { _form:'sfs-inquiry', _timestamp:new Date().toISOString(), _source:window.location.href,
+      full_name:name, phone:phone, email:email,
+      business_type:document.getElementById('f-btype').value,
+      service:service, funding:document.getElementById('f-amount').value,
+      message:document.getElementById('f-msg').value };
+    var all = JSON.parse(localStorage.getItem('scg_form_submissions')||'[]');
+    sub._id = Date.now()+'-'+Math.random().toString(36).slice(2,7);
+    all.push(sub); localStorage.setItem('scg_form_submissions', JSON.stringify(all));
+  } catch(ex){}
   btn.innerHTML='✓ Inquiry Submitted — We\'ll Contact You Within 4 Hours!'; btn.style.background='linear-gradient(135deg,#27ae60,#2ecc71)'; btn.style.color='#fff'; btn.disabled=true;
   setTimeout(function(){ btn.innerHTML='Submit Inquiry — Get Free Consultation ›'; btn.style.background=''; btn.style.color=''; btn.disabled=false; },6000);
 }
@@ -678,6 +700,72 @@ function toggleMobileMenu(){
   var center=document.querySelector('.nav-center');
   if(center){ var showing=center.style.display==='flex'; center.style.display=showing?'none':'flex'; if(!showing){ center.style.flexDirection='column'; center.style.position='absolute'; center.style.top='62px'; center.style.left='0'; center.style.right='0'; center.style.background='rgba(4,12,22,0.98)'; center.style.padding='16px 24px 24px'; center.style.borderBottom='1px solid var(--border)'; center.style.zIndex='800'; } }
 }
+</script>
+
+<style>
+#sfs-oc-btn{position:fixed;bottom:28px;right:28px;z-index:9998;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#071220,#0C1C35);border:2px solid var(--gold);cursor:pointer;box-shadow:0 4px 20px rgba(7,18,32,0.55);display:flex;align-items:center;justify-content:center;font-size:26px;transition:transform .2s,box-shadow .2s;}
+#sfs-oc-btn:hover{transform:scale(1.1);box-shadow:0 8px 30px rgba(7,18,32,0.7);}
+#sfs-oc-badge{position:absolute;top:-4px;right:-4px;background:var(--gold);color:var(--navy);font-size:9px;font-weight:700;border-radius:10px;padding:2px 5px;letter-spacing:.3px;text-transform:uppercase;}
+#sfs-oc-panel{position:fixed;bottom:100px;right:24px;z-index:9999;width:340px;max-width:calc(100vw - 32px);background:var(--navy2);border-radius:16px;box-shadow:0 12px 48px rgba(7,18,32,0.6);border:1px solid var(--border);overflow:hidden;display:none;flex-direction:column;font-family:'DM Sans',sans-serif;}
+#sfs-oc-panel.open{display:flex;}
+.sfs-oc-head{background:linear-gradient(135deg,var(--navy3),var(--navy2));padding:16px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);}
+.sfs-oc-head-icon{width:40px;height:40px;border-radius:50%;background:var(--gold-dim);border:1.5px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.sfs-oc-head-title{color:var(--gold);font-size:14px;font-weight:700;line-height:1.2;}
+.sfs-oc-head-sub{color:var(--text-muted);font-size:11px;margin-top:2px;}
+.sfs-oc-close{margin-left:auto;background:rgba(255,255,255,.08);border:none;color:var(--text-mid);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.sfs-oc-close:hover{background:rgba(201,168,76,0.2);}
+.sfs-oc-body{padding:16px 18px;}
+.sfs-oc-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+#sfs-oc-input{width:100%;background:rgba(255,255,255,0.06);border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;font-size:13px;resize:none;height:76px;font-family:inherit;color:var(--white);outline:none;transition:border-color .15s;}
+#sfs-oc-input:focus{border-color:var(--gold);}
+#sfs-oc-input::placeholder{color:var(--text-muted);}
+#sfs-oc-ask{margin-top:10px;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;border-radius:10px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.3px;transition:opacity .15s;}
+#sfs-oc-ask:hover{opacity:.88;}
+.sfs-oc-divider{border:none;border-top:1px solid var(--border);margin:14px 0 10px;}
+.sfs-oc-quicklinks{display:flex;flex-direction:column;gap:6px;}
+.sfs-oc-quick{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;background:rgba(255,255,255,0.05);text-decoration:none;color:var(--text-mid);font-size:12.5px;font-weight:500;transition:background .15s,color .15s;}
+.sfs-oc-quick:hover{background:var(--gold-dim);color:var(--gold);}
+.sfs-oc-quick .qi{font-size:16px;flex-shrink:0;}
+.sfs-oc-footer{padding:10px 18px;background:var(--navy);border-top:1px solid var(--border);text-align:center;font-size:10.5px;color:var(--text-muted);}
+.sfs-oc-footer a{color:var(--gold);text-decoration:none;font-weight:600;}
+</style>
+
+<!-- OpenClaw AI Widget -->
+<button id="sfs-oc-btn" aria-label="Open AI Assistant">🤖<span id="sfs-oc-badge">AI</span></button>
+<div id="sfs-oc-panel">
+  <div class="sfs-oc-head">
+    <div class="sfs-oc-head-icon">🦞</div>
+    <div><div class="sfs-oc-head-title">SFS AI Assistant</div><div class="sfs-oc-head-sub">Powered by OpenClaw · Always available</div></div>
+    <button class="sfs-oc-close" id="sfs-oc-close-btn">✕</button>
+  </div>
+  <div class="sfs-oc-body">
+    <div class="sfs-oc-label">Ask about financial services</div>
+    <textarea id="sfs-oc-input" placeholder="e.g. How can I get an MSME loan? What documents are needed for DPR?"></textarea>
+    <button id="sfs-oc-ask">Ask AI Assistant ›</button>
+    <hr class="sfs-oc-divider">
+    <div class="sfs-oc-label">Quick links</div>
+    <div class="sfs-oc-quicklinks">
+      <a class="sfs-oc-quick" href="#contact"><span class="qi">📩</span> Book Free Consultation</a>
+      <a class="sfs-oc-quick" href="https://wa.me/919979021275?text=Hello+SFS+Team%2C+I+need+financial+advisory." target="_blank"><span class="qi">💬</span> WhatsApp Now</a>
+      <a class="sfs-oc-quick" href="https://rksjha.github.io/SHIVACSG/" target="_blank"><span class="qi">🏢</span> SCG Main Website</a>
+      <a class="sfs-oc-quick" href="https://openclaw.ai" target="_blank"><span class="qi">🦞</span> Get OpenClaw App</a>
+    </div>
+  </div>
+  <div class="sfs-oc-footer">AI powered by <a href="https://openclaw.ai" target="_blank">OpenClaw</a> &nbsp;·&nbsp; <a href="https://github.com/rksjha/openclaw" target="_blank">GitHub</a></div>
+</div>
+<script>
+(function(){
+  var btn=document.getElementById('sfs-oc-btn'),panel=document.getElementById('sfs-oc-panel');
+  btn.addEventListener('click',function(){panel.classList.toggle('open');});
+  document.getElementById('sfs-oc-close-btn').addEventListener('click',function(){panel.classList.remove('open');});
+  document.getElementById('sfs-oc-ask').addEventListener('click',function(){
+    var q=(document.getElementById('sfs-oc-input').value||'').trim();
+    if(!q){document.getElementById('sfs-oc-input').focus();return;}
+    window.open('https://openclaw.ai/?message='+encodeURIComponent('I am on the Shiva Financial Solutions website. '+q),'_blank');
+  });
+  document.getElementById('sfs-oc-input').addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();document.getElementById('sfs-oc-ask').click();}});
+  document.addEventListener('click',function(e){if(!panel.contains(e.target)&&e.target!==btn)panel.classList.remove('open');});
+})();
 </script>
 </body>
 </html>
