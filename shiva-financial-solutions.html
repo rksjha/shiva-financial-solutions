@@ -3,2095 +3,226 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shiva Financial Solutions | Capital Advisory & Business Finance | SCG</title>
-<meta name="description" content="Shiva Financial Solutions – Expert capital advisory, bank loan proposals, DPR preparation, MSME funding, project finance and SARFAESI enforcement. A division of Shiva Consultancy Group, Ahmedabad.">
+<title>Shiva Financial Solutions | Capital Advisory · Project Finance · MSME Funding | Ahmedabad</title>
+<meta name="description" content="Shiva Financial Solutions – Expert bank loan proposals, DPR preparation, SARFAESI enforcement, MSME funding, ESG advisory and project finance. A department of Shiva Consultancy Group, Ahmedabad. Contact: +91 99790 21275.">
+<meta name="keywords" content="MSME loan Ahmedabad, bank loan proposal Gujarat, DPR preparation India, SARFAESI enforcement, project finance consultant, ESG advisory India, startup funding Ahmedabad, Rakesh Jha SCG">
+<meta property="og:title" content="Shiva Financial Solutions | Expert Financial Advisory">
+<meta property="og:description" content="From bank loan proposals to SARFAESI enforcement — institutional-grade financial advisory for MSMEs, corporates and startups across India.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy: #0A1628;
-    --navy2: #0F2040;
-    --navy3: #162D52;
-    --gold: #C9A84C;
-    --gold2: #E8C96A;
-    --gold-light: #F5E6BB;
-    --white: #FFFFFF;
-    --off-white: #F8F5EE;
-    --text-muted: #8A9BB5;
-    --border: rgba(201,168,76,0.2);
-    --shadow: 0 20px 60px rgba(10,22,40,0.5);
+    /* SCG Brand — Navy + Gold + SCG Blue-Green */
+    --navy:       #071220;
+    --navy2:      #0C1C35;
+    --navy3:      #122444;
+    --scg-blue:   #3B5EA6;
+    --scg-green:  #4A9A3C;
+    --gold:       #C9A84C;
+    --gold2:      #E8C96A;
+    --gold-dim:   rgba(201,168,76,0.12);
+    --white:      #FFFFFF;
+    --off-white:  #F6F4EF;
+    --text-mid:   #B0C0D8;
+    --text-muted: #6B80A0;
+    --border:     rgba(201,168,76,0.18);
+    --border2:    rgba(59,94,166,0.25);
+    --shadow-lg:  0 24px 64px rgba(7,18,32,0.7);
+    --shadow-md:  0 8px 32px rgba(7,18,32,0.5);
+    --radius:     3px;
+    --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
   }
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; font-size: 16px; }
 
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--navy);
     color: var(--white);
     overflow-x: hidden;
-    cursor: default;
+    line-height: 1.6;
   }
 
-  /* ─── SCROLLBAR ─── */
-  ::-webkit-scrollbar { width: 6px; }
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--navy); }
   ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
 
-  /* ─── NOISE OVERLAY ─── */
-  body::before {
+  /* TEXTURE OVERLAY */
+  body::after {
     content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.35;
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: 0.4;
   }
 
-  /* ─── NAV ─── */
+  /* NAVIGATION */
   nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 900;
-    padding: 0 40px;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(10,22,40,0.92);
-    backdrop-filter: blur(20px);
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 900; height: 76px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px;
+    background: rgba(7,18,32,0.95);
+    backdrop-filter: blur(24px) saturate(180%);
     border-bottom: 1px solid var(--border);
-    transition: all 0.3s;
+    transition: height var(--transition), background var(--transition);
   }
-  .nav-logo {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
+  nav.scrolled { height: 62px; background: rgba(4,12,22,0.98); }
+
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .nav-logo-img {
+    height: 44px; width: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.92;
+    transition: opacity var(--transition);
   }
-  .nav-logo-main {
+  nav.scrolled .nav-logo-img { height: 36px; }
+  .nav-brand:hover .nav-logo-img { opacity: 1; }
+  .nav-brand-divider {
+    width: 1px; height: 32px;
+    background: linear-gradient(to bottom, transparent, var(--border), transparent);
+  }
+  .nav-brand-text { display: flex; flex-direction: column; gap: 2px; }
+  .nav-brand-main {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--gold);
-    letter-spacing: 0.05em;
-    line-height: 1;
+    font-size: 1.15rem; font-weight: 700;
+    color: var(--gold); letter-spacing: 0.04em; line-height: 1;
   }
-  .nav-logo-sub {
-    font-size: 0.6rem;
-    font-weight: 400;
-    color: var(--text-muted);
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
+  .nav-brand-sub {
+    font-size: 0.58rem; font-weight: 500;
+    color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase;
   }
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-    align-items: center;
+  .nav-center { display: flex; align-items: center; gap: 6px; list-style: none; }
+  .nav-center a {
+    color: var(--text-mid); text-decoration: none;
+    font-size: 0.8rem; font-weight: 500;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: var(--radius);
+    transition: color var(--transition), background var(--transition);
   }
-  .nav-links a {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.82rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--gold); }
-  .nav-cta {
-    background: var(--gold);
-    color: var(--navy) !important;
-    padding: 9px 22px;
-    border-radius: 2px;
-    font-weight: 600 !important;
-    transition: background 0.2s !important;
-  }
-  .nav-cta:hover { background: var(--gold2) !important; color: var(--navy) !important; }
+  .nav-center a:hover { color: var(--gold); background: var(--gold-dim); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
   .nav-phone {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.8rem;
-    color: var(--gold);
-    text-decoration: none;
-    font-weight: 500;
-    border: 1px solid var(--border);
-    padding: 7px 14px;
-    border-radius: 2px;
-    transition: all 0.2s;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.8rem; font-weight: 600;
+    color: var(--text-mid); text-decoration: none;
+    border: 1px solid var(--border2);
+    padding: 7px 16px; border-radius: var(--radius);
+    transition: all var(--transition);
   }
-  .nav-phone:hover { background: var(--border); }
+  .nav-phone:hover { color: var(--white); border-color: var(--scg-blue); background: rgba(59,94,166,0.15); }
+  .nav-phone-icon { font-size: 0.75rem; color: var(--scg-blue); }
+  .btn-nav-cta {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: var(--navy) !important; text-decoration: none;
+    padding: 9px 22px; border-radius: var(--radius);
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: all var(--transition); border: none; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+  .hamburger span { width: 22px; height: 2px; background: var(--text-mid); border-radius: 2px; transition: all 0.3s; }
 
-  /* ─── HERO ─── */
+  /* HERO */
   .hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding: 120px 40px 80px;
-    overflow: hidden;
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 110px 48px 80px; position: relative; overflow: hidden;
   }
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background: 
-      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(201,168,76,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 80% at 10% 80%, rgba(22,45,82,0.8) 0%, transparent 70%),
-      linear-gradient(135deg, #0A1628 0%, #0F2040 50%, #0A1628 100%);
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 90% 70% at 65% 35%, rgba(59,94,166,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 60% at 5% 90%, rgba(74,154,60,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse 40% 50% at 90% 10%, rgba(201,168,76,0.07) 0%, transparent 50%),
+      linear-gradient(160deg, #071220 0%, #0C1C35 45%, #071220 100%);
   }
-  .hero-grid-lines {
-    position: absolute;
-    inset: 0;
-    background-image: 
-      linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-    background-size: 60px 60px;
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(59,94,166,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,94,166,0.04) 1px, transparent 1px);
+    background-size: 64px 64px;
   }
-  .hero-corner-ornament {
-    position: absolute;
-    top: 100px;
-    right: 80px;
-    width: 320px;
-    height: 320px;
-    border: 1px solid rgba(201,168,76,0.1);
-    border-radius: 50%;
-    animation: rotate-slow 30s linear infinite;
+  .hero-orb1 {
+    position: absolute; top: 15%; right: 8%;
+    width: 380px; height: 380px; border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.08);
+    animation: slow-spin 35s linear infinite;
   }
-  .hero-corner-ornament::before {
-    content: '';
-    position: absolute;
-    inset: 30px;
-    border: 1px solid rgba(201,168,76,0.06);
-    border-radius: 50%;
+  .hero-orb1::before { content: ''; position: absolute; inset: 28px; border-radius: 50%; border: 1px solid rgba(59,94,166,0.08); }
+  .hero-orb1::after  { content: ''; position: absolute; inset: 56px; border-radius: 50%; border: 1px solid rgba(74,154,60,0.06); }
+  .hero-orb2 {
+    position: absolute; bottom: 10%; right: 22%;
+    width: 160px; height: 160px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,94,166,0.08), transparent 70%);
+    animation: pulse-soft 4s ease-in-out infinite;
   }
-  .hero-corner-ornament::after {
-    content: '';
-    position: absolute;
-    inset: 60px;
-    border: 1px solid rgba(201,168,76,0.04);
-    border-radius: 50%;
+  @keyframes slow-spin { to { transform: rotate(360deg); } }
+  @keyframes pulse-soft { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.15); opacity: 1; } }
+  .hero-content { position: relative; z-index: 2; max-width: 680px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(59,94,166,0.15); border: 1px solid rgba(59,94,166,0.35);
+    border-radius: 30px; padding: 6px 16px;
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+    color: #7CA4E0; margin-bottom: 28px; animation: fadeInUp 0.6s ease-out both;
   }
-  @keyframes rotate-slow { to { transform: rotate(360deg); } }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 720px;
+  .hero-badge-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--scg-green);
+    animation: pulse-dot 2s ease-in-out infinite;
   }
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 28px;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    width: 30px;
-    height: 1px;
-    background: var(--gold);
-  }
-  .hero-title {
+  @keyframes pulse-dot { 0%, 100% { box-shadow: 0 0 0 0 rgba(74,154,60,0.6); } 50% { box-shadow: 0 0 0 5px rgba(74,154,60,0); } }
+  .hero-h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(3rem, 6vw, 5.5rem);
-    font-weight: 700;
-    line-height: 1.05;
-    color: var(--white);
-    margin-bottom: 12px;
+    font-size: clamp(2.8rem, 5.5vw, 5.2rem);
+    font-weight: 700; line-height: 1.04; color: var(--white); margin-bottom: 10px;
+    animation: fadeInUp 0.7s 0.1s ease-out both;
   }
-  .hero-title em {
-    font-style: italic;
-    color: var(--gold);
-  }
-  .hero-title-line2 {
+  .hero-h1 em { font-style: italic; color: var(--gold); }
+  .hero-h2 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.8rem, 3.5vw, 3rem);
-    font-weight: 400;
-    font-style: italic;
-    color: var(--text-muted);
-    margin-bottom: 28px;
-    line-height: 1.2;
+    font-size: clamp(1.4rem, 2.8vw, 2.4rem);
+    font-weight: 400; font-style: italic; color: var(--text-mid); margin-bottom: 28px; line-height: 1.25;
+    animation: fadeInUp 0.7s 0.2s ease-out both;
   }
   .hero-desc {
-    font-size: 1.05rem;
-    color: rgba(255,255,255,0.65);
-    line-height: 1.7;
-    max-width: 540px;
-    margin-bottom: 44px;
-    font-weight: 300;
+    font-size: 1rem; font-weight: 300; line-height: 1.75;
+    color: rgba(176,192,216,0.85); max-width: 540px; margin-bottom: 40px;
+    animation: fadeInUp 0.7s 0.3s ease-out both;
   }
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-bottom: 56px;
-  }
-  .btn-primary {
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 52px; animation: fadeInUp 0.7s 0.4s ease-out both; }
+  .btn-gold {
     background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
-    color: var(--navy);
-    padding: 15px 32px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
+    color: var(--navy); padding: 15px 34px;
+    font-size: 0.85rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+    border: none; cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    border-radius: var(--radius); transition: all var(--transition);
   }
-  .btn-primary::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0.15);
-    transform: translateX(-100%);
-    transition: transform 0.3s;
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(201,168,76,0.45); }
+  .btn-ghost {
+    background: transparent; color: var(--white);
+    padding: 14px 30px; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.2); cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    border-radius: var(--radius); transition: all var(--transition);
   }
-  .btn-primary:hover::after { transform: translateX(0); }
-  .btn-secondary {
-    background: transparent;
-    color: var(--white);
-    padding: 14px 32px;
-    font-size: 0.88rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    border: 1px solid rgba(255,255,255,0.25);
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.25s;
-  }
-  .btn-secondary:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
   .hero-stats {
-    display: flex;
-    gap: 40px;
-    flex-wrap: wrap;
+    display: flex; gap: 0; flex-wrap: wrap;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; background: rgba(12,28,53,0.6); backdrop-filter: blur(10px);
+    animation: fadeInUp 0.7s 0.5s ease-out both; max-width: 580px;
   }
   .hero-stat {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .hero-stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-  }
-  .hero-stat-label {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-  .hero-stat-divider {
-    width: 1px;
-    height: 40px;
-    background: var(--border);
-    align-self: center;
-  }
-
-  /* ─── MARQUEE STRIP ─── */
-  .marquee-strip {
-    background: var(--gold);
-    padding: 10px 0;
-    overflow: hidden;
-    position: relative;
-  }
-  .marquee-track {
-    display: flex;
-    gap: 0;
-    animation: marquee 25s linear infinite;
-    width: max-content;
-  }
-  @keyframes marquee { to { transform: translateX(-50%); } }
-  .marquee-item {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--navy);
-    padding: 0 28px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    white-space: nowrap;
-  }
-  .marquee-dot { width: 4px; height: 4px; background: var(--navy); border-radius: 50%; opacity: 0.5; }
-
-  /* ─── SECTION UTILITIES ─── */
-  section { padding: 100px 40px; }
-  .container { max-width: 1200px; margin: 0 auto; }
-  .section-eyebrow {
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  .section-eyebrow::after {
-    content: '';
-    flex: 1;
-    max-width: 40px;
-    height: 1px;
-    background: var(--gold);
-  }
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.2rem, 4vw, 3.5rem);
-    font-weight: 700;
-    line-height: 1.1;
-    color: var(--white);
-    margin-bottom: 16px;
-  }
-  .section-title em { color: var(--gold); font-style: italic; }
-  .section-subtitle {
-    font-size: 1rem;
-    color: var(--text-muted);
-    line-height: 1.7;
-    max-width: 560px;
-    font-weight: 300;
-  }
-
-  /* ─── LEAD CAPTURE ─── */
-  .lead-section {
-    background: linear-gradient(135deg, var(--navy2) 0%, var(--navy3) 100%);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 70px 40px;
-  }
-  .lead-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-  }
-  .lead-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(1.8rem, 3vw, 2.8rem);
-    font-weight: 700;
-    line-height: 1.15;
-    color: var(--white);
-    margin-bottom: 14px;
-  }
-  .lead-heading em { color: var(--gold); font-style: italic; }
-  .lead-sub {
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    line-height: 1.65;
-    margin-bottom: 28px;
-    font-weight: 300;
-  }
-  .lead-features {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .lead-feature {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.88rem;
-    color: rgba(255,255,255,0.75);
-  }
-  .lead-feature::before {
-    content: '✦';
-    color: var(--gold);
-    font-size: 0.6rem;
-  }
-  .inquiry-form {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    padding: 36px;
-    position: relative;
-  }
-  .inquiry-form::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--gold), var(--gold2), var(--gold));
-  }
-  .form-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--white);
-    margin-bottom: 6px;
-  }
-  .form-sub {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    margin-bottom: 24px;
-    letter-spacing: 0.03em;
-  }
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 14px;
-  }
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .form-group label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: var(--white);
-    padding: 11px 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
-    outline: none;
-    transition: border-color 0.2s;
-    border-radius: 1px;
-  }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    border-color: var(--gold);
-    background: rgba(201,168,76,0.05);
-  }
-  .form-group select option { background: var(--navy2); }
-  .form-group textarea { resize: vertical; min-height: 80px; }
-  .form-full { grid-column: 1 / -1; }
-  .form-submit {
-    width: 100%;
-    background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
-    color: var(--navy);
-    border: none;
-    padding: 14px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-top: 8px;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-  .form-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(201,168,76,0.4); }
-  .form-note {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    text-align: center;
-    margin-top: 10px;
-    letter-spacing: 0.03em;
-  }
-
-  /* ─── SERVICES ─── */
-  .services-section { background: var(--navy); }
-  .services-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 60px;
-    flex-wrap: wrap;
-    gap: 24px;
-  }
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-  }
-  .service-card {
-    background: var(--navy2);
-    padding: 36px 32px;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s;
-    cursor: pointer;
-    border: 1px solid transparent;
-  }
-  .service-card::before {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--gold), transparent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.35s;
-  }
-  .service-card:hover {
-    background: var(--navy3);
-    border-color: var(--border);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow);
-  }
-  .service-card:hover::before { transform: scaleX(1); }
-  .service-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3.5rem;
-    font-weight: 700;
-    color: rgba(201,168,76,0.08);
-    position: absolute;
-    top: 10px; right: 20px;
-    line-height: 1;
-    transition: color 0.3s;
-  }
-  .service-card:hover .service-num { color: rgba(201,168,76,0.15); }
-  .service-icon {
-    width: 44px;
-    height: 44px;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    transition: all 0.3s;
-  }
-  .service-card:hover .service-icon {
-    background: rgba(201,168,76,0.2);
-    border-color: var(--gold);
-  }
-  .service-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--white);
-    margin-bottom: 10px;
-    line-height: 1.2;
-  }
-  .service-desc {
-    font-size: 0.84rem;
-    color: var(--text-muted);
-    line-height: 1.65;
-    margin-bottom: 20px;
-    font-weight: 300;
-  }
-  .service-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .service-tag {
-    font-size: 0.66rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold);
-    background: rgba(201,168,76,0.08);
-    border: 1px solid rgba(201,168,76,0.2);
-    padding: 3px 10px;
-  }
-  .service-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--gold);
-    text-decoration: none;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-top: 20px;
-    opacity: 0;
-    transform: translateY(4px);
-    transition: all 0.25s;
-  }
-  .service-card:hover .service-link { opacity: 1; transform: translateY(0); }
-  .service-featured {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 0;
-    background: linear-gradient(135deg, var(--navy3) 0%, var(--navy2) 100%);
-    border: 1px solid var(--border);
-    margin-top: 2px;
-    overflow: hidden;
-  }
-  .service-featured-badge {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    background: rgba(201,168,76,0.06);
-    border-right: 1px solid var(--border);
-    text-align: center;
-    gap: 10px;
-  }
-  .service-featured-badge .big-icon { font-size: 2.5rem; }
-  .service-featured-badge .badge-label {
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-  .service-featured-content {
-    padding: 36px 40px;
-  }
-  .service-featured-content .service-title { font-size: 1.6rem; }
-
-  /* ─── PROCESS ─── */
-  .process-section {
-    background: linear-gradient(180deg, var(--navy) 0%, var(--navy2) 100%);
-    position: relative;
-    overflow: hidden;
-  }
-  .process-section::before {
-    content: '';
-    position: absolute;
-    right: -200px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 600px;
-    height: 600px;
-    border: 1px solid rgba(201,168,76,0.05);
-    border-radius: 50%;
-  }
-  .process-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .process-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    margin-bottom: 70px;
-    align-items: end;
-  }
-  .process-steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    position: relative;
-  }
-  .process-steps::before {
-    content: '';
-    position: absolute;
-    top: 32px;
-    left: 10%;
-    right: 10%;
-    height: 1px;
-    background: linear-gradient(90deg, var(--gold), rgba(201,168,76,0.2), var(--gold), rgba(201,168,76,0.2));
-    background-size: 200% 100%;
-    animation: shimmer-line 3s linear infinite;
-  }
-  @keyframes shimmer-line { to { background-position: 200% 0; } }
-  .process-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0 16px;
-    position: relative;
-  }
-  .step-circle {
-    width: 64px;
-    height: 64px;
-    border: 2px solid var(--gold);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--gold);
-    background: var(--navy2);
-    position: relative;
-    z-index: 1;
-    margin-bottom: 24px;
-    transition: all 0.3s;
-  }
-  .process-step:hover .step-circle {
-    background: var(--gold);
-    color: var(--navy);
-  }
-  .step-time {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-    background: rgba(201,168,76,0.1);
-    padding: 3px 10px;
-    margin-bottom: 12px;
-  }
-  .step-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--white);
-    margin-bottom: 8px;
-  }
-  .step-desc {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    font-weight: 300;
-  }
-
-  /* ─── WHY CHOOSE ─── */
-  .why-section {
-    background: var(--navy);
-    padding: 100px 40px;
-  }
-  .why-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 80px;
-    align-items: center;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .why-visual {
-    position: relative;
-    height: 480px;
-  }
-  .why-main-box {
-    position: absolute;
-    top: 0; left: 0;
-    width: 78%;
-    height: 78%;
-    background: linear-gradient(135deg, var(--navy3) 0%, var(--navy2) 100%);
-    border: 1px solid var(--border);
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    overflow: hidden;
-  }
-  .why-main-box::before {
-    content: '"';
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 12rem;
-    color: rgba(201,168,76,0.06);
-    position: absolute;
-    top: -20px;
-    right: 10px;
-    line-height: 1;
-  }
-  .why-quote {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.4rem;
-    font-style: italic;
-    color: var(--white);
-    line-height: 1.5;
-    margin-bottom: 16px;
-  }
-  .why-author {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-  .why-accent-box {
-    position: absolute;
-    bottom: 0; right: 0;
-    width: 45%;
-    height: 45%;
-    background: var(--gold);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 24px;
-  }
-  .why-accent-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--navy);
-    line-height: 1;
-  }
-  .why-accent-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--navy);
-    opacity: 0.75;
-    margin-top: 4px;
-  }
-  .why-dot-accent {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60px;
-    height: 60px;
-    background: var(--navy);
-    border: 2px solid var(--gold);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    z-index: 2;
-  }
-  .why-points {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-  .why-point {
-    padding: 24px 0;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    gap: 18px;
-    align-items: flex-start;
-    transition: all 0.2s;
-    cursor: default;
-  }
-  .why-point:first-child { padding-top: 0; }
-  .why-point:hover .why-point-icon { background: rgba(201,168,76,0.2); border-color: var(--gold); }
-  .why-point-icon {
-    width: 36px;
-    height: 36px;
-    background: rgba(201,168,76,0.08);
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    flex-shrink: 0;
-    transition: all 0.25s;
-  }
-  .why-point-text {}
-  .why-point-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--white);
-    margin-bottom: 5px;
-  }
-  .why-point-desc {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-    font-weight: 300;
-  }
-
-  /* ─── TRUST METRICS ─── */
-  .metrics-strip {
-    background: linear-gradient(135deg, var(--navy3) 0%, var(--navy2) 100%);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 0;
-  }
-  .metrics-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .metric-item {
-    padding: 48px 32px;
-    text-align: center;
-    border-right: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-  .metric-item:last-child { border-right: none; }
-  .metric-item::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    transform: scaleX(0);
-    transition: transform 0.5s;
-  }
-  .metric-item:hover::before { transform: scaleX(1); }
-  .metric-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    color: var(--gold);
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-  .metric-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  /* ─── SCHEMES SECTION ─── */
-  .schemes-section {
-    background: var(--navy);
-  }
-  .schemes-tabs {
-    display: flex;
-    gap: 0;
-    margin-bottom: 40px;
-    border-bottom: 1px solid var(--border);
-  }
-  .scheme-tab {
-    padding: 12px 24px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    transition: all 0.2s;
-    background: transparent;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-  }
-  .scheme-tab.active {
-    color: var(--gold);
-    border-bottom-color: var(--gold);
-  }
-  .scheme-tab:hover { color: var(--white); }
-  .schemes-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .scheme-card {
-    background: var(--navy2);
-    border: 1px solid var(--border);
-    padding: 28px 24px;
-    position: relative;
-    transition: all 0.25s;
-    overflow: hidden;
-  }
-  .scheme-card:hover {
-    border-color: rgba(201,168,76,0.5);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(10,22,40,0.6);
-  }
-  .scheme-badge {
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--navy);
-    background: var(--gold);
-    padding: 3px 10px;
-    display: inline-block;
-    margin-bottom: 14px;
-  }
-  .scheme-amount {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--white);
-    margin-bottom: 4px;
-  }
-  .scheme-name {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    margin-bottom: 14px;
-    font-weight: 300;
-  }
-  .scheme-meta {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.72rem;
-  }
-  .scheme-meta-item { color: var(--text-muted); }
-  .scheme-meta-item span { color: var(--gold); font-weight: 600; }
-  .scheme-card-cta {
-    display: block;
-    width: 100%;
-    margin-top: 18px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--gold);
-    padding: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-    text-align: center;
-  }
-  .scheme-card-cta:hover {
-    background: rgba(201,168,76,0.1);
-    border-color: var(--gold);
-  }
-
-  /* ─── TESTIMONIALS ─── */
-  .testi-section {
-    background: linear-gradient(180deg, var(--navy2) 0%, var(--navy) 100%);
-    padding: 100px 40px;
-  }
-  .testi-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    max-width: 1100px;
-    margin: 60px auto 0;
-  }
-  .testi-card {
-    background: var(--navy3);
-    border: 1px solid var(--border);
-    padding: 32px 28px;
-    position: relative;
-    transition: all 0.25s;
-  }
-  .testi-card:hover {
-    border-color: rgba(201,168,76,0.4);
-    box-shadow: var(--shadow);
-  }
-  .testi-stars {
-    color: var(--gold);
-    font-size: 0.85rem;
-    letter-spacing: 2px;
-    margin-bottom: 18px;
-  }
-  .testi-text {
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.8);
-    line-height: 1.7;
-    font-style: italic;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.05rem;
-    margin-bottom: 24px;
-  }
-  .testi-author {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border-top: 1px solid var(--border);
-    padding-top: 20px;
-  }
-  .testi-avatar {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--navy);
-  }
-  .testi-name {
-    font-weight: 600;
-    font-size: 0.88rem;
-    color: var(--white);
-  }
-  .testi-role {
-    font-size: 0.74rem;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-  .testi-card-featured {
-    background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, var(--navy3) 100%);
-    border-color: rgba(201,168,76,0.3);
-  }
-
-  /* ─── CTA BANNER ─── */
-  .cta-banner {
-    background: linear-gradient(135deg, var(--gold) 0%, #B8922A 100%);
-    padding: 80px 40px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .cta-banner::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: 0.5;
-  }
-  .cta-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2.2rem, 4vw, 3.5rem);
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 12px;
-    position: relative;
-  }
-  .cta-sub {
-    font-size: 1.05rem;
-    color: rgba(10,22,40,0.7);
-    max-width: 520px;
-    margin: 0 auto 36px;
-    font-weight: 400;
-    line-height: 1.6;
-    position: relative;
-  }
-  .cta-actions {
-    display: flex;
-    gap: 14px;
-    justify-content: center;
-    flex-wrap: wrap;
-    position: relative;
-  }
-  .btn-dark {
-    background: var(--navy);
-    color: var(--gold);
-    padding: 15px 32px;
-    font-size: 0.88rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.25s;
-  }
-  .btn-dark:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
-  .btn-outline-dark {
-    background: transparent;
-    color: var(--navy);
-    padding: 14px 32px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    border: 2px solid var(--navy);
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.25s;
-  }
-  .btn-outline-dark:hover { background: var(--navy); color: var(--gold); }
-
-  /* ─── FOOTER ─── */
-  footer {
-    background: #060E1A;
-    padding: 80px 40px 0;
-    border-top: 1px solid var(--border);
-  }
-  .footer-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 60px;
-    padding-bottom: 60px;
-    border-bottom: 1px solid var(--border);
-  }
-  .footer-brand {}
-  .footer-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--gold);
-    margin-bottom: 4px;
-    display: block;
-  }
-  .footer-logo-div {
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 16px;
-  }
-  .footer-desc {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    line-height: 1.7;
-    margin-bottom: 24px;
-    font-weight: 300;
-  }
-  .footer-contact-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-  }
-  .footer-contact-icon { color: var(--gold); font-size: 0.8rem; margin-top: 2px; flex-shrink: 0; }
-  .footer-heading {
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 20px;
-  }
-  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .footer-links a {
-    font-size: 0.83rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .footer-links a::before {
-    content: '›';
-    color: var(--gold);
-    font-size: 0.9rem;
-  }
-  .footer-links a:hover { color: var(--white); }
-  .footer-bottom {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 24px 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  .footer-copy {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-  }
-  .footer-copy a { color: var(--gold); text-decoration: none; }
-  .footer-social {
-    display: flex;
-    gap: 10px;
-  }
-  .social-btn {
-    width: 32px;
-    height: 32px;
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    transition: all 0.2s;
-    cursor: pointer;
-    text-decoration: none;
-  }
-  .social-btn:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); color: var(--gold); }
-
-  /* ─── FLOATING WHATSAPP ─── */
-  .whatsapp-float {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    z-index: 800;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
-  }
-  .whatsapp-bubble {
-    background: #25D366;
-    color: white;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(37,211,102,0.4);
-    transition: all 0.25s;
-    text-decoration: none;
-  }
-  .whatsapp-bubble:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.6); }
-  .whatsapp-label {
-    background: rgba(10,22,40,0.95);
-    border: 1px solid var(--border);
-    color: var(--white);
-    font-size: 0.72rem;
-    font-weight: 600;
-    padding: 6px 12px;
-    letter-spacing: 0.05em;
-    backdrop-filter: blur(10px);
-  }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .fade-in { animation: fadeInUp 0.7s ease-out forwards; }
-  .delay-1 { animation-delay: 0.1s; opacity: 0; }
-  .delay-2 { animation-delay: 0.2s; opacity: 0; }
-  .delay-3 { animation-delay: 0.35s; opacity: 0; }
-  .delay-4 { animation-delay: 0.5s; opacity: 0; }
-  .delay-5 { animation-delay: 0.65s; opacity: 0; }
-
-  /* ─── MOBILE ─── */
-  @media (max-width: 900px) {
-    nav { padding: 0 20px; }
-    .nav-links { display: none; }
-    section { padding: 70px 20px; }
-    .hero { padding: 100px 20px 60px; }
-    .hero-corner-ornament { display: none; }
-    .lead-inner { grid-template-columns: 1fr; gap: 40px; }
-    .services-grid { grid-template-columns: 1fr; }
-    .service-featured { grid-template-columns: 1fr; }
-    .process-steps { grid-template-columns: 1fr 1fr; gap: 30px; }
-    .process-steps::before { display: none; }
-    .why-grid { grid-template-columns: 1fr; gap: 40px; }
-    .why-visual { height: 300px; }
-    .metrics-inner { grid-template-columns: 1fr 1fr; }
-    .metric-item { border-right: none; border-bottom: 1px solid var(--border); }
-    .schemes-grid { grid-template-columns: 1fr 1fr; }
-    .testi-grid { grid-template-columns: 1fr; }
-    .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
-    .hero-stats { gap: 20px; }
-    .form-row { grid-template-columns: 1fr; }
-    .process-header { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 600px) {
-    .schemes-grid { grid-template-columns: 1fr; }
-    .footer-inner { grid-template-columns: 1fr; }
-    .metrics-inner { grid-template-columns: 1fr 1fr; }
-  }
-</style>
-</head>
-<body>
-
-<!-- ─── NAV ─── -->
-<nav>
-  <div class="nav-logo">
-    <span class="nav-logo-main">Shiva Financial Solutions</span>
-    <span class="nav-logo-sub">A Division of Shiva Consultancy Group</span>
-  </div>
-  <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#schemes">Schemes</a></li>
-    <li><a href="#process">Process</a></li>
-    <li><a href="#why">Why Us</a></li>
-    <li><a href="#contact" class="nav-cta">Free Consultation</a></li>
-  </ul>
-  <a href="tel:+919979021275" class="nav-phone">
-    📞 +91 99790 21275
-  </a>
-</nav>
-
-<!-- ─── HERO ─── -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid-lines"></div>
-  <div class="hero-corner-ornament"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow fade-in delay-1">Capital Advisory · Project Finance · MSME Funding</div>
-    <h1 class="hero-title fade-in delay-2">Your Business <em>Deserves</em><br>Capital That Moves</h1>
-    <p class="hero-title-line2 fade-in delay-2">Expert. Personalised. Results-Driven.</p>
-    <p class="hero-desc fade-in delay-3">
-      From bank loan proposals to DPR preparation, SARFAESI enforcement to government scheme navigation — Shiva Financial Solutions delivers precise, institutional-grade financial advisory for MSMEs, corporates, and startups across India.
-    </p>
-    <div class="hero-actions fade-in delay-4">
-      <a href="#contact" class="btn-primary">Get Free Consultation ›</a>
-      <a href="#services" class="btn-secondary">Explore Services</a>
-    </div>
-    <div class="hero-stats fade-in delay-5">
-      <div class="hero-stat">
-        <span class="hero-stat-num">500+</span>
-        <span class="hero-stat-label">Cases Handled</span>
-      </div>
-      <div class="hero-stat-divider"></div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">₹200Cr+</span>
-        <span class="hero-stat-label">Finance Facilitated</span>
-      </div>
-      <div class="hero-stat-divider"></div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">15+</span>
-        <span class="hero-stat-label">Years Experience</span>
-      </div>
-      <div class="hero-stat-divider"></div>
-      <div class="hero-stat">
-        <span class="hero-stat-num">PAN India</span>
-        <span class="hero-stat-label">Operations</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── MARQUEE ─── -->
-<div class="marquee-strip">
-  <div class="marquee-track">
-    <span class="marquee-item">Project Finance <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Bank Loan Proposals <span class="marquee-dot"></span></span>
-    <span class="marquee-item">DPR Preparation <span class="marquee-dot"></span></span>
-    <span class="marquee-item">MSME Funding <span class="marquee-dot"></span></span>
-    <span class="marquee-item">SARFAESI Enforcement <span class="marquee-dot"></span></span>
-    <span class="marquee-item">ESG Advisory <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Startup Capital <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Institutional Tenders <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Working Capital <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Renewable Energy Finance <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Project Finance <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Bank Loan Proposals <span class="marquee-dot"></span></span>
-    <span class="marquee-item">DPR Preparation <span class="marquee-dot"></span></span>
-    <span class="marquee-item">MSME Funding <span class="marquee-dot"></span></span>
-    <span class="marquee-item">SARFAESI Enforcement <span class="marquee-dot"></span></span>
-    <span class="marquee-item">ESG Advisory <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Startup Capital <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Institutional Tenders <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Working Capital <span class="marquee-dot"></span></span>
-    <span class="marquee-item">Renewable Energy Finance <span class="marquee-dot"></span></span>
-  </div>
-</div>
-
-<!-- ─── LEAD CAPTURE ─── -->
-<div class="lead-section" id="contact">
-  <div class="lead-inner">
-    <div>
-      <div class="section-eyebrow">Start Your Journey</div>
-      <h2 class="lead-heading">Tell Us Your <em>Financial Challenge.</em><br>We'll Solve It.</h2>
-      <p class="lead-sub">Our senior consultants personally assess every case. No templates, no juniors — direct engagement with experts who have closed deals with SBI, YES Bank, SIDBI, and leading PSU institutions.</p>
-      <div class="lead-features">
-        <div class="lead-feature">Confidential, no-obligation first consultation</div>
-        <div class="lead-feature">Personalised strategy within 48 hours</div>
-        <div class="lead-feature">Direct access to Rakesh Jha & senior team</div>
-        <div class="lead-feature">PAN India reach — served 20+ states</div>
-        <div class="lead-feature">Success fee options available for eligible cases</div>
-      </div>
-    </div>
-    <div class="inquiry-form">
-      <div class="form-title">Quick Inquiry Form</div>
-      <div class="form-sub">Response guaranteed within 4 business hours</div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Full Name *</label>
-          <input type="text" placeholder="Your name">
-        </div>
-        <div class="form-group">
-          <label>Mobile Number *</label>
-          <input type="tel" placeholder="+91 XXXXX XXXXX">
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Email Address *</label>
-          <input type="email" placeholder="you@company.com">
-        </div>
-        <div class="form-group">
-          <label>Business Type *</label>
-          <select>
-            <option value="">Select Type</option>
-            <option>MSME / SME</option>
-            <option>Startup</option>
-            <option>Corporation / PSU</option>
-            <option>Agribusiness</option>
-            <option>Renewable Energy</option>
-            <option>Individual / NRI</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Service Required *</label>
-          <select>
-            <option value="">Select Service</option>
-            <option>Bank Loan / Project Finance</option>
-            <option>DPR Preparation</option>
-            <option>SARFAESI / NPA Resolution</option>
-            <option>Government Scheme (MUDRA/PMEGP/etc.)</option>
-            <option>ESG / Sustainability Advisory</option>
-            <option>Startup Funding / Pitch</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Funding Requirement</label>
-          <select>
-            <option value="">Select Range</option>
-            <option>₹5L – ₹25L</option>
-            <option>₹25L – ₹1 Crore</option>
-            <option>₹1Cr – ₹10 Crore</option>
-            <option>₹10Cr – ₹100 Crore</option>
-            <option>₹100 Crore+</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group form-full">
-          <label>Brief Description of Your Requirement</label>
-          <textarea placeholder="Describe your challenge in brief — we'll prepare a personalised response..."></textarea>
-        </div>
-      </div>
-      <button class="form-submit" onclick="handleSubmit(this)">Submit Inquiry — Get Free Consultation ›</button>
-      <p class="form-note">🔒 100% Confidential · No Spam · Expert Response Only</p>
-    </div>
-  </div>
-</div>
-
-<!-- ─── METRICS ─── -->
-<div class="metrics-strip">
-  <div class="metrics-inner">
-    <div class="metric-item">
-      <div class="metric-num">500+</div>
-      <div class="metric-label">Successful Cases</div>
-    </div>
-    <div class="metric-item">
-      <div class="metric-num">₹200Cr+</div>
-      <div class="metric-label">Finance Facilitated</div>
-    </div>
-    <div class="metric-item">
-      <div class="metric-num">92%</div>
-      <div class="metric-label">Approval Success Rate</div>
-    </div>
-    <div class="metric-item">
-      <div class="metric-num">15+</div>
-      <div class="metric-label">Years of Expertise</div>
-    </div>
-  </div>
-</div>
-
-<!-- ─── SERVICES ─── -->
-<section class="services-section" id="services">
-  <div class="container">
-    <div class="services-header">
-      <div>
-        <div class="section-eyebrow">What We Do</div>
-        <h2 class="section-title">Institutional-Grade<br><em>Financial Services</em></h2>
-      </div>
-      <p class="section-subtitle">Every engagement is led personally by our senior consultants with deep-domain expertise across Indian banking, regulatory, and financial systems.</p>
-    </div>
-    <div class="services-grid">
-
-      <div class="service-card">
-        <div class="service-num">01</div>
-        <div class="service-icon">🏦</div>
-        <div class="service-title">Bank Loan Proposals & Project Finance</div>
-        <div class="service-desc">End-to-end preparation of bankable proposals — TEV studies, CMA data, financial modelling, and lender presentations for term loans, working capital, and structured debt.</div>
-        <div class="service-tags">
-          <span class="service-tag">SBI</span>
-          <span class="service-tag">SIDBI</span>
-          <span class="service-tag">HDFC</span>
-          <span class="service-tag">PSU Banks</span>
-        </div>
-        <a href="#contact" class="service-link">Enquire Now →</a>
-      </div>
-
-      <div class="service-card">
-        <div class="service-num">02</div>
-        <div class="service-icon">📋</div>
-        <div class="service-title">DPR Preparation</div>
-        <div class="service-desc">Detailed Project Reports crafted for government schemes, bank sanctions, tender eligibility, and institutional investor presentations — techno-economic and financially rigorous.</div>
-        <div class="service-tags">
-          <span class="service-tag">Govt. Schemes</span>
-          <span class="service-tag">Manufacturing</span>
-          <span class="service-tag">Infra</span>
-        </div>
-        <a href="#contact" class="service-link">Enquire Now →</a>
-      </div>
-
-      <div class="service-card">
-        <div class="service-num">03</div>
-        <div class="service-icon">⚖️</div>
-        <div class="service-title">SARFAESI & NPA Resolution</div>
-        <div class="service-desc">Strategic enforcement and recovery advisory under SARFAESI Act — from possession proceedings to OTS negotiations, debt restructuring, and DRT/DRAT representation support.</div>
-        <div class="service-tags">
-          <span class="service-tag">NPA Recovery</span>
-          <span class="service-tag">OTS</span>
-          <span class="service-tag">DRT</span>
-        </div>
-        <a href="#contact" class="service-link">Enquire Now →</a>
-      </div>
-
-      <div class="service-card">
-        <div class="service-num">04</div>
-        <div class="service-icon">🌱</div>
-        <div class="service-title">ESG & Sustainability Advisory</div>
-        <div class="service-desc">GHG emissions inventories, carbon sequestration studies, ESG framework implementation, and sustainability reporting aligned to global standards (GRI, BRSR, ISO 14064).</div>
-        <div class="service-tags">
-          <span class="service-tag">GHG Inventory</span>
-          <span class="service-tag">BRSR</span>
-          <span class="service-tag">Net Zero</span>
-        </div>
-        <a href="#contact" class="service-link">Enquire Now →</a>
-      </div>
-
-      <div class="service-card">
-        <div class="service-num">05</div>
-        <div class="service-icon">🚀</div>
-        <div class="service-title">Startup & MSME Capital Advisory</div>
-        <div class="service-desc">Navigating the entire funding ecosystem — government grants (PMEGP, MUDRA, Startup India), angel networks, PE/VC, and institutional lending for early- to growth-stage ventures.</div>
-        <div class="service-tags">
-          <span class="service-tag">PMEGP</span>
-          <span class="service-tag">MUDRA</span>
-          <span class="service-tag">VC Access</span>
-        </div>
-        <a href="#contact" class="service-link">Enquire Now →</a>
-      </div>
-
-      <div class="service-card">
-        <div class="service-num">06</div>
-        <div class="service-icon">📊</div>
-        <div class="service-title">Institutional Tenders & B2G Advisory</div>
-        <div class="service-desc">Bid strategy, pre-bid consultation, technical and financial proposal preparation for PSU, government, and multilateral institution tenders — with a proven track record in SAIL, ONGC, NTPC.</div>
-        <div class="service-tags">
-          <span class="service-tag">SAIL</span>
-          <span class="service-tag">PSU Tenders</span>
-          <span class="service-tag">GeM Portal</span>
-        </div>
-        <a href="#contact" class="service-link">Enquire Now →</a>
-      </div>
-
-      <div class="service-featured">
-        <div class="service-featured-badge">
-          <span class="big-icon">⚡</span>
-          <span class="badge-label">Most Requested</span>
-        </div>
-        <div class="service-featured-content">
-          <div class="service-num">07</div>
-          <div class="service-title">Renewable Energy & Agribusiness Finance</div>
-          <div class="service-desc">Specialised project finance, DPR, and subsidy advisory for solar, wind, biomass, and agri-infrastructure projects — including NABARD RIDF, MNRE schemes, and state-level incentives.</div>
-          <div class="service-tags">
-            <span class="service-tag">Solar Finance</span>
-            <span class="service-tag">NABARD RIDF</span>
-            <span class="service-tag">MNRE Subsidies</span>
-            <span class="service-tag">Agri Credit</span>
-          </div>
-          <a href="#contact" class="service-link" style="opacity:1;transform:none;">Get Expert Advice →</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ─── PROCESS ─── -->
-<section class="process-section" id="process">
-  <div class="process-inner">
-    <div class="process-header">
-      <div>
-        <div class="section-eyebrow">How We Work</div>
-        <h2 class="section-title">From Problem to<br><em>Approved Finance</em></h2>
-      </div>
-      <p class="section-subtitle">A rigorous, structured approach that transforms your financial challenge into a bankable, fundable solution — backed by two decades of institutional expertise.</p>
-    </div>
-    <div class="process-steps">
-      <div class="process-step">
-        <div class="step-circle">01</div>
-        <div class="step-time">Day 1</div>
-        <div class="step-title">Discovery Call</div>
-        <div class="step-desc">In-depth consultation with Rakesh Jha to understand your case, financials, and target outcome.</div>
-      </div>
-      <div class="process-step">
-        <div class="step-circle">02</div>
-        <div class="step-time">Days 2–3</div>
-        <div class="step-title">Deep Analysis</div>
-        <div class="step-desc">Document review, financial modelling, and scheme eligibility mapping to craft your optimal strategy.</div>
-      </div>
-      <div class="process-step">
-        <div class="step-circle">03</div>
-        <div class="step-time">Days 4–15</div>
-        <div class="step-title">Proposal Preparation</div>
-        <div class="step-desc">End-to-end documentation — DPR, CMA, loan proposals, TEV studies — tailored to target lender.</div>
-      </div>
-      <div class="process-step">
-        <div class="step-circle">04</div>
-        <div class="step-time">Days 15–45</div>
-        <div class="step-title">Submission & Closure</div>
-        <div class="step-desc">Active lender engagement, query resolution, sanction tracking, and disbursement support.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── WHY US ─── -->
-<section class="why-section" id="why">
-  <div class="why-grid">
-    <div>
-      <div class="section-eyebrow">Why Shiva Financial</div>
-      <h2 class="section-title">Consulting That Goes<br><em>Beyond Advice</em></h2>
-      <p class="section-subtitle" style="margin-bottom:40px;">We don't just advise — we execute. Every mandate is owned personally, ensuring your financial goals become our professional obligation.</p>
-      <div class="why-points">
-        <div class="why-point">
-          <div class="why-point-icon">🎯</div>
-          <div class="why-point-text">
-            <div class="why-point-title">Personalised, Not Packaged</div>
-            <div class="why-point-desc">Every client receives a bespoke strategy. We reject templated approaches — your business is unique, your solution must be too.</div>
-          </div>
-        </div>
-        <div class="why-point">
-          <div class="why-point-icon">🏛️</div>
-          <div class="why-point-text">
-            <div class="why-point-title">Institutional Relationships</div>
-            <div class="why-point-desc">Established working relationships with SBI, SIDBI, YES Bank, HDFC, and 20+ PSU banks — accelerating your approval timeline.</div>
-          </div>
-        </div>
-        <div class="why-point">
-          <div class="why-point-icon">⚡</div>
-          <div class="why-point-text">
-            <div class="why-point-title">Senior-Led Execution</div>
-            <div class="why-point-desc">Your mandate is handled by Rakesh Jha directly — a 15+ year veteran — not delegated to junior associates.</div>
-          </div>
-        </div>
-        <div class="why-point">
-          <div class="why-point-icon">🛡️</div>
-          <div class="why-point-text">
-            <div class="why-point-title">End-to-End Accountability</div>
-            <div class="why-point-desc">From first draft to final disbursement, we stay engaged. Transparent milestones, regular updates, zero surprises.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="why-visual">
-      <div class="why-main-box">
-        <div class="why-quote">"Our clients don't just get a consultant — they get a strategic partner committed to their financial success."</div>
-        <div class="why-author">Rakesh Jha · Co-Founder, SCG</div>
-      </div>
-      <div class="why-accent-box">
-        <div class="why-accent-num">92%</div>
-        <div class="why-accent-label">Approval Success Rate</div>
-      </div>
-      <div class="why-dot-accent">✦</div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── SCHEMES ─── -->
-<section class="schemes-section" id="schemes">
-  <div class="container">
-    <div class="section-eyebrow">Government Schemes</div>
-    <h2 class="section-title">50+ Funding Schemes<br><em>We Navigate for You</em></h2>
-    <div class="schemes-tabs">
-      <button class="scheme-tab active" onclick="filterSchemes('all', this)">All Schemes</button>
-      <button class="scheme-tab" onclick="filterSchemes('loan', this)">Loans</button>
-      <button class="scheme-tab" onclick="filterSchemes('subsidy', this)">Subsidies</button>
-      <button class="scheme-tab" onclick="filterSchemes('grant', this)">Grants</button>
-      <button class="scheme-tab" onclick="filterSchemes('equity', this)">Equity</button>
-    </div>
-    <div class="schemes-grid" id="schemesGrid">
-      <div class="scheme-card" data-type="loan">
-        <div class="scheme-badge">⚡ High Success</div>
-        <div class="scheme-amount">Up to ₹10L</div>
-        <div class="scheme-name">Pradhan Mantri MUDRA Yojana (PMMY)</div>
-        <div class="scheme-meta">
-          <div class="scheme-meta-item">Success <span>98%</span></div>
-          <div class="scheme-meta-item">Timeline <span>7–10 days</span></div>
-          <div class="scheme-meta-item">Type <span>Collateral-Free</span></div>
-        </div>
-        <a href="#contact" class="scheme-card-cta">Apply with Expert Guidance →</a>
-      </div>
-      <div class="scheme-card" data-type="subsidy">
-        <div class="scheme-badge">Popular</div>
-        <div class="scheme-amount">Up to ₹50L</div>
-        <div class="scheme-name">PM Employment Generation Programme (PMEGP)</div>
-        <div class="scheme-meta">
-          <div class="scheme-meta-item">Subsidy <span>15–35%</span></div>
-          <div class="scheme-meta-item">Timeline <span>30–45 days</span></div>
-          <div class="scheme-meta-item">Type <span>Margin Money</span></div>
-        </div>
-        <a href="#contact" class="scheme-card-cta">Apply with Expert Guidance →</a>
-      </div>
-      <div class="scheme-card" data-type="loan">
-        <div class="scheme-badge">No Collateral</div>
-        <div class="scheme-amount">Up to ₹5 Cr</div>
-        <div class="scheme-name">CGTMSE Credit Guarantee Scheme</div>
-        <div class="scheme-meta">
-          <div class="scheme-meta-item">Cover <span>75–85%</span></div>
-          <div class="scheme-meta-item">Timeline <span>15–20 days</span></div>
-          <div class="scheme-meta-item">Type <span>Guarantee</span></div>
-        </div>
-        <a href="#contact" class="scheme-card-cta">Apply with Expert Guidance →</a>
-      </div>
-      <div class="scheme-card" data-type="grant">
-        <div class="scheme-badge">Startup Focused</div>
-        <div class="scheme-amount">Up to ₹20L</div>
-        <div class="scheme-name">Startup India Seed Fund Scheme</div>
-        <div class="scheme-meta">
-          <div class="scheme-meta-item">Stage <span>Early</span></div>
-          <div class="scheme-meta-item">Timeline <span>45–60 days</span></div>
-          <div class="scheme-meta-item">Type <span>Seed Grant</span></div>
-        </div>
-        <a href="#contact" class="scheme-card-cta">Apply with Expert Guidance →</a>
-      </div>
-      <div class="scheme-card" data-type="loan">
-        <div class="scheme-badge">Fast Track</div>
-        <div class="scheme-amount">₹1L – ₹5 Cr</div>
-        <div class="scheme-name">PSB Loans in 59 Minutes (GST-based)</div>
-        <div class="scheme-meta">
-          <div class="scheme-meta-item">Success <span>89%</span></div>
-          <div class="scheme-meta-item">Timeline <span>59 minutes</span></div>
-          <div class="scheme-meta-item">Type <span>Digital</span></div>
-        </div>
-        <a href="#contact" class="scheme-card-cta">Apply with Expert Guidance →</a>
-      </div>
-      <div class="scheme-card" data-type="equity">
-        <div class="scheme-badge">Growth Stage</div>
-        <div class="scheme-amount">₹50,000 Cr Fund</div>
-        <div class="scheme-name">Self-Reliant India (SRI) Fund</div>
-        <div class="scheme-meta">
-          <div class="scheme-meta-item">Type <span>Equity / QE</span></div>
-          <div class="scheme-meta-item">Timeline <span>45–60 days</span></div>
-          <div class="scheme-meta-item">Stage <span>Growth</span></div>
-        </div>
-        <a href="#contact" class="scheme-card-cta">Apply with Expert Guidance →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── TESTIMONIALS ─── -->
-<section class="testi-section">
-  <div class="container" style="max-width:1100px;margin:0 auto;">
-    <div style="text-align:center;margin-bottom:0;">
-      <div class="section-eyebrow" style="justify-content:center;">What Our Clients Say</div>
-      <h2 class="section-title" style="text-align:center;margin:0 auto;">Results That<br><em>Speak for Themselves</em></h2>
-    </div>
-    <div class="testi-grid">
-      <div class="testi-card testi-card-featured">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-text">"Rakesh and his team turned our rejected bank application into a sanctioned ₹4.5 Cr term loan in 28 days. Their knowledge of CMA data and lender psychology is unmatched."</div>
-        <div class="testi-author">
-          <div class="testi-avatar">R</div>
-          <div>
-            <div class="testi-name">Ramesh Patel</div>
-            <div class="testi-role">MD, Gujarat Manufacturing MSME</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-text">"Our DPR for a solar project was prepared with exceptional detail. NABARD approval came through smoothly. SCG's understanding of renewable energy finance is truly institutional-grade."</div>
-        <div class="testi-author">
-          <div class="testi-avatar">A</div>
-          <div>
-            <div class="testi-name">Anand Sharma</div>
-            <div class="testi-role">Founder, Solar EPC Company, Rajasthan</div>
-          </div>
-        </div>
-      </div>
-      <div class="testi-card">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-text">"The SARFAESI enforcement strategy they crafted for us recovered ₹8.2 Cr from a defaulter where we had lost hope. Professional, strategic, and relentless."</div>
-        <div class="testi-author">
-          <div class="testi-avatar">P</div>
-          <div>
-            <div class="testi-name">Priya Mehta</div>
-            <div class="testi-role">CFO, NBFC Client, Mumbai</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── CTA BANNER ─── -->
-<div class="cta-banner">
-  <h2 class="cta-title">Ready to Secure the Finance<br>Your Business Deserves?</h2>
-  <p class="cta-sub">Connect with our senior consultants today. First consultation is always free and confidential.</p>
-  <div class="cta-actions">
-    <a href="#contact" class="btn-dark">Book Free Consultation ›</a>
-    <a href="https://wa.me/919979021275?text=Hello%20Shiva%20Financial%20Solutions%2C%20I%20need%20financial%20advisory." target="_blank" class="btn-outline-dark">💬 WhatsApp Us</a>
-  </div>
-</div>
-
-<!-- ─── FOOTER ─── -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <span class="footer-logo">Shiva Financial Solutions</span>
-      <div class="footer-logo-div">A Department of Shiva Consultancy Group (SCG)</div>
-      <p class="footer-desc">Institutional-grade financial advisory for MSMEs, corporates, and startups. From capital structuring to government scheme navigation — we deliver results, not just reports.</p>
-      <div class="footer-contact-item">
-        <span class="footer-contact-icon">📞</span>
-        <span>+91 99790 21275</span>
-      </div>
-      <div class="footer-contact-item">
-        <span class="footer-contact-icon">✉️</span>
-        <span>rakesh@shivagroup.org.in</span>
-      </div>
-      <div class="footer-contact-item">
-        <span class="footer-contact-icon">📍</span>
-        <span>SF 34, 4D Square Mall, Motera, Ahmedabad 380005, Gujarat, India</span>
-      </div>
-      <div class="footer-contact-item">
-        <span class="footer-contact-icon">🌐</span>
-        <span>www.shivagroup.org.in</span>
-      </div>
-    </div>
-    <div>
-      <div class="footer-heading">Core Services</div>
-      <ul class="footer-links">
-        <li><a href="#contact">Bank Loan Proposals</a></li>
-        <li><a href="#contact">DPR Preparation</a></li>
-        <li><a href="#contact">SARFAESI Enforcement</a></li>
-        <li><a href="#contact">Project Finance</a></li>
-        <li><a href="#contact">ESG Advisory</a></li>
-        <li><a href="#contact">Working Capital</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-heading">For Businesses</div>
-      <ul class="footer-links">
-        <li><a href="#schemes">MSME Funding</a></li>
-        <li><a href="#schemes">Startup Capital</a></li>
-        <li><a href="#schemes">Renewable Energy Finance</a></li>
-        <li><a href="#schemes">Agribusiness Credit</a></li>
-        <li><a href="#schemes">Institutional Tenders</a></li>
-        <li><a href="#contact">NPA / OTS Advisory</a></li>
-      </ul>
-    </div>
-    <div>
-      <div class="footer-heading">Quick Links</div>
-      <ul class="footer-links">
-        <li><a href="#services">Our Services</a></li>
-        <li><a href="#schemes">Govt. Schemes</a></li>
-        <li><a href="#process">Our Process</a></li>
-        <li><a href="#why">Why Choose Us</a></li>
-        <li><a href="#contact">Free Consultation</a></li>
-        <li><a href="https://www.linkedin.com/in/rksjha" target="_blank">LinkedIn</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <div class="footer-copy">
-      © 2025 Shiva Financial Solutions · A Department of <a href="https://www.shivagroup.org.in" target="_blank">Shiva Consultancy Group</a>. All rights reserved. · Ahmedabad, India
-    </div>
-    <div class="footer-social">
-      <a href="https://www.linkedin.com/in/rksjha" target="_blank" class="social-btn" title="LinkedIn">in</a>
-      <a href="https://wa.me/919979021275" target="_blank" class="social-btn" title="WhatsApp">💬</a>
-      <a href="mailto:rakesh@shivagroup.org.in" class="social-btn" title="Email">✉</a>
-    </div>
-  </div>
-</footer>
-
-<!-- ─── WHATSAPP FLOAT ─── -->
-<div class="whatsapp-float">
-  <span class="whatsapp-label">Chat on WhatsApp</span>
-  <a href="https://wa.me/919979021275?text=Hello%2C%20I%20need%20financial%20advisory%20from%20Shiva%20Financial%20Solutions." target="_blank" class="whatsapp-bubble" title="WhatsApp">
-    💬
-  </a>
-</div>
-
-<script>
-  // Nav scroll effect
-  window.addEventListener('scroll', () => {
-    const nav = document.querySelector('nav');
-    if (window.scrollY > 50) {
-      nav.style.height = '60px';
-      nav.style.background = 'rgba(6,14,26,0.97)';
-    } else {
-      nav.style.height = '72px';
-      nav.style.background = 'rgba(10,22,40,0.92)';
-    }
-  });
-
-  // Scheme filter
-  function filterSchemes(type, btn) {
-    document.querySelectorAll('.scheme-tab').forEach(t => t.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.scheme-card').forEach(card => {
-      if (type === 'all' || card.dataset.type === type) {
-        card.style.display = '';
-        card.style.animation = 'fadeInUp 0.4s ease-out forwards';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
-
-  // Counter animation
-  function animateCounters() {
-    document.querySelectorAll('.metric-num').forEach(el => {
-      const text = el.textContent;
-      const num = parseFloat(text.replace(/[^0-9.]/g, ''));
-      if (isNaN(num)) return;
-      const prefix = text.match(/^[^0-9]*/)[0];
-      const suffix = text.match(/[^0-9.]*$/)[0];
-      let start = 0;
-      const duration = 1800;
-      const step = (timestamp) => {
-        if (!start) start = timestamp;
-        const progress = Math.min((timestamp - start) / duration, 1);
-        const ease = 1 - Math.pow(1 - progress, 3);
-        const current = ease * num;
-        el.textContent = prefix + (Number.isInteger(num) ? Math.floor(current) : current.toFixed(1)) + suffix;
-        if (progress < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    });
-  }
-
-  // Intersection Observer for counters
-  const metricsStrip = document.querySelector('.metrics-strip');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if (entry.isIntersecting) { animateCounters(); observer.unobserve(entry.target); } });
-  }, { threshold: 0.3 });
-  if (metricsStrip) observer.observe(metricsStrip);
-
-  // Form submission
-  function handleSubmit(btn) {
-    btn.textContent = '✓ Inquiry Received — We\'ll Contact You Shortly!';
-    btn.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
-    btn.style.color = '#fff';
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.textContent = 'Submit Inquiry — Get Free Consultation ›';
-      btn.style.background = '';
-      btn.style.color = '';
-      btn.disabled = false;
-    }, 5000);
-  }
-
-  // Smooth reveal on scroll
-  const revealEls = document.querySelectorAll('.service-card, .scheme-card, .testi-card, .process-step, .why-point');
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }, 60 * i);
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  revealEls.forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    revealObserver.observe(el);
-  });
-</script>
-</body>
-</html>
+    flex: 1; padding: 18px 24px; border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 3px; transition: background var(--transition);
+  }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat:hover { background: rgba(201,168,76,0.06); }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 700; color: var(--gold); line-height: 1; }
+  .stat-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
