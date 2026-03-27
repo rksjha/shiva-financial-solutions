@@ -1,150 +1,683 @@
-
-  /* MARQUEE TRUST STRIP */
-  .trust-strip {
-    background: linear-gradient(90deg, var(--scg-blue) 0%, #2A4A8A 50%, var(--scg-blue) 100%);
-    padding: 0; overflow: hidden; position: relative;
-    border-top: 1px solid rgba(59,94,166,0.4); border-bottom: 1px solid rgba(201,168,76,0.2);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shiva Financial Solutions | Capital Advisory · Project Finance · MSME Funding | Ahmedabad</title>
+<meta name="description" content="Shiva Financial Solutions – Expert bank loan proposals, DPR preparation, SARFAESI enforcement, MSME funding, ESG advisory and project finance. A department of Shiva Consultancy Group, Ahmedabad. Contact: +91 99790 21275.">
+<meta name="keywords" content="MSME loan Ahmedabad, bank loan proposal Gujarat, DPR preparation India, SARFAESI enforcement, project finance consultant, ESG advisory India, startup funding Ahmedabad, Rakesh Jha SCG">
+<meta property="og:title" content="Shiva Financial Solutions | Expert Financial Advisory">
+<meta property="og:description" content="From bank loan proposals to SARFAESI enforcement — institutional-grade financial advisory for MSMEs, corporates and startups across India.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #071220; --navy2: #0C1C35; --navy3: #122444;
+    --scg-blue: #3B5EA6; --scg-green: #4A9A3C;
+    --gold: #C9A84C; --gold2: #E8C96A; --gold-dim: rgba(201,168,76,0.12);
+    --white: #FFFFFF; --text-mid: #B0C0D8; --text-muted: #6B80A0;
+    --border: rgba(201,168,76,0.18); --border2: rgba(59,94,166,0.25);
+    --shadow-md: 0 8px 32px rgba(7,18,32,0.5); --radius: 3px;
+    --transition: 0.28s cubic-bezier(0.4,0,0.2,1);
   }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); overflow-x: hidden; line-height: 1.6; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+  /* TEXTURE OVERLAY */
+  body::after { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 900; height: 76px; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; background: rgba(7,18,32,0.95); backdrop-filter: blur(24px) saturate(180%); border-bottom: 1px solid var(--border); transition: height var(--transition), background var(--transition); }
+  nav.scrolled { height: 62px; background: rgba(4,12,22,0.98); }
+  .nav-brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+  .nav-logo-img { height: 44px; width: auto; filter: brightness(0) invert(1); opacity: 0.92; transition: opacity var(--transition); }
+  nav.scrolled .nav-logo-img { height: 36px; }
+  .nav-brand:hover .nav-logo-img { opacity: 1; }
+  .nav-brand-divider { width: 1px; height: 32px; background: linear-gradient(to bottom, transparent, var(--border), transparent); }
+  .nav-brand-text { display: flex; flex-direction: column; gap: 2px; }
+  .nav-brand-main { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 700; color: var(--gold); letter-spacing: 0.04em; line-height: 1; }
+  .nav-brand-sub { font-size: 0.58rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase; }
+  .nav-center { display: flex; align-items: center; gap: 6px; list-style: none; }
+  .nav-center a { color: var(--text-mid); text-decoration: none; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; padding: 6px 14px; border-radius: var(--radius); transition: color var(--transition), background var(--transition); }
+  .nav-center a:hover { color: var(--gold); background: var(--gold-dim); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-phone { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: 600; color: var(--text-mid); text-decoration: none; border: 1px solid var(--border2); padding: 7px 16px; border-radius: var(--radius); transition: all var(--transition); }
+  .nav-phone:hover { color: var(--white); border-color: var(--scg-blue); background: rgba(59,94,166,0.15); }
+  .nav-phone-icon { font-size: 0.75rem; color: var(--scg-blue); }
+  .btn-nav-cta { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: var(--navy) !important; text-decoration: none; padding: 9px 22px; border-radius: var(--radius); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; transition: all var(--transition); border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-nav-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+  .hamburger span { width: 22px; height: 2px; background: var(--text-mid); border-radius: 2px; transition: all 0.3s; }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: flex; align-items: center; padding: 110px 48px 80px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 90% 70% at 65% 35%, rgba(59,94,166,0.12) 0%, transparent 55%), radial-gradient(ellipse 50% 60% at 5% 90%, rgba(74,154,60,0.06) 0%, transparent 50%), radial-gradient(ellipse 40% 50% at 90% 10%, rgba(201,168,76,0.07) 0%, transparent 50%), linear-gradient(160deg, #071220 0%, #0C1C35 45%, #071220 100%); }
+  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(59,94,166,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(59,94,166,0.04) 1px, transparent 1px); background-size: 64px 64px; }
+  .hero-orb1 { position: absolute; top: 15%; right: 8%; width: 380px; height: 380px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.08); animation: slow-spin 35s linear infinite; }
+  .hero-orb1::before { content: ''; position: absolute; inset: 28px; border-radius: 50%; border: 1px solid rgba(59,94,166,0.08); }
+  .hero-orb1::after { content: ''; position: absolute; inset: 56px; border-radius: 50%; border: 1px solid rgba(74,154,60,0.06); }
+  .hero-orb2 { position: absolute; bottom: 10%; right: 22%; width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(circle, rgba(59,94,166,0.08), transparent 70%); animation: pulse-soft 4s ease-in-out infinite; }
+  @keyframes slow-spin { to { transform: rotate(360deg); } }
+  @keyframes pulse-soft { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.15); opacity: 1; } }
+  .hero-content { position: relative; z-index: 2; max-width: 680px; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(59,94,166,0.15); border: 1px solid rgba(59,94,166,0.35); border-radius: 30px; padding: 6px 16px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: #7CA4E0; margin-bottom: 28px; animation: fadeInUp 0.6s ease-out both; }
+  .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--scg-green); animation: pulse-dot 2s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%, 100% { box-shadow: 0 0 0 0 rgba(74,154,60,0.6); } 50% { box-shadow: 0 0 0 5px rgba(74,154,60,0); } }
+  .hero-h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 5.5vw, 5.2rem); font-weight: 700; line-height: 1.04; color: var(--white); margin-bottom: 10px; animation: fadeInUp 0.7s 0.1s ease-out both; }
+  .hero-h1 em { font-style: italic; color: var(--gold); }
+  .hero-h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.4rem, 2.8vw, 2.4rem); font-weight: 400; font-style: italic; color: var(--text-mid); margin-bottom: 28px; line-height: 1.25; animation: fadeInUp 0.7s 0.2s ease-out both; }
+  .hero-desc { font-size: 1rem; font-weight: 300; line-height: 1.75; color: rgba(176,192,216,0.85); max-width: 540px; margin-bottom: 40px; animation: fadeInUp 0.7s 0.3s ease-out both; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 52px; animation: fadeInUp 0.7s 0.4s ease-out both; }
+  .btn-gold { background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%); color: var(--navy); padding: 15px 34px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius); transition: all var(--transition); }
+  .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(201,168,76,0.45); }
+  .btn-ghost { background: transparent; color: var(--white); padding: 14px 30px; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius); transition: all var(--transition); }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+  .hero-stats { display: flex; gap: 0; flex-wrap: wrap; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: rgba(12,28,53,0.6); backdrop-filter: blur(10px); animation: fadeInUp 0.7s 0.5s ease-out both; max-width: 580px; }
+  .hero-stat { flex: 1; padding: 18px 24px; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 3px; transition: background var(--transition); }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat:hover { background: rgba(201,168,76,0.06); }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 1.75rem; font-weight: 700; color: var(--gold); line-height: 1; }
+  .stat-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* MARQUEE */
+  .trust-strip { background: linear-gradient(90deg, var(--scg-blue) 0%, #2A4A8A 50%, var(--scg-blue) 100%); padding: 0; overflow: hidden; position: relative; border-top: 1px solid rgba(59,94,166,0.4); border-bottom: 1px solid rgba(201,168,76,0.2); }
   .trust-strip::before, .trust-strip::after { content: ''; position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; }
   .trust-strip::before { left: 0; background: linear-gradient(90deg, var(--scg-blue), transparent); }
-  .trust-strip::after  { right: 0; background: linear-gradient(-90deg, var(--scg-blue), transparent); }
+  .trust-strip::after { right: 0; background: linear-gradient(-90deg, var(--scg-blue), transparent); }
   .marquee-wrapper { display: flex; }
   .marquee-track { display: flex; gap: 0; animation: marquee 30s linear infinite; width: max-content; }
   .marquee-track:hover { animation-play-state: paused; }
   @keyframes marquee { to { transform: translateX(-50%); } }
-  .marquee-item {
-    display: flex; align-items: center; gap: 10px; padding: 11px 28px; white-space: nowrap;
-    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.9);
-  }
+  .marquee-item { display: flex; align-items: center; gap: 10px; padding: 11px 28px; white-space: nowrap; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.9); }
   .marquee-sep { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: 0.7; flex-shrink: 0; }
 
-  /* QUICK INQUIRY BAR */
+  /* INQUIRY BAR */
   .inquiry-bar { background: var(--navy2); border-bottom: 1px solid var(--border); padding: 22px 48px; }
   .inquiry-bar-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-  .inquiry-bar-label {
-    font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 700; font-style: italic;
-    color: var(--gold); white-space: nowrap; flex-shrink: 0;
-  }
-  .inquiry-bar-input {
-    flex: 1; min-width: 160px; background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12); color: var(--white); padding: 10px 16px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.85rem; border-radius: var(--radius); outline: none;
-    transition: border-color var(--transition);
-  }
+  .inquiry-bar-label { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 700; font-style: italic; color: var(--gold); white-space: nowrap; flex-shrink: 0; }
+  .inquiry-bar-input { flex: 1; min-width: 160px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--white); padding: 10px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; border-radius: var(--radius); outline: none; transition: border-color var(--transition); }
   .inquiry-bar-input:focus { border-color: var(--gold); background: rgba(201,168,76,0.05); }
   .inquiry-bar-input::placeholder { color: var(--text-muted); }
-  .inquiry-bar-select {
-    flex: 1; min-width: 160px; background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12); color: var(--text-mid); padding: 10px 16px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.85rem; border-radius: var(--radius);
-    outline: none; cursor: pointer; appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
-    transition: border-color var(--transition);
-  }
+  .inquiry-bar-select { flex: 1; min-width: 160px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--text-mid); padding: 10px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; border-radius: var(--radius); outline: none; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; transition: border-color var(--transition); }
   .inquiry-bar-select:focus { border-color: var(--gold); }
   .inquiry-bar-select option { background: var(--navy2); color: var(--white); }
 
-  /* SECTIONS — SHARED UTILITIES */
+  /* SHARED */
   section { padding: 100px 48px; }
   .container { max-width: 1140px; margin: 0 auto; }
-  .eyebrow {
-    display: inline-flex; align-items: center; gap: 10px;
-    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
-  }
+  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
   .eyebrow::before { content: ''; width: 28px; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); }
-  .section-h2 {
-    font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.8vw, 3.2rem);
-    font-weight: 700; line-height: 1.1; color: var(--white); margin-bottom: 14px;
-  }
+  .section-h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.8vw, 3.2rem); font-weight: 700; line-height: 1.1; color: var(--white); margin-bottom: 14px; }
   .section-h2 em { font-style: italic; color: var(--gold); }
   .section-sub { font-size: 0.95rem; font-weight: 300; color: var(--text-mid); line-height: 1.7; max-width: 520px; }
 
-  /* MAIN INQUIRY FORM SECTION */
-  .form-section {
-    background: linear-gradient(160deg, var(--navy2) 0%, var(--navy3) 100%);
-    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 48px;
-  }
+  /* METRICS BAR */
+  .metrics-bar { background: var(--navy); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .metrics-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
+  .metric-cell { padding: 44px 24px; text-align: center; border-right: 1px solid var(--border); position: relative; overflow: hidden; transition: background var(--transition); }
+  .metric-cell:last-child { border-right: none; }
+  .metric-cell:hover { background: var(--gold-dim); }
+  .metric-cell::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); transform: scaleX(0); transform-origin: center; transition: transform 0.5s; }
+  .metric-cell:hover::after { transform: scaleX(1); }
+  .metric-num { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 6px; display: block; }
+  .metric-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); display: block; }
+
+  /* SERVICES */
+  .services-section { background: var(--navy); }
+  .services-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; flex-wrap: wrap; gap: 28px; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .svc-card { background: var(--navy2); padding: 36px 30px; position: relative; overflow: hidden; transition: all var(--transition); cursor: default; display: flex; flex-direction: column; }
+  .svc-card::before { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, var(--scg-blue), var(--gold)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s; }
+  .svc-card:hover { background: var(--navy3); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .svc-card:hover::before { transform: scaleX(1); }
+  .svc-num { position: absolute; top: 16px; right: 22px; font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 700; color: rgba(201,168,76,0.05); line-height: 1; transition: color var(--transition); }
+  .svc-card:hover .svc-num { color: rgba(201,168,76,0.10); }
+  .svc-icon-wrap { width: 48px; height: 48px; margin-bottom: 20px; background: rgba(59,94,166,0.12); border: 1px solid rgba(59,94,166,0.25); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; transition: all var(--transition); }
+  .svc-card:hover .svc-icon-wrap { background: rgba(59,94,166,0.25); border-color: var(--scg-blue); }
+  .svc-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 10px; line-height: 1.2; }
+  .svc-desc { font-size: 0.83rem; font-weight: 300; color: var(--text-mid); line-height: 1.65; margin-bottom: 18px; flex: 1; }
+  .svc-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
+  .svc-tag { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); padding: 3px 9px; border-radius: var(--radius); }
+  .svc-link { display: inline-flex; align-items: center; gap: 6px; font-size: 0.74rem; font-weight: 700; color: var(--gold); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0; transform: translateX(-6px); transition: all var(--transition); }
+  .svc-card:hover .svc-link { opacity: 1; transform: translateX(0); }
+  .svc-featured { grid-column: 1 / -1; display: grid; grid-template-columns: auto 1fr; background: linear-gradient(135deg, rgba(74,154,60,0.08), var(--navy2)) !important; border-top: 2px solid rgba(74,154,60,0.3) !important; gap: 0; }
+  .svc-feat-aside { padding: 36px 32px; border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 10px; min-width: 140px; background: rgba(74,154,60,0.06); }
+  .svc-feat-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--scg-green); background: rgba(74,154,60,0.15); border: 1px solid rgba(74,154,60,0.3); padding: 4px 12px; border-radius: 20px; }
+
+  /* PROCESS */
+  .process-section { background: linear-gradient(180deg, var(--navy) 0%, var(--navy2) 100%); }
+  .process-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; max-width: 1100px; margin: 0 auto; }
+  .process-steps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+  .process-step { padding: 32px 28px; border: 1px solid var(--border); margin: -1px 0 0 -1px; transition: all var(--transition); }
+  .process-step:hover { background: var(--gold-dim); border-color: rgba(201,168,76,0.35); z-index: 1; }
+  .step-circle { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: var(--gold); background: rgba(201,168,76,0.08); transition: all var(--transition); }
+  .process-step:hover .step-circle { background: var(--gold); color: var(--navy); }
+  .step-time-badge { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--scg-blue); background: rgba(59,94,166,0.12); border: 1px solid rgba(59,94,166,0.25); padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+  .step-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+  .step-desc { font-size: 0.8rem; font-weight: 300; color: var(--text-muted); line-height: 1.6; }
+
+  /* WHY US */
+  .why-section { background: var(--navy); }
+  .why-layout { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .why-visual { position: relative; height: 460px; }
+  .why-card-main { position: absolute; top: 0; left: 0; width: 80%; height: 80%; background: linear-gradient(145deg, var(--navy3), var(--navy2)); border: 1px solid var(--border); padding: 36px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+  .why-card-main::before { content: '\201C'; font-family: 'Cormorant Garamond', serif; font-size: 11rem; color: rgba(59,94,166,0.08); position: absolute; top: -20px; right: 10px; line-height: 1; pointer-events: none; }
+  .why-quote { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-style: italic; color: var(--white); line-height: 1.55; margin-bottom: 18px; }
+  .why-sig { display: flex; align-items: center; gap: 12px; }
+  .why-sig-line { flex: 1; height: 1px; background: var(--border); }
+  .why-sig-name { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+  .why-accent { position: absolute; bottom: 0; right: 0; width: 44%; height: 44%; background: linear-gradient(135deg, var(--gold), var(--gold2)); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; }
+  .why-accent-num { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; color: var(--navy); line-height: 1; }
+  .why-accent-lbl { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(7,18,32,0.7); margin-top: 4px; }
+  .why-pivot { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 52px; height: 52px; border-radius: 50%; background: var(--navy); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; z-index: 2; }
+  .why-points { display: flex; flex-direction: column; }
+  .why-point { display: flex; gap: 16px; align-items: flex-start; padding: 22px 0; border-bottom: 1px solid rgba(59,94,166,0.18); transition: all var(--transition); }
+  .why-point:first-child { padding-top: 0; }
+  .why-point:hover { padding-left: 8px; }
+  .why-icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: var(--radius); background: rgba(59,94,166,0.1); border: 1px solid rgba(59,94,166,0.25); display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: all var(--transition); }
+  .why-point:hover .why-icon { background: rgba(59,94,166,0.25); border-color: var(--scg-blue); }
+  .why-pt-title { font-size: 0.92rem; font-weight: 600; color: var(--white); margin-bottom: 5px; }
+  .why-pt-desc { font-size: 0.81rem; font-weight: 300; color: var(--text-muted); line-height: 1.6; }
+
+  /* SCHEMES */
+  .schemes-section { background: linear-gradient(180deg, var(--navy2) 0%, var(--navy) 100%); }
+  .schemes-tabs { display: flex; gap: 0; margin-bottom: 36px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .s-tab { padding: 11px 24px; font-size: 0.76rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); cursor: pointer; background: transparent; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all var(--transition); }
+  .s-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .s-tab:hover { color: var(--white); }
+  .schemes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .sc-card { background: var(--navy2); border: 1px solid var(--border); padding: 26px 22px; position: relative; transition: all var(--transition); overflow: hidden; border-radius: var(--radius); }
+  .sc-card:hover { border-color: rgba(201,168,76,0.45); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .sc-badge { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--navy); background: var(--gold); padding: 3px 10px; display: inline-block; margin-bottom: 12px; border-radius: 2px; }
+  .sc-amount { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+  .sc-name { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 16px; font-weight: 300; }
+  .sc-meta { display: flex; justify-content: space-between; }
+  .sc-meta-item { font-size: 0.7rem; color: var(--text-muted); }
+  .sc-meta-item span { color: var(--gold); font-weight: 600; }
+  .sc-cta { display: block; width: 100%; margin-top: 16px; text-decoration: none; background: transparent; border: 1px solid var(--border); color: var(--gold); padding: 9px 14px; text-align: center; font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-radius: var(--radius); transition: all var(--transition); }
+  .sc-cta:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+  /* FOUNDER */
+  .founder-section { background: linear-gradient(135deg, var(--navy3) 0%, var(--navy2) 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 48px; }
+  .founder-layout { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 60px; align-items: center; }
+  .founder-portrait { width: 200px; height: 200px; background: linear-gradient(135deg, var(--scg-blue), rgba(59,94,166,0.4)); border: 2px solid var(--border); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 700; color: var(--gold); position: relative; flex-shrink: 0; }
+  .founder-portrait::after { content: ''; position: absolute; inset: -6px; border: 1px solid rgba(201,168,76,0.2); border-radius: calc(var(--radius) + 4px); }
+  .founder-badge { position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 14px; border-radius: 20px; white-space: nowrap; }
+  .founder-name { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+  .founder-title { font-size: 0.8rem; font-weight: 500; color: var(--gold); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 18px; }
+  .founder-bio { font-size: 0.9rem; font-weight: 300; color: var(--text-mid); line-height: 1.75; max-width: 600px; margin-bottom: 24px; }
+  .founder-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+  .founder-chip { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; color: var(--text-mid); background: rgba(59,94,166,0.12); border: 1px solid rgba(59,94,166,0.25); padding: 5px 14px; border-radius: 20px; }
+  .founder-contacts { display: flex; gap: 12px; flex-wrap: wrap; }
+  .founder-contact-link { display: inline-flex; align-items: center; gap: 7px; font-size: 0.78rem; font-weight: 600; color: var(--text-mid); text-decoration: none; border: 1px solid var(--border); padding: 8px 16px; border-radius: var(--radius); transition: all var(--transition); }
+  .founder-contact-link:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+
+  /* FORM */
+  .form-section { background: linear-gradient(160deg, var(--navy2) 0%, var(--navy3) 100%); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 80px 48px; }
   .form-layout { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: start; }
   .form-value-list { margin-top: 32px; display: flex; flex-direction: column; gap: 0; }
-  .value-row {
-    display: flex; align-items: flex-start; gap: 14px; padding: 20px 0;
-    border-bottom: 1px solid rgba(59,94,166,0.18); transition: background var(--transition);
-  }
+  .value-row { display: flex; align-items: flex-start; gap: 14px; padding: 20px 0; border-bottom: 1px solid rgba(59,94,166,0.18); transition: background var(--transition); }
   .value-row:first-child { padding-top: 0; }
-  .value-icon {
-    width: 38px; height: 38px; flex-shrink: 0;
-    background: rgba(59,94,166,0.15); border: 1px solid rgba(59,94,166,0.3);
-    border-radius: var(--radius); display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; transition: all var(--transition);
-  }
+  .value-icon { width: 38px; height: 38px; flex-shrink: 0; background: rgba(59,94,166,0.15); border: 1px solid rgba(59,94,166,0.3); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: all var(--transition); }
   .value-row:hover .value-icon { background: rgba(59,94,166,0.3); border-color: var(--scg-blue); }
   .value-title { font-weight: 600; font-size: 0.9rem; color: var(--white); margin-bottom: 3px; }
   .value-desc { font-size: 0.8rem; color: var(--text-muted); font-weight: 300; line-height: 1.5; }
-
-  .form-card {
-    background: rgba(255,255,255,0.03); border: 1px solid var(--border);
-    border-radius: var(--radius); overflow: hidden;
-  }
-  .form-card-header {
-    padding: 24px 32px 20px;
-    background: linear-gradient(135deg, rgba(201,168,76,0.08), transparent);
-    border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px;
-  }
-  .form-header-icon {
-    width: 42px; height: 42px; background: linear-gradient(135deg, var(--gold), var(--gold2));
-    border-radius: var(--radius); display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; color: var(--navy);
-  }
+  .form-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .form-card-header { padding: 24px 32px 20px; background: linear-gradient(135deg, rgba(201,168,76,0.08), transparent); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
+  .form-header-icon { width: 42px; height: 42px; background: linear-gradient(135deg, var(--gold), var(--gold2)); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--navy); }
   .form-header-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 700; color: var(--white); }
   .form-header-sub { font-size: 0.74rem; color: var(--text-muted); margin-top: 2px; }
   .form-card-body { padding: 28px 32px 32px; }
   .fg { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
   .fg label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
-  .fg input, .fg select, .fg textarea {
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
-    color: var(--white); padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
-    border-radius: var(--radius); outline: none; transition: border-color var(--transition), background var(--transition);
-  }
+  .fg input, .fg select, .fg textarea { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: var(--white); padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; border-radius: var(--radius); outline: none; transition: border-color var(--transition), background var(--transition); }
   .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--gold); background: rgba(201,168,76,0.04); }
   .fg input::placeholder, .fg textarea::placeholder { color: var(--text-muted); }
-  .fg select {
-    cursor: pointer; appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 12px center;
-    padding-right: 32px; background-color: rgba(255,255,255,0.04);
-  }
+  .fg select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; background-color: rgba(255,255,255,0.04); }
   .fg select option { background: var(--navy2); }
   .fg textarea { resize: vertical; min-height: 90px; }
   .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .fg-full { grid-column: 1 / -1; }
-  .form-submit-btn {
-    width: 100%; margin-top: 8px; background: linear-gradient(135deg, var(--gold), var(--gold2));
-    color: var(--navy); border: none; padding: 15px; font-family: 'DM Sans', sans-serif;
-    font-size: 0.88rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    cursor: pointer; border-radius: var(--radius); transition: all var(--transition);
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
+  .form-submit-btn { width: 100%; margin-top: 8px; background: linear-gradient(135deg, var(--gold), var(--gold2)); color: var(--navy); border: none; padding: 15px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border-radius: var(--radius); transition: all var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; }
   .form-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(201,168,76,0.45); }
-  .form-note {
-    font-size: 0.72rem; color: var(--text-muted); text-align: center; margin-top: 12px;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-  }
+  .form-note { font-size: 0.72rem; color: var(--text-muted); text-align: center; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
-  /* TRUST METRICS BAR */
-  .metrics-bar { background: var(--navy); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .metrics-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); }
-  .metric-cell {
-    padding: 44px 24px; text-align: center; border-right: 1px solid var(--border);
-    position: relative; overflow: hidden; transition: background var(--transition);
+  /* TESTIMONIALS */
+  .testi-section { background: var(--navy); padding: 100px 48px; }
+  .testi-header { text-align: center; margin-bottom: 56px; }
+  .testi-header .eyebrow { justify-content: center; }
+  .testi-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .tc { background: var(--navy2); border: 1px solid var(--border); padding: 32px 26px; border-radius: var(--radius); transition: all var(--transition); }
+  .tc:hover { border-color: rgba(201,168,76,0.4); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .tc-stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 3px; margin-bottom: 16px; }
+  .tc-text { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic; color: rgba(255,255,255,0.85); line-height: 1.65; margin-bottom: 24px; }
+  .tc-author { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--border); padding-top: 20px; }
+  .tc-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--scg-blue), var(--gold)); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 700; color: var(--white); flex-shrink: 0; }
+  .tc-name { font-weight: 600; font-size: 0.88rem; color: var(--white); }
+  .tc-role { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+  .tc-feat { background: linear-gradient(135deg, rgba(59,94,166,0.12), var(--navy2)) !important; border-color: rgba(59,94,166,0.3) !important; }
+
+  /* CTA */
+  .cta-section { background: linear-gradient(135deg, var(--gold) 0%, #B8922A 40%, var(--gold2) 100%); padding: 80px 48px; text-align: center; position: relative; overflow: hidden; }
+  .cta-section::before { content: ''; position: absolute; inset: 0; opacity: 0.08; background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(0,0,0,0.05) 20px, rgba(0,0,0,0.05) 40px); }
+  .cta-h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 700; color: var(--navy); margin-bottom: 12px; position: relative; }
+  .cta-sub { font-size: 1rem; color: rgba(7,18,32,0.7); max-width: 480px; margin: 0 auto 36px; line-height: 1.65; position: relative; }
+  .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; position: relative; }
+  .btn-dark-solid { background: var(--navy); color: var(--gold); padding: 15px 32px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius); transition: all var(--transition); }
+  .btn-dark-solid:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.4); }
+  .btn-outline-navy { background: transparent; color: var(--navy); padding: 14px 32px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: 2px solid var(--navy); cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: var(--radius); transition: all var(--transition); }
+  .btn-outline-navy:hover { background: var(--navy); color: var(--gold); }
+
+  /* FOOTER */
+  footer { background: #040C18; border-top: 1px solid var(--border); padding: 80px 48px 0; }
+  .footer-top { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr; gap: 56px; padding-bottom: 56px; border-bottom: 1px solid var(--border); }
+  .footer-brand-col .footer-logo-img { height: 48px; width: auto; filter: brightness(0) invert(1); opacity: 0.85; margin-bottom: 8px; display: block; }
+  .footer-brand-col .footer-div-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 18px; }
+  .footer-desc { font-size: 0.84rem; font-weight: 300; color: var(--text-muted); line-height: 1.75; margin-bottom: 22px; }
+  .footer-contact-line { display: flex; align-items: flex-start; gap: 9px; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 9px; text-decoration: none; transition: color var(--transition); }
+  .footer-contact-line:hover { color: var(--white); }
+  .fci { color: var(--scg-blue); font-size: 0.75rem; margin-top: 2px; flex-shrink: 0; }
+  .footer-col-head { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { font-size: 0.82rem; color: var(--text-muted); text-decoration: none; transition: color var(--transition); display: flex; align-items: center; gap: 6px; }
+  .footer-links a::before { content: '›'; color: var(--scg-blue); font-size: 1rem; line-height: 1; }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom { max-width: 1100px; margin: 0 auto; padding: 22px 0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  .footer-copy { font-size: 0.73rem; color: var(--text-muted); }
+  .footer-copy a { color: var(--gold); text-decoration: none; }
+  .footer-legal { display: flex; gap: 20px; }
+  .footer-legal a { font-size: 0.72rem; color: var(--text-muted); text-decoration: none; transition: color var(--transition); }
+  .footer-legal a:hover { color: var(--white); }
+  .footer-social { display: flex; gap: 8px; }
+  .soc-btn { width: 34px; height: 34px; border: 1px solid var(--border); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--text-muted); text-decoration: none; transition: all var(--transition); }
+  .soc-btn:hover { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+
+  /* FLOATING WA */
+  .wa-float { position: fixed; bottom: 28px; right: 28px; z-index: 800; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  .wa-label { background: rgba(4,12,22,0.94); border: 1px solid var(--border); color: var(--white); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; padding: 6px 12px; border-radius: var(--radius); backdrop-filter: blur(10px); }
+  .wa-btn { width: 54px; height: 54px; border-radius: 50%; background: #25D366; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-decoration: none; box-shadow: 0 4px 20px rgba(37,211,102,0.45); transition: all var(--transition); }
+  .wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.65); }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    nav { padding: 0 24px; } nav .nav-center { display: none; } section { padding: 70px 24px; }
+    .hero { padding: 100px 24px 60px; } .form-section { padding: 70px 24px; }
+    .form-layout { grid-template-columns: 1fr; gap: 40px; } .services-grid { grid-template-columns: 1fr 1fr; }
+    .svc-featured { grid-template-columns: 1fr !important; } .svc-feat-aside { border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; justify-content: flex-start; }
+    .process-layout { grid-template-columns: 1fr; gap: 40px; } .why-layout { grid-template-columns: 1fr; gap: 40px; }
+    .why-visual { height: 300px; } .metrics-inner { grid-template-columns: 1fr 1fr; } .metric-cell { border-right: none; border-bottom: 1px solid var(--border); }
+    .schemes-grid { grid-template-columns: 1fr 1fr; } .testi-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; } .founder-layout { grid-template-columns: 1fr; text-align: center; }
+    .founder-portrait { margin: 0 auto; } .founder-contacts { justify-content: center; }
+    .hero-orb1 { display: none; } .inquiry-bar { padding: 18px 24px; } .hamburger { display: flex; }
   }
-  .metric-cell:last-child { border-right: none; }
-  .metric-cell:hover { background: var(--gold-dim); }
-  .metric-cell::after {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    transform: scaleX(0); transform-origin: center; transition: transform 0.5s;
+  @media (max-width: 600px) {
+    .services-grid { grid-template-columns: 1fr; } .schemes-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; } .metrics-inner { grid-template-columns: 1fr 1fr; }
+    .fg-row { grid-template-columns: 1fr; } .hero-stats { flex-direction: column; gap: 0; }
+    .hero-stat { border-right: none; border-bottom: 1px solid var(--border); } .process-steps-grid { grid-template-columns: 1fr; }
+    .nav-phone .phone-text { display: none; } .inquiry-bar-inner { flex-direction: column; align-items: stretch; }
   }
-  .metric-cell:hover::after { transform: scaleX(1); }
-  .metric-num { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 6px; display: block; }
-  .metric-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); display: block; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-brand">
+    <img class="nav-logo-img" src="1 Logo Shiva Consultancy Group (Rakesh Jha) (1).jpg" alt="Shiva Consultancy Group">
+    <div class="nav-brand-divider"></div>
+    <div class="nav-brand-text">
+      <span class="nav-brand-main">Shiva Financial Solutions</span>
+      <span class="nav-brand-sub">A Department of Shiva Consultancy Group</span>
+    </div>
+  </a>
+  <ul class="nav-center">
+    <li><a href="#services">Services</a></li><li><a href="#schemes">Schemes</a></li>
+    <li><a href="#process">Our Process</a></li><li><a href="#about">About Us</a></li><li><a href="#contact">Inquiry</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="tel:+919979021275" class="nav-phone"><span class="nav-phone-icon">📞</span><span class="phone-text">+91 99790 21275</span></a>
+    <a href="#contact" class="btn-nav-cta">Free Consult ›</a>
+  </div>
+  <div class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div><div class="hero-orb1"></div><div class="hero-orb2"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><div class="hero-badge-dot"></div>PAN India · Capital Advisory · Institutional Finance</div>
+    <h1 class="hero-h1">Your Business Deserves<br><em>Capital That Works</em></h1>
+    <p class="hero-h2">Expert. Personalised. Results-Driven.</p>
+    <p class="hero-desc">From bank loan proposals to SARFAESI enforcement, DPR preparation to ESG advisory — Shiva Financial Solutions delivers institutional-grade financial consulting for MSMEs, corporates and startups across India. Every mandate is personally led by Rakesh Jha.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-gold">Get Free Consultation ›</a>
+      <a href="#services" class="btn-ghost">Explore Our Services</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="stat-num" data-target="500">0</span><span class="stat-label">Cases Handled</span></div>
+      <div class="hero-stat"><span class="stat-num">₹200Cr+</span><span class="stat-label">Finance Facilitated</span></div>
+      <div class="hero-stat"><span class="stat-num" data-target="92">0</span><span class="stat-label">% Success Rate</span></div>
+      <div class="hero-stat"><span class="stat-num" data-target="15">0</span><span class="stat-label">Yrs Experience</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="trust-strip"><div class="marquee-wrapper"><div class="marquee-track">
+  <span class="marquee-item">Project Finance <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Bank Loan Proposals <span class="marquee-sep"></span></span>
+  <span class="marquee-item">DPR Preparation <span class="marquee-sep"></span></span>
+  <span class="marquee-item">MSME Funding <span class="marquee-sep"></span></span>
+  <span class="marquee-item">SARFAESI Enforcement <span class="marquee-sep"></span></span>
+  <span class="marquee-item">ESG Advisory <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Startup Capital <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Institutional Tenders <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Working Capital <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Renewable Energy Finance <span class="marquee-sep"></span></span>
+  <span class="marquee-item">NPA Resolution <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Agribusiness Finance <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Project Finance <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Bank Loan Proposals <span class="marquee-sep"></span></span>
+  <span class="marquee-item">DPR Preparation <span class="marquee-sep"></span></span>
+  <span class="marquee-item">MSME Funding <span class="marquee-sep"></span></span>
+  <span class="marquee-item">SARFAESI Enforcement <span class="marquee-sep"></span></span>
+  <span class="marquee-item">ESG Advisory <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Startup Capital <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Institutional Tenders <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Working Capital <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Renewable Energy Finance <span class="marquee-sep"></span></span>
+  <span class="marquee-item">NPA Resolution <span class="marquee-sep"></span></span>
+  <span class="marquee-item">Agribusiness Finance <span class="marquee-sep"></span></span>
+</div></div></div>
+
+<!-- INQUIRY BAR -->
+<div class="inquiry-bar">
+  <div class="inquiry-bar-inner">
+    <span class="inquiry-bar-label">Quick Check — Find the Right Scheme for You:</span>
+    <input class="inquiry-bar-input" type="text" placeholder="Your business name or city...">
+    <select class="inquiry-bar-select"><option value="">Business Type</option><option>MSME / SME</option><option>Startup</option><option>Corporation</option><option>Agribusiness</option><option>Renewable Energy</option></select>
+    <select class="inquiry-bar-select"><option value="">Funding Range</option><option>₹5L – ₹25L</option><option>₹25L – ₹1 Crore</option><option>₹1Cr – ₹10 Crore</option><option>₹10Cr+</option></select>
+    <a href="#contact" class="btn-gold" style="padding:10px 24px;font-size:0.78rem;white-space:nowrap;">Find Schemes ›</a>
+  </div>
+</div>
+
+<!-- METRICS BAR -->
+<div class="metrics-bar"><div class="metrics-inner">
+  <div class="metric-cell"><span class="metric-num" data-target="500">0+</span><span class="metric-label">Successful Cases</span></div>
+  <div class="metric-cell"><span class="metric-num">₹200Cr+</span><span class="metric-label">Finance Facilitated</span></div>
+  <div class="metric-cell"><span class="metric-num" data-target="92">0</span><span class="metric-label">% Approval Rate</span></div>
+  <div class="metric-cell"><span class="metric-num" data-target="15">0</span><span class="metric-label">Years of Expertise</span></div>
+</div></div>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="container">
+    <div class="services-header">
+      <div><div class="eyebrow">What We Do</div><h2 class="section-h2">Institutional-Grade<br><em>Financial Services</em></h2></div>
+      <p class="section-sub">Every engagement is personally led by our senior consultants with deep expertise across Indian banking, regulatory, and financial ecosystems.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card"><div class="svc-num">01</div><div class="svc-icon-wrap">🏦</div><div class="svc-title">Bank Loan Proposals & Project Finance</div><div class="svc-desc">End-to-end preparation of bankable proposals — TEV studies, CMA data, financial modelling, and lender presentations for term loans, working capital, and structured debt facilities up to ₹500 Cr.</div><div class="svc-tags"><span class="svc-tag">SBI</span><span class="svc-tag">SIDBI</span><span class="svc-tag">HDFC</span><span class="svc-tag">PSU Banks</span></div><a href="#contact" class="svc-link">Enquire Now →</a></div>
+      <div class="svc-card"><div class="svc-num">02</div><div class="svc-icon-wrap">📋</div><div class="svc-title">DPR Preparation</div><div class="svc-desc">Detailed Project Reports crafted for government scheme applications, bank sanctions, tender eligibility, and institutional investor presentations — techno-economically rigorous and outcome-focused.</div><div class="svc-tags"><span class="svc-tag">Govt. Schemes</span><span class="svc-tag">Manufacturing</span><span class="svc-tag">Infrastructure</span></div><a href="#contact" class="svc-link">Enquire Now →</a></div>
+      <div class="svc-card"><div class="svc-num">03</div><div class="svc-icon-wrap">⚖️</div><div class="svc-title">SARFAESI & NPA Resolution</div><div class="svc-desc">Strategic enforcement and recovery advisory under the SARFAESI Act — from possession proceedings to OTS negotiations, debt restructuring, and DRT/DRAT representation support for banks and ARCs.</div><div class="svc-tags"><span class="svc-tag">NPA Recovery</span><span class="svc-tag">OTS</span><span class="svc-tag">DRT</span><span class="svc-tag">ARC</span></div><a href="#contact" class="svc-link">Enquire Now →</a></div>
+      <div class="svc-card"><div class="svc-num">04</div><div class="svc-icon-wrap">🌱</div><div class="svc-title">ESG & Sustainability Advisory</div><div class="svc-desc">GHG emissions inventories, carbon sequestration studies, ESG framework implementation, and sustainability reporting aligned to GRI, BRSR, ISO 14064, and TCFD standards — including PSU tender execution.</div><div class="svc-tags"><span class="svc-tag">GHG Inventory</span><span class="svc-tag">BRSR</span><span class="svc-tag">Net Zero</span><span class="svc-tag">ISO 14064</span></div><a href="#contact" class="svc-link">Enquire Now →</a></div>
+      <div class="svc-card"><div class="svc-num">05</div><div class="svc-icon-wrap">🚀</div><div class="svc-title">Startup & MSME Capital Advisory</div><div class="svc-desc">Navigating India's full funding ecosystem — government grants, angel networks, PE/VC, and institutional lending. From pitch decks to financial models, we make your venture fundable.</div><div class="svc-tags"><span class="svc-tag">PMEGP</span><span class="svc-tag">MUDRA</span><span class="svc-tag">Startup India</span><span class="svc-tag">VC Access</span></div><a href="#contact" class="svc-link">Enquire Now →</a></div>
+      <div class="svc-card"><div class="svc-num">06</div><div class="svc-icon-wrap">📊</div><div class="svc-title">Institutional Tenders & B2G Advisory</div><div class="svc-desc">Bid strategy, pre-bid consultation, and complete technical & financial proposal preparation for PSU, government, and multilateral tenders — with successful engagements at SAIL, ONGC, and NTPC level.</div><div class="svc-tags"><span class="svc-tag">SAIL</span><span class="svc-tag">PSU Tenders</span><span class="svc-tag">GeM Portal</span><span class="svc-tag">B2G</span></div><a href="#contact" class="svc-link">Enquire Now →</a></div>
+      <div class="svc-card svc-featured">
+        <div class="svc-feat-aside"><span style="font-size:2.2rem;">⚡</span><span class="svc-feat-badge">Most Requested</span></div>
+        <div style="padding:36px 38px;flex:1;">
+          <div class="svc-num">07</div>
+          <div class="svc-title" style="font-size:1.5rem;">Renewable Energy & Agribusiness Project Finance</div>
+          <div class="svc-desc">Specialised project finance, DPR, and subsidy advisory for solar, wind, biomass, and agri-infrastructure projects — including NABARD RIDF, MNRE scheme navigation, PMFBY, and state-level incentive structuring.</div>
+          <div class="svc-tags"><span class="svc-tag">Solar Finance</span><span class="svc-tag">NABARD RIDF</span><span class="svc-tag">MNRE Subsidies</span><span class="svc-tag">Agri Credit</span></div>
+          <a href="#contact" class="svc-link" style="opacity:1;transform:none;margin-top:16px;display:inline-flex;">Get Expert Advice →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section" id="process">
+  <div class="container"><div class="process-layout">
+    <div>
+      <div class="eyebrow">How We Work</div>
+      <h2 class="section-h2">From Problem<br>to <em>Approved Finance</em></h2>
+      <p class="section-sub" style="margin-top:14px;">A structured, senior-led approach that converts your financial challenge into a bankable, fundable solution.</p>
+      <div style="margin-top:36px;display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.83rem;color:var(--text-mid);"><span style="color:var(--scg-green);">✓</span> 100% Confidential Engagement</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.83rem;color:var(--text-mid);"><span style="color:var(--scg-green);">✓</span> No Hidden Charges — Transparent Fees</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.83rem;color:var(--text-mid);"><span style="color:var(--scg-green);">✓</span> Senior Consultant Handles Your Case Directly</div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:0.83rem;color:var(--text-mid);"><span style="color:var(--scg-green);">✓</span> Regular Status Updates & Milestone Reporting</div>
+      </div>
+    </div>
+    <div class="process-steps-grid">
+      <div class="process-step"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div class="step-circle">1</div><span class="step-time-badge">Day 1</span></div><div class="step-title">Discovery Call</div><div class="step-desc">In-depth consultation with Rakesh Jha to understand your case, financials, and target outcome. No templates, no juniors.</div></div>
+      <div class="process-step"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div class="step-circle">2</div><span class="step-time-badge">Days 2–4</span></div><div class="step-title">Deep Analysis</div><div class="step-desc">Document review, financial modelling, regulatory mapping, and scheme eligibility assessment to craft your optimal strategy.</div></div>
+      <div class="process-step"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div class="step-circle">3</div><span class="step-time-badge">Days 5–18</span></div><div class="step-title">Proposal & Docs</div><div class="step-desc">Complete documentation — DPR, CMA data, loan proposals, TEV studies — professionally prepared and tailored to your target lender.</div></div>
+      <div class="process-step"><div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><div class="step-circle">4</div><span class="step-time-badge">Days 18–45</span></div><div class="step-title">Submission & Closure</div><div class="step-desc">Active lender engagement, real-time query resolution, sanction tracking, and hands-on disbursement support until your funds arrive.</div></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- WHY US -->
+<section class="why-section" id="why">
+  <div class="why-layout">
+    <div>
+      <div class="eyebrow">Why Shiva Financial</div>
+      <h2 class="section-h2">Consulting That Goes<br><em>Beyond Advice</em></h2>
+      <p class="section-sub" style="margin-bottom:36px;">We don't just advise — we execute. Every mandate is owned end-to-end, making your financial goals our professional obligation.</p>
+      <div class="why-points">
+        <div class="why-point"><div class="why-icon">🎯</div><div><div class="why-pt-title">Personalised, Not Packaged</div><div class="why-pt-desc">Every client receives a bespoke strategy built from deep analysis of their unique documents, financials, and regulatory context. We reject one-size-fits-all approaches.</div></div></div>
+        <div class="why-point"><div class="why-icon">🏛️</div><div><div class="why-pt-title">Institutional Relationships</div><div class="why-pt-desc">Established working relationships with SBI, SIDBI, YES Bank, HDFC, NABARD, and 20+ PSU banks — accelerating your approval timeline significantly.</div></div></div>
+        <div class="why-point"><div class="why-icon">⚡</div><div><div class="why-pt-title">Senior-Led Execution</div><div class="why-pt-desc">Your mandate is handled by Rakesh Jha directly — a 15+ year veteran — not delegated to junior associates or call-centre staff.</div></div></div>
+        <div class="why-point"><div class="why-icon">🛡️</div><div><div class="why-pt-title">End-to-End Accountability</div><div class="why-pt-desc">From first draft to final disbursement, we stay engaged. Transparent milestones, regular updates, zero surprises. Our reputation is built on outcomes.</div></div></div>
+      </div>
+    </div>
+    <div class="why-visual">
+      <div class="why-card-main">
+        <div class="why-quote">"Our clients don't just get a consultant — they get a strategic partner who is personally committed to their financial success, from the first call to final closure."</div>
+        <div class="why-sig"><div class="why-sig-line"></div><div class="why-sig-name">Rakesh Jha · Co-Founder, SCG & Shiva Financial Solutions</div></div>
+      </div>
+      <div class="why-accent"><div class="why-accent-num">92%</div><div class="why-accent-lbl">Approval Success Rate</div></div>
+      <div class="why-pivot">✦</div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEMES -->
+<section class="schemes-section" id="schemes">
+  <div class="container">
+    <div class="eyebrow">Government Schemes</div>
+    <h2 class="section-h2">50+ Funding Schemes<br><em>We Navigate for You</em></h2>
+    <p class="section-sub" style="margin-bottom:36px;">Expert scheme identification, eligibility assessment, and end-to-end application management.</p>
+    <div class="schemes-tabs">
+      <button class="s-tab active" onclick="filterSchemes('all',this)">All Schemes</button>
+      <button class="s-tab" onclick="filterSchemes('loan',this)">Loans</button>
+      <button class="s-tab" onclick="filterSchemes('subsidy',this)">Subsidies</button>
+      <button class="s-tab" onclick="filterSchemes('grant',this)">Grants</button>
+      <button class="s-tab" onclick="filterSchemes('equity',this)">Equity / VC</button>
+    </div>
+    <div class="schemes-grid" id="schemesGrid">
+      <div class="sc-card" data-type="loan"><div class="sc-badge">⚡ 98% Success</div><div class="sc-amount">Up to ₹10 Lakh</div><div class="sc-name">Pradhan Mantri MUDRA Yojana (PMMY) — Shishu / Kishore / Tarun</div><div class="sc-meta"><div class="sc-meta-item">Type <span>Collateral-Free</span></div><div class="sc-meta-item">Timeline <span>7–10 days</span></div></div><a href="#contact" class="sc-cta">Apply with Expert Guidance →</a></div>
+      <div class="sc-card" data-type="subsidy"><div class="sc-badge">Popular</div><div class="sc-amount">Up to ₹50 Lakh</div><div class="sc-name">PM Employment Generation Programme (PMEGP)</div><div class="sc-meta"><div class="sc-meta-item">Subsidy <span>15–35%</span></div><div class="sc-meta-item">Timeline <span>30–45 days</span></div></div><a href="#contact" class="sc-cta">Apply with Expert Guidance →</a></div>
+      <div class="sc-card" data-type="loan"><div class="sc-badge">No Collateral</div><div class="sc-amount">Up to ₹5 Crore</div><div class="sc-name">CGTMSE Credit Guarantee Scheme</div><div class="sc-meta"><div class="sc-meta-item">Cover <span>75–85%</span></div><div class="sc-meta-item">Timeline <span>15–20 days</span></div></div><a href="#contact" class="sc-cta">Apply with Expert Guidance →</a></div>
+      <div class="sc-card" data-type="grant"><div class="sc-badge">Startup</div><div class="sc-amount">Up to ₹20 Lakh</div><div class="sc-name">Startup India Seed Fund Scheme (SISFS)</div><div class="sc-meta"><div class="sc-meta-item">Stage <span>Early-Stage</span></div><div class="sc-meta-item">Timeline <span>45–60 days</span></div></div><a href="#contact" class="sc-cta">Apply with Expert Guidance →</a></div>
+      <div class="sc-card" data-type="loan"><div class="sc-badge">Fast Track</div><div class="sc-amount">₹1L – ₹5 Crore</div><div class="sc-name">PSB Loans in 59 Minutes</div><div class="sc-meta"><div class="sc-meta-item">Digital <span>Yes</span></div><div class="sc-meta-item">Approval <span>59 minutes</span></div></div><a href="#contact" class="sc-cta">Apply with Expert Guidance →</a></div>
+      <div class="sc-card" data-type="equity"><div class="sc-badge">Growth Stage</div><div class="sc-amount">₹50,000 Cr Fund</div><div class="sc-name">Self-Reliant India (SRI) Fund — AIF Structure</div><div class="sc-meta"><div class="sc-meta-item">Type <span>Equity / QE</span></div><div class="sc-meta-item">Timeline <span>45–60 days</span></div></div><a href="#contact" class="sc-cta">Apply with Expert Guidance →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<div class="founder-section" id="about">
+  <div class="founder-layout">
+    <div class="founder-portrait">RJ<span class="founder-badge">Co-Founder &amp; Mentor</span></div>
+    <div>
+      <div class="eyebrow">Leadership</div>
+      <div class="founder-name">Rakesh Jha</div>
+      <div class="founder-title">Co-Founder, Shiva Consultancy Group &amp; Shiva Financial Solutions</div>
+      <p class="founder-bio">A seasoned financial and strategic consultant with 15+ years of hands-on experience across project finance, MSME capital advisory, SARFAESI enforcement, ESG reporting, and institutional tender processes. Rakesh has personally led mandates with SBI, YES Bank, SIDBI, NABARD, SAIL, and dozens of leading PSU institutions — delivering results where conventional advisors have fallen short.<br><br>His approach is distinctive: every client engagement is led personally, with deep analysis of documents, financials, and regulatory context, followed by a clear, actionable strategy tailored precisely to the client's situation.</p>
+      <div class="founder-chips">
+        <span class="founder-chip">Project Finance</span><span class="founder-chip">SARFAESI Specialist</span><span class="founder-chip">DPR Expert</span><span class="founder-chip">ESG Advisory</span><span class="founder-chip">MSME Funding</span><span class="founder-chip">PSU Tenders</span><span class="founder-chip">Startup Mentor</span>
+      </div>
+      <div class="founder-contacts">
+        <a href="tel:+919979021275" class="founder-contact-link">📞 +91 99790 21275</a>
+        <a href="mailto:rakesh@shivagroup.org.in" class="founder-contact-link">✉️ rakesh@shivagroup.org.in</a>
+        <a href="https://www.linkedin.com/in/rksjha" target="_blank" class="founder-contact-link">🔗 LinkedIn /rksjha</a>
+        <a href="https://www.shivagroup.org.in" target="_blank" class="founder-contact-link">🌐 shivagroup.org.in</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div class="testi-header"><div class="eyebrow" style="justify-content:center;">Client Outcomes</div><h2 class="section-h2" style="text-align:center;">Results That<br><em>Speak for Themselves</em></h2></div>
+  <div class="testi-grid">
+    <div class="tc tc-feat"><div class="tc-stars">★★★★★</div><div class="tc-text">"Rakesh and his team turned our two-time rejected bank application into a sanctioned ₹4.5 Cr term loan in just 28 days. Their command over CMA data and lender psychology is truly unmatched in the industry."</div><div class="tc-author"><div class="tc-avatar">R</div><div><div class="tc-name">Ramesh Patel</div><div class="tc-role">MD, Gujarat Manufacturing MSME</div></div></div></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><div class="tc-text">"Our DPR for a 2 MW solar project was prepared with exceptional techno-economic detail. NABARD approval came through in record time. SCG's understanding of renewable energy finance is institutional-grade."</div><div class="tc-author"><div class="tc-avatar">A</div><div><div class="tc-name">Anand Sharma</div><div class="tc-role">Founder, Solar EPC Company, Rajasthan</div></div></div></div>
+    <div class="tc"><div class="tc-stars">★★★★★</div><div class="tc-text">"The SARFAESI enforcement strategy SCG crafted recovered ₹8.2 Cr from a defaulter case where we had lost all hope. Professional, strategic, and relentlessly focused on results."</div><div class="tc-author"><div class="tc-avatar">P</div><div><div class="tc-name">Priya Mehta</div><div class="tc-role">CFO, NBFC Client, Mumbai</div></div></div></div>
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<div class="form-section" id="contact">
+  <div class="form-layout">
+    <div>
+      <div class="eyebrow">Get Started</div>
+      <h2 class="section-h2">Tell Us Your<br><em>Financial Challenge.</em><br>We'll Solve It.</h2>
+      <p class="section-sub" style="margin:16px 0 0;">Our senior consultants personally assess every case. No templates, no juniors — direct engagement with experts who have closed deals with SBI, YES Bank, SIDBI, and leading PSU institutions.</p>
+      <div class="form-value-list">
+        <div class="value-row"><div class="value-icon">🔒</div><div><div class="value-title">100% Confidential</div><div class="value-desc">Your documents and financials are handled with strict confidentiality. NDAs available on request.</div></div></div>
+        <div class="value-row"><div class="value-icon">⏱️</div><div><div class="value-title">4-Hour Response Guarantee</div><div class="value-desc">Every inquiry receives a personal response from a senior consultant within 4 business hours.</div></div></div>
+        <div class="value-row"><div class="value-icon">💼</div><div><div class="value-title">Free First Consultation</div><div class="value-desc">Your first consultation with Rakesh Jha is completely free — no obligation, no hidden agenda.</div></div></div>
+        <div class="value-row"><div class="value-icon">📍</div><div><div class="value-title">SF 34, 4D Square Mall, Motera</div><div class="value-desc">Ahmedabad 380005, Gujarat, India · Also serving PAN India clients remotely.</div></div></div>
+      </div>
+    </div>
+    <div class="form-card">
+      <div class="form-card-header"><div class="form-header-icon">📩</div><div><div class="form-header-title">Quick Inquiry Form</div><div class="form-header-sub">Senior consultant responds personally within 4 business hours</div></div></div>
+      <div class="form-card-body">
+        <div class="fg-row">
+          <div class="fg"><label>Full Name *</label><input type="text" id="f-name" placeholder="Your full name"></div>
+          <div class="fg"><label>Mobile Number *</label><input type="tel" id="f-phone" placeholder="+91 XXXXX XXXXX"></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Email Address *</label><input type="email" id="f-email" placeholder="you@company.com"></div>
+          <div class="fg"><label>Business Type *</label><select id="f-btype"><option value="">Select type...</option><option>MSME / SME</option><option>Startup / Early-Stage</option><option>Corporation / Group</option><option>PSU / Government</option><option>Agribusiness / FPO</option><option>Renewable Energy</option><option>Individual / NRI</option></select></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Service Required *</label><select id="f-service"><option value="">Select service...</option><option>Bank Loan / Project Finance</option><option>DPR Preparation</option><option>SARFAESI / NPA Resolution</option><option>Government Scheme (MUDRA/PMEGP/etc.)</option><option>ESG / Sustainability Advisory</option><option>Startup Funding / Pitch Deck</option><option>Institutional Tender Advisory</option><option>Renewable Energy Finance</option><option>Other</option></select></div>
+          <div class="fg"><label>Funding Requirement</label><select id="f-amount"><option value="">Select range...</option><option>₹5L – ₹25L</option><option>₹25L – ₹1 Crore</option><option>₹1Cr – ₹10 Crore</option><option>₹10Cr – ₹100 Crore</option><option>₹100 Crore+</option></select></div>
+        </div>
+        <div class="fg fg-full"><label>Brief Description of Your Requirement</label><textarea id="f-msg" placeholder="Describe your challenge briefly — our senior consultant will review it personally..."></textarea></div>
+        <button class="form-submit-btn" onclick="submitForm(this)">Submit Inquiry — Get Free Consultation ›</button>
+        <p class="form-note"><span>🔒</span> 100% Confidential <span style="margin:0 8px;opacity:0.3;">·</span> <span>📵</span> Zero Spam <span style="margin:0 8px;opacity:0.3;">·</span> <span>👤</span> Senior Expert Response</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA BANNER -->
+<div class="cta-section">
+  <h2 class="cta-h2">Ready to Secure the Finance<br>Your Business Deserves?</h2>
+  <p class="cta-sub">Connect with Rakesh Jha and our senior team today. First consultation is always free and completely confidential.</p>
+  <div class="cta-btns">
+    <a href="#contact" class="btn-dark-solid">Book Free Consultation ›</a>
+    <a href="https://wa.me/919979021275?text=Hello%20Shiva%20Financial%20Solutions%2C%20I%20need%20financial%20advisory." target="_blank" class="btn-outline-navy">💬 WhatsApp Us Now</a>
+    <a href="tel:+919979021275" class="btn-outline-navy">📞 Call +91 99790 21275</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand-col">
+      <img class="footer-logo-img" src="1 Logo Shiva Consultancy Group (Rakesh Jha) (1).jpg" alt="Shiva Consultancy Group">
+      <div class="footer-div-label">Shiva Financial Solutions · A Department of Shiva Consultancy Group</div>
+      <p class="footer-desc">Institutional-grade financial advisory for MSMEs, corporates, and startups. From capital structuring to government scheme navigation — we deliver results, not just reports. PAN India operations since 2009.</p>
+      <a href="tel:+919979021275" class="footer-contact-line"><span class="fci">📞</span> +91 99790 21275</a>
+      <a href="mailto:rakesh@shivagroup.org.in" class="footer-contact-line"><span class="fci">✉️</span> rakesh@shivagroup.org.in</a>
+      <a href="https://www.shivagroup.org.in" target="_blank" class="footer-contact-line"><span class="fci">🌐</span> www.shivagroup.org.in</a>
+      <div class="footer-contact-line"><span class="fci">📍</span> SF 34, 4D Square Mall, Motera, Ahmedabad 380005, Gujarat, India</div>
+      <div class="footer-contact-line"><span class="fci">🔗</span> LinkedIn: /rksjha</div>
+    </div>
+    <div>
+      <div class="footer-col-head">Core Services</div>
+      <ul class="footer-links"><li><a href="#contact">Bank Loan Proposals</a></li><li><a href="#contact">DPR Preparation</a></li><li><a href="#contact">SARFAESI Enforcement</a></li><li><a href="#contact">Project Finance</a></li><li><a href="#contact">ESG Advisory</a></li><li><a href="#contact">Working Capital Finance</a></li></ul>
+    </div>
+    <div>
+      <div class="footer-col-head">For Businesses</div>
+      <ul class="footer-links"><li><a href="#schemes">MSME Funding</a></li><li><a href="#schemes">Startup Capital</a></li><li><a href="#schemes">Renewable Energy Finance</a></li><li><a href="#schemes">Agribusiness Credit</a></li><li><a href="#schemes">Institutional Tenders</a></li><li><a href="#contact">NPA / OTS Advisory</a></li></ul>
+    </div>
+    <div>
+      <div class="footer-col-head">About SCG</div>
+      <ul class="footer-links"><li><a href="#about">Rakesh Jha</a></li><li><a href="https://www.shivagroup.org.in" target="_blank">SCG Main Website</a></li><li><a href="#services">Our Services</a></li><li><a href="#process">Our Process</a></li><li><a href="#contact">Free Consultation</a></li><li><a href="https://www.linkedin.com/in/rksjha" target="_blank">LinkedIn</a></li></ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2025 Shiva Financial Solutions · A Department of <a href="https://www.shivagroup.org.in" target="_blank">Shiva Consultancy Group (SCG)</a>, Ahmedabad. All rights reserved.</div>
+    <div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Disclaimer</a></div>
+    <div class="footer-social">
+      <a href="https://www.linkedin.com/in/rksjha" target="_blank" class="soc-btn">in</a>
+      <a href="https://wa.me/919979021275" target="_blank" class="soc-btn">💬</a>
+      <a href="mailto:rakesh@shivagroup.org.in" class="soc-btn">✉</a>
+      <a href="https://www.shivagroup.org.in" target="_blank" class="soc-btn">🌐</a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<div class="wa-float">
+  <span class="wa-label">Chat with us on WhatsApp</span>
+  <a href="https://wa.me/919979021275?text=Hello%20Shiva%20Financial%20Solutions%2C%20I%20am%20looking%20for%20financial%20advisory." target="_blank" class="wa-btn">💬</a>
+</div>
+
+<script>
+// Nav scroll
+var nav = document.getElementById('mainNav');
+window.addEventListener('scroll', function(){ nav.classList.toggle('scrolled', window.scrollY > 60); });
+
+// Counter animation
+function animateCounter(el){
+  var target = parseInt(el.dataset.target); if(!target) return;
+  var suffix = el.textContent.replace(/[0-9]/g,''), start = 0, duration = 1800, startTs = null;
+  function step(ts){ if(!startTs) startTs = ts; var p = Math.min((ts-startTs)/duration,1), ease = 1-Math.pow(1-p,3); el.textContent = Math.floor(ease*target)+suffix; if(p<1) requestAnimationFrame(step); }
+  requestAnimationFrame(step);
+}
+var counterObs = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ animateCounter(e.target); counterObs.unobserve(e.target); } }); },{threshold:0.4});
+document.querySelectorAll('[data-target]').forEach(function(el){ counterObs.observe(el); });
+
+// Scheme filter
+function filterSchemes(type, btn){
+  document.querySelectorAll('.s-tab').forEach(function(t){ t.classList.remove('active'); }); btn.classList.add('active');
+  document.querySelectorAll('.sc-card').forEach(function(c){ c.style.display = (type==='all'||c.dataset.type===type)?'':'none'; });
+}
+
+// Scroll reveal
+var revObs = new IntersectionObserver(function(entries){ entries.forEach(function(e,i){ if(e.isIntersecting){ setTimeout(function(){ e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; },60*i); revObs.unobserve(e.target); } }); },{threshold:0.08});
+document.querySelectorAll('.svc-card,.sc-card,.tc,.process-step,.why-point,.value-row,.metric-cell').forEach(function(el){ el.style.opacity='0'; el.style.transform='translateY(22px)'; el.style.transition='opacity 0.5s ease,transform 0.5s ease'; revObs.observe(el); });
+
+// Form submit
+function submitForm(btn){
+  var name=document.getElementById('f-name').value.trim(), phone=document.getElementById('f-phone').value.trim(), email=document.getElementById('f-email').value.trim(), service=document.getElementById('f-service').value;
+  if(!name||!phone||!email||!service){ btn.style.background='#c0392b'; btn.style.color='#fff'; btn.textContent='⚠ Please fill all required fields'; setTimeout(function(){ btn.style.background=''; btn.style.color=''; btn.innerHTML='Submit Inquiry — Get Free Consultation ›'; },2500); return; }
+  btn.innerHTML='✓ Inquiry Submitted — We\'ll Contact You Within 4 Hours!'; btn.style.background='linear-gradient(135deg,#27ae60,#2ecc71)'; btn.style.color='#fff'; btn.disabled=true;
+  setTimeout(function(){ btn.innerHTML='Submit Inquiry — Get Free Consultation ›'; btn.style.background=''; btn.style.color=''; btn.disabled=false; },6000);
+}
+
+// Mobile menu
+function toggleMobileMenu(){
+  var center=document.querySelector('.nav-center');
+  if(center){ var showing=center.style.display==='flex'; center.style.display=showing?'none':'flex'; if(!showing){ center.style.flexDirection='column'; center.style.position='absolute'; center.style.top='62px'; center.style.left='0'; center.style.right='0'; center.style.background='rgba(4,12,22,0.98)'; center.style.padding='16px 24px 24px'; center.style.borderBottom='1px solid var(--border)'; center.style.zIndex='800'; } }
+}
+</script>
+</body>
+</html>
