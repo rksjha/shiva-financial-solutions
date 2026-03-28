@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Requisition | SCG Financial Advisory Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#071220;--navy2:#0C1C35;--navy3:#122444;
+  --scg-blue:#3B5EA6;--scg-green:#4A9A3C;
+  --gold:#C9A84C;--gold2:#E8C96A;--gold-dim:rgba(201,168,76,0.10);
+  --white:#FFFFFF;--text-mid:#B0C0D8;--text-muted:#6B80A0;
+  --border:rgba(201,168,76,0.18);--border2:rgba(59,94,166,0.25);
+  --fg:#F0F4FA;--fg2:#E2EAF6;--fg3:#C8D6ED;
+  --shadow:0 8px 32px rgba(7,18,32,0.5);--radius:6px;
+  --transition:0.25s cubic-bezier(0.4,0,0.2,1);
+  --ink:#1A2840;--ink2:#2D3F5A;--ink3:#4A6080;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:900;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:rgba(7,18,32,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo{height:36px;width:auto;filter:brightness(0) invert(1);opacity:0.9;}
+.nav-brand-main{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--gold);}
+.nav-brand-sub{font-size:0.52rem;font-weight:600;color:var(--text-muted);letter-spacing:0.18em;text-transform:uppercase;}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none;}
+.nav-links a{color:var(--text-mid);text-decoration:none;font-size:0.72rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:5px 10px;border-radius:4px;transition:all var(--transition);}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);background:var(--gold-dim);}
+@media(max-width:768px){.nav-links{display:none;}}
+
+/* PAGE HEADER */
+.page-header{padding:50px 36px 30px;background:linear-gradient(160deg,#071220,#0C1C35);border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 80% 50%,rgba(59,94,166,0.1),transparent);}
+.page-header-inner{position:relative;z-index:2;max-width:860px;}
+.page-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(74,154,60,0.15);border:1px solid rgba(74,154,60,0.3);border-radius:20px;padding:4px 12px;font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#7ED86A;margin-bottom:14px;}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:700;color:var(--white);margin-bottom:8px;}
+.page-header h1 em{font-style:italic;color:var(--gold);}
+.page-header p{font-size:0.88rem;color:var(--text-mid);max-width:600px;font-weight:300;}
+
+/* MAIN LAYOUT */
+.main{max-width:920px;margin:0 auto;padding:40px 36px 80px;}
+
+/* FORM CARD */
+.form-card{background:var(--fg);border-radius:10px;overflow:hidden;box-shadow:0 4px 24px rgba(7,18,32,0.3);margin-bottom:24px;}
+.form-card-header{background:linear-gradient(135deg,var(--navy2),var(--navy3));padding:18px 24px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);}
+.fch-icon{width:38px;height:38px;background:rgba(59,94,166,0.2);border:1px solid rgba(59,94,166,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.fch-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--gold);}
+.fch-sub{font-size:0.72rem;color:var(--text-muted);}
+.form-card-body{padding:24px;}
+
+/* FORM ELEMENTS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:4px;}
+.field label{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink2);}
+.field label .req{color:#C0392B;margin-left:2px;}
+.field input,.field select,.field textarea{background:var(--white);border:1.5px solid var(--fg3);color:var(--ink);padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:0.87rem;border-radius:var(--radius);outline:none;transition:border-color var(--transition);width:100%;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--scg-blue);box-shadow:0 0 0 3px rgba(59,94,166,0.1);}
+.field input::placeholder,.field textarea::placeholder{color:#9BACC0;}
+.field select option{color:var(--ink);}
+.field textarea{height:90px;resize:vertical;}
+.field .hint{font-size:0.68rem;color:var(--ink3);margin-top:2px;}
+
+/* CHECKBOX GRID */
+.cb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;}
+.cb-item{display:flex;align-items:center;gap:8px;padding:9px 12px;background:var(--white);border:1.5px solid var(--fg3);border-radius:var(--radius);cursor:pointer;transition:all var(--transition);}
+.cb-item:hover{border-color:var(--scg-blue);background:#EEF4FF;}
+.cb-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--scg-blue);cursor:pointer;flex-shrink:0;}
+.cb-item.checked{border-color:var(--scg-blue);background:#EEF4FF;}
+.cb-label{font-size:0.8rem;color:var(--ink2);line-height:1.2;}
+
+/* SECTION DIVIDER */
+.s-divider{font-size:0.7rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--scg-blue);padding:6px 0 12px;border-bottom:1px solid var(--fg3);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.s-divider::after{content:'';flex:1;height:1px;background:var(--fg3);}
+
+/* ACTIONS */
+.form-actions{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap;}
+.btn-primary{background:linear-gradient(135deg,var(--scg-blue),#2A4A8A);color:var(--white);padding:13px 28px;font-size:0.82rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;border:none;cursor:pointer;border-radius:var(--radius);transition:all var(--transition);display:inline-flex;align-items:center;gap:8px;}
+.btn-primary:hover{box-shadow:0 6px 20px rgba(59,94,166,0.45);transform:translateY(-1px);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);padding:13px 28px;font-size:0.82rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;border:none;cursor:pointer;border-radius:var(--radius);transition:all var(--transition);display:inline-flex;align-items:center;gap:8px;}
+.btn-gold:hover{box-shadow:0 6px 20px rgba(201,168,76,0.45);transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--ink2);padding:12px 24px;font-size:0.82rem;font-weight:600;border:1.5px solid var(--fg3);cursor:pointer;border-radius:var(--radius);transition:all var(--transition);}
+.btn-outline:hover{border-color:var(--scg-blue);color:var(--scg-blue);}
+
+/* SUCCESS */
+.success-panel{display:none;background:linear-gradient(135deg,rgba(74,154,60,0.1),rgba(74,154,60,0.05));border:1px solid rgba(74,154,60,0.3);border-radius:10px;padding:32px;text-align:center;margin-top:24px;}
+.success-panel.show{display:block;}
+.success-icon{font-size:3rem;margin-bottom:12px;}
+.success-ref{display:inline-block;background:var(--navy2);color:var(--gold);padding:8px 20px;border-radius:20px;font-size:0.8rem;font-weight:700;letter-spacing:0.1em;margin:12px 0;}
+.success-panel h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--white);margin-bottom:8px;}
+.success-panel p{font-size:0.85rem;color:var(--text-mid);}
+
+/* PREVIEW PANEL */
+.preview-panel{display:none;background:var(--white);border-radius:10px;padding:28px;margin-top:24px;color:var(--ink);}
+.preview-panel.show{display:block;}
+.preview-header{text-align:center;border-bottom:2px solid var(--scg-blue);padding-bottom:16px;margin-bottom:20px;}
+.preview-header .logo-area{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--scg-blue);}
+.preview-header .sub{font-size:0.75rem;color:#666;margin-top:4px;}
+.preview-ref{text-align:right;font-size:0.75rem;color:#888;margin-bottom:16px;}
+.preview-section{margin-bottom:16px;}
+.preview-section h4{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--scg-blue);border-bottom:1px solid #E0E8F0;padding-bottom:6px;margin-bottom:10px;}
+.preview-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;}
+.pf{display:flex;flex-direction:column;}
+.pf-label{font-size:0.65rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.06em;}
+.pf-value{font-size:0.85rem;color:var(--ink);}
+
+@media(max-width:680px){.grid-2,.grid-3{grid-template-columns:1fr;}.cb-grid{grid-template-columns:1fr 1fr;}}
+@media print{nav,.form-actions,.page-header{display:none;}.preview-panel{display:block!important;box-shadow:none;border-radius:0;}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="../1 Logo Shiva Consultancy Group (Rakesh Jha) (1).jpg" alt="SCG" class="nav-logo">
+    <div><div class="nav-brand-main">Shiva Consultancy Group</div><div class="nav-brand-sub">Financial Advisory Portal</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="service-requisition.html" class="active">Service Request</a></li>
+    <li><a href="loan-application.html">Loan App</a></li>
+    <li><a href="dpr-preparation.html">DPR</a></li>
+    <li><a href="bank-proposal.html">Bank Proposal</a></li>
+    <li><a href="cma-data.html">CMA Data</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-badge">📋 Step 1 — Start Here</div>
+    <h1>Service <em>Requisition</em> Form</h1>
+    <p>Tell us about your financial requirement. Our expert team will review your request and reach out within 24 hours with a customised advisory plan — completely free initial consultation.</p>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Section A: Client Identification -->
+  <div class="form-card">
+    <div class="form-card-header">
+      <div class="fch-icon">🏢</div>
+      <div><div class="fch-title">A. Client Identification</div><div class="fch-sub">Basic contact and business identity details</div></div>
+    </div>
+    <div class="form-card-body">
+      <div class="grid-2">
+        <div class="field">
+          <label>Applicant / Company Name <span class="req">*</span></label>
+          <input type="text" id="sr-name" placeholder="Full legal name of individual or entity">
+        </div>
+        <div class="field">
+          <label>Contact Person Name <span class="req">*</span></label>
+          <input type="text" id="sr-contact" placeholder="Name of person to contact">
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="field">
+          <label>Mobile / WhatsApp <span class="req">*</span></label>
+          <input type="tel" id="sr-mobile" placeholder="+91 XXXXX XXXXX">
+        </div>
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" id="sr-email" placeholder="email@example.com">
+        </div>
+        <div class="field">
+          <label>City / Location <span class="req">*</span></label>
+          <input type="text" id="sr-city" placeholder="City, State">
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="field">
+          <label>Constitution <span class="req">*</span></label>
+          <select id="sr-constitution">
+            <option value="">— Select —</option>
+            <option>Sole Proprietorship</option>
+            <option>Partnership Firm</option>
+            <option>LLP</option>
+            <option>Private Limited Company</option>
+            <option>Public Limited Company</option>
+            <option>Trust / Society / NGO</option>
+            <option>HUF</option>
+            <option>Individual</option>
+            <option>Startup (DPIIT Recognised)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Industry / Sector</label>
+          <select id="sr-industry">
+            <option value="">— Select —</option>
+            <option>Manufacturing</option>
+            <option>Trading</option>
+            <option>Services / IT</option>
+            <option>Agriculture / Agro-processing</option>
+            <option>Real Estate / Construction</option>
+            <option>Infrastructure</option>
+            <option>Healthcare / Pharma</option>
+            <option>Education</option>
+            <option>Hospitality / Tourism</option>
+            <option>Renewable Energy</option>
+            <option>Export / Import</option>
+            <option>Retail / FMCG</option>
+            <option>Textile / Garment</option>
+            <option>Chemical</option>
+            <option>Food Processing</option>
+            <option>Startup (Tech / SaaS)</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Annual Turnover (Approx.)</label>
+          <select id="sr-turnover">
+            <option value="">— Select —</option>
+            <option>Below ₹50 Lakhs</option>
+            <option>₹50 L – ₹2 Crore</option>
+            <option>₹2 Cr – ₹10 Crore</option>
+            <option>₹10 Cr – ₹50 Crore</option>
+            <option>₹50 Cr – ₹250 Crore</option>
+            <option>Above ₹250 Crore</option>
+            <option>New Project (No Turnover)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section B: Services Required -->
+  <div class="form-card">
+    <div class="form-card-header">
+      <div class="fch-icon">📌</div>
+      <div><div class="fch-title">B. Services Required</div><div class="fch-sub">Select all services you need — we handle everything under one roof</div></div>
+    </div>
+    <div class="form-card-body">
+      <div class="s-divider">Debt Financing Services</div>
+      <div class="cb-grid" id="services-grid">
+        <label class="cb-item"><input type="checkbox" value="Term Loan / Project Finance"><span class="cb-label">Term Loan / Project Finance</span></label>
+        <label class="cb-item"><input type="checkbox" value="Working Capital (CC/OD)"><span class="cb-label">Working Capital (CC / OD)</span></label>
+        <label class="cb-item"><input type="checkbox" value="Equipment / Machinery Finance"><span class="cb-label">Equipment / Machinery Finance</span></label>
+        <label class="cb-item"><input type="checkbox" value="Export Packing Credit (EPC)"><span class="cb-label">Export Packing Credit (EPC)</span></label>
+        <label class="cb-item"><input type="checkbox" value="Letter of Credit (LC)"><span class="cb-label">Letter of Credit (LC)</span></label>
+        <label class="cb-item"><input type="checkbox" value="Bank Guarantee (BG)"><span class="cb-label">Bank Guarantee (BG)</span></label>
+        <label class="cb-item"><input type="checkbox" value="MSME / CGTMSE Loan"><span class="cb-label">MSME / CGTMSE Loan</span></label>
+        <label class="cb-item"><input type="checkbox" value="ECLGS / Emergency Credit"><span class="cb-label">ECLGS / Emergency Credit</span></label>
+      </div>
+      <div class="s-divider" style="margin-top:20px;">Advisory &amp; Restructuring</div>
+      <div class="cb-grid">
+        <label class="cb-item"><input type="checkbox" value="Debt Syndication"><span class="cb-label">Debt Syndication</span></label>
+        <label class="cb-item"><input type="checkbox" value="Debt Restructuring"><span class="cb-label">Debt Restructuring</span></label>
+        <label class="cb-item"><input type="checkbox" value="OTS (One-Time Settlement)"><span class="cb-label">OTS (One-Time Settlement)</span></label>
+        <label class="cb-item"><input type="checkbox" value="NCLT / IBC Resolution"><span class="cb-label">NCLT / IBC Resolution</span></label>
+        <label class="cb-item"><input type="checkbox" value="SARFAESI Advisory"><span class="cb-label">SARFAESI Advisory</span></label>
+        <label class="cb-item"><input type="checkbox" value="TEV Study"><span class="cb-label">TEV Study</span></label>
+        <label class="cb-item"><input type="checkbox" value="IPO / SME IPO Advisory"><span class="cb-label">IPO / SME IPO Advisory</span></label>
+        <label class="cb-item"><input type="checkbox" value="Private Equity / VC"><span class="cb-label">Private Equity / VC</span></label>
+        <label class="cb-item"><input type="checkbox" value="Grants &amp; Subsidies"><span class="cb-label">Grants &amp; Subsidies</span></label>
+      </div>
+      <div class="s-divider" style="margin-top:20px;">Documentation Preparation</div>
+      <div class="cb-grid">
+        <label class="cb-item"><input type="checkbox" value="Loan Application Preparation"><span class="cb-label">Loan Application Preparation</span></label>
+        <label class="cb-item"><input type="checkbox" value="DPR Preparation"><span class="cb-label">DPR (Project Report) Preparation</span></label>
+        <label class="cb-item"><input type="checkbox" value="CMA Data Preparation"><span class="cb-label">CMA Data Preparation</span></label>
+        <label class="cb-item"><input type="checkbox" value="Bank Proposal / Credit Note"><span class="cb-label">Bank Proposal / Credit Note</span></label>
+        <label class="cb-item"><input type="checkbox" value="Financial Projections"><span class="cb-label">Financial Projections (5-Year)</span></label>
+        <label class="cb-item"><input type="checkbox" value="Net Worth Statement"><span class="cb-label">Net Worth Statement</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section C: Finance Requirement Details -->
+  <div class="form-card">
+    <div class="form-card-header">
+      <div class="fch-icon">💰</div>
+      <div><div class="fch-title">C. Finance Requirement Details</div><div class="fch-sub">Provide specifics of your funding or advisory need</div></div>
+    </div>
+    <div class="form-card-body">
+      <div class="grid-2">
+        <div class="field">
+          <label>Total Finance Required (₹)</label>
+          <input type="text" id="sr-amount" placeholder="e.g. ₹2,50,00,000 or ₹2.5 Crore">
+        </div>
+        <div class="field">
+          <label>Purpose / End Use</label>
+          <select id="sr-purpose">
+            <option value="">— Select —</option>
+            <option>Purchase of Land &amp; Building</option>
+            <option>Construction of Factory / Office</option>
+            <option>Purchase of Plant &amp; Machinery</option>
+            <option>Working Capital / Business Operations</option>
+            <option>Export Finance</option>
+            <option>Business Expansion</option>
+            <option>New Project / Greenfield</option>
+            <option>Acquisition / Takeover</option>
+            <option>Debt Repayment / Refinance</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Preferred Lender / Bank</label>
+          <select id="sr-bank">
+            <option value="">— No Preference / Best Option —</option>
+            <option>SBI (State Bank of India)</option>
+            <option>Bank of Baroda</option>
+            <option>Punjab National Bank</option>
+            <option>Union Bank of India</option>
+            <option>Canara Bank</option>
+            <option>Bank of India</option>
+            <option>HDFC Bank</option>
+            <option>ICICI Bank</option>
+            <option>Axis Bank</option>
+            <option>Kotak Mahindra Bank</option>
+            <option>Yes Bank</option>
+            <option>SIDBI</option>
+            <option>NABARD</option>
+            <option>NHB</option>
+            <option>Any PSU Bank</option>
+            <option>Any Private Bank</option>
+            <option>NBFC</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Existing Credit Facilities (Banks)</label>
+          <input type="text" id="sr-existing-banks" placeholder="e.g. SBI CC ₹50L, HDFC TL ₹1.2Cr">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Current CIBIL / Credit Score (Approx.)</label>
+          <select id="sr-cibil">
+            <option value="">— Unknown / Not Checked —</option>
+            <option>750+ (Excellent)</option>
+            <option>700–750 (Good)</option>
+            <option>650–700 (Average)</option>
+            <option>Below 650 (Poor)</option>
+            <option>NTC (New to Credit)</option>
+            <option>Default / NPA</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Timeline / Urgency</label>
+          <select id="sr-timeline">
+            <option value="">— Select —</option>
+            <option>Immediate (Within 15 days)</option>
+            <option>Urgent (Within 1 month)</option>
+            <option>Normal (1–3 months)</option>
+            <option>Planned (3–6 months)</option>
+            <option>Exploratory (6+ months)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Available Collateral / Security (describe briefly)</label>
+        <textarea id="sr-security" placeholder="e.g. Residential property at Ahmedabad (Market Value ₹1.5 Cr), Plant &amp; Machinery, FD of ₹20 Lakhs..."></textarea>
+      </div>
+      <div class="field">
+        <label>Brief Description of Requirement <span class="req">*</span></label>
+        <textarea id="sr-description" placeholder="Describe your business, current situation, what finance you need and why — the more detail, the better we can help you..." style="height:110px;"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section D: Current Situation -->
+  <div class="form-card">
+    <div class="form-card-header">
+      <div class="fch-icon">📊</div>
+      <div><div class="fch-title">D. Business &amp; Financial Snapshot</div><div class="fch-sub">Approximate figures — helps us identify the right solution faster</div></div>
+    </div>
+    <div class="form-card-body">
+      <div class="grid-3">
+        <div class="field">
+          <label>Year of Establishment</label>
+          <input type="number" id="sr-estyr" placeholder="e.g. 2010" min="1900" max="2026">
+        </div>
+        <div class="field">
+          <label>Total Employees</label>
+          <select id="sr-emp">
+            <option value="">— Select —</option>
+            <option>Below 10</option>
+            <option>10–50</option>
+            <option>51–200</option>
+            <option>201–500</option>
+            <option>500+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Net Worth (Approx. ₹)</label>
+          <input type="text" id="sr-networth" placeholder="e.g. ₹1.5 Crore">
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="field">
+          <label>Last Year Sales / Revenue (₹)</label>
+          <input type="text" id="sr-sales" placeholder="e.g. ₹8 Crore">
+        </div>
+        <div class="field">
+          <label>Last Year Net Profit (₹)</label>
+          <input type="text" id="sr-profit" placeholder="e.g. ₹45 Lakhs">
+        </div>
+        <div class="field">
+          <label>Total Existing Debt (₹)</label>
+          <input type="text" id="sr-debt" placeholder="e.g. ₹3 Crore">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Any Overdue / NPA Status?</label>
+          <select id="sr-npa">
+            <option value="">— Select —</option>
+            <option>No overdues — Standard Account</option>
+            <option>Minor overdues (within 90 days)</option>
+            <option>NPA (Non-Performing Asset)</option>
+            <option>Written Off</option>
+            <option>Under NCLT / IBC</option>
+            <option>SARFAESI Action Pending</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>UDYAM Registration Number</label>
+          <input type="text" id="sr-udyam" placeholder="UDYAM-XX-00-0000000 (if registered)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section E: How We Work -->
+  <div class="form-card">
+    <div class="form-card-header">
+      <div class="fch-icon">📎</div>
+      <div><div class="fch-title">E. Documents &amp; Preference</div><div class="fch-sub">Tell us about documents available and preferred contact mode</div></div>
+    </div>
+    <div class="form-card-body">
+      <div class="s-divider">Documents Available</div>
+      <div class="cb-grid">
+        <label class="cb-item"><input type="checkbox" value="ITR – Last 3 Years"><span class="cb-label">ITR – Last 3 Years</span></label>
+        <label class="cb-item"><input type="checkbox" value="Audited Balance Sheet"><span class="cb-label">Audited Balance Sheet (3 Yrs)</span></label>
+        <label class="cb-item"><input type="checkbox" value="Bank Statement – 12 Months"><span class="cb-label">Bank Statement – 12 Months</span></label>
+        <label class="cb-item"><input type="checkbox" value="GST Returns (GSTR-3B)"><span class="cb-label">GST Returns (GSTR-3B)</span></label>
+        <label class="cb-item"><input type="checkbox" value="KYC Documents"><span class="cb-label">KYC (Aadhar, PAN, Photo)</span></label>
+        <label class="cb-item"><input type="checkbox" value="Property Documents"><span class="cb-label">Property / Collateral Documents</span></label>
+        <label class="cb-item"><input type="checkbox" value="Existing Loan Sanction Letters"><span class="cb-label">Existing Loan Sanction Letters</span></label>
+        <label class="cb-item"><input type="checkbox" value="Project Report / DPR"><span class="cb-label">Project Report / DPR</span></label>
+        <label class="cb-item"><input type="checkbox" value="Quotations for Machinery"><span class="cb-label">Quotations for Machinery</span></label>
+        <label class="cb-item"><input type="checkbox" value="Sale Deed / Title Documents"><span class="cb-label">Sale Deed / Title Documents</span></label>
+      </div>
+      <div class="grid-2" style="margin-top:18px;">
+        <div class="field">
+          <label>Preferred Contact Mode</label>
+          <select id="sr-contact-mode">
+            <option>WhatsApp (Preferred)</option>
+            <option>Phone Call</option>
+            <option>Email</option>
+            <option>In-Person Meeting – Ahmedabad</option>
+            <option>Video Call (Google Meet / Zoom)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>How Did You Hear About SCG?</label>
+          <select id="sr-referral">
+            <option value="">— Select —</option>
+            <option>Existing Client Referral</option>
+            <option>Banker Referral</option>
+            <option>CA / Advocate Referral</option>
+            <option>Google Search</option>
+            <option>LinkedIn</option>
+            <option>WhatsApp</option>
+            <option>Website</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Referral Name (if referred by someone)</label>
+        <input type="text" id="sr-ref-name" placeholder="Name of the person who referred you">
+      </div>
+      <div class="field">
+        <label>Any Other Information / Special Instructions</label>
+        <textarea id="sr-notes" placeholder="Anything else we should know — previous rejection reasons, special constraints, specific banker name, etc."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Declaration -->
+  <div class="form-card">
+    <div class="form-card-header">
+      <div class="fch-icon">✅</div>
+      <div><div class="fch-title">F. Declaration &amp; Submission</div><div class="fch-sub">Confirm and submit your service request</div></div>
+    </div>
+    <div class="form-card-body">
+      <label class="cb-item" style="margin-bottom:12px;">
+        <input type="checkbox" id="sr-declare">
+        <span class="cb-label" style="font-size:0.85rem;">I confirm that the information provided is true and accurate to the best of my knowledge. I authorise Shiva Consultancy Group to contact me regarding my financial requirement.</span>
+      </label>
+      <label class="cb-item">
+        <input type="checkbox" id="sr-privacy">
+        <span class="cb-label" style="font-size:0.85rem;">I understand that SCG will maintain strict confidentiality of all information shared and will use it solely for advisory purposes.</span>
+      </label>
+      <div class="form-actions">
+        <button class="btn-gold" onclick="submitServiceRequest()">📧 Submit &amp; Generate Report →</button>
+        <button class="btn-primary" onclick="previewRequest()">👁 Preview Request</button>
+        <button class="btn-outline" onclick="saveProgress()">💾 Save Progress</button>
+        <button class="btn-outline" onclick="window.print()">🖨 Print Form</button>
+        <button class="btn-outline" onclick="clearForm()">🗑 Clear All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Panel -->
+  <div class="success-panel" id="success-panel">
+    <div class="success-icon">✅</div>
+    <h3>Service Request Submitted!</h3>
+    <div class="success-ref" id="success-ref">SCG-SR-XXXXXXXX-XXXX</div>
+    <p>Your service request has been recorded. Our team will contact you within <strong>24 hours</strong>.<br>
+    You will also receive a WhatsApp confirmation. Please save your reference number.</p>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap;">
+      <a id="wa-link" href="#" target="_blank" class="btn-gold" style="text-decoration:none;">💬 Send via WhatsApp</a>
+      <button class="btn-primary" onclick="window.print()">🖨 Print Confirmation</button>
+      <a href="loan-application.html" class="btn-outline" style="color:var(--ink2);text-decoration:none;">Next: Loan Application →</a>
+    </div>
+  </div>
+
+  <!-- Preview Panel -->
+  <div class="preview-panel" id="preview-panel"></div>
+
+</div>
+
+<script>
+const DB_NAME = 'SCG_Portal_DB';
+let db;
+function initDB(){
+  const req=indexedDB.open(DB_NAME,1);
+  req.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains('service_requests'))d.createObjectStore('service_requests',{keyPath:'id',autoIncrement:true});};
+  req.onsuccess=e=>{db=e.target.result;loadProgress();};
+}
+function generateRef(type){const d=new Date();return `SCG-${type}-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${Math.floor(1000+Math.random()*9000)}`;}
+
+function collectData(){
+  const services=[];
+  document.querySelectorAll('.cb-item input[type=checkbox]:checked').forEach(cb=>{if(cb.value&&cb.id!='sr-declare'&&cb.id!='sr-privacy')services.push(cb.value);});
+  const docs=[];
+  // collect separately if needed
+  return {
+    ref: generateRef('SR'),
+    name: v('sr-name'), contact: v('sr-contact'), mobile: v('sr-mobile'), email: v('sr-email'),
+    city: v('sr-city'), constitution: v('sr-constitution'), industry: v('sr-industry'), turnover: v('sr-turnover'),
+    services: services.join(', '),
+    amount: v('sr-amount'), purpose: v('sr-purpose'), bank: v('sr-bank'),
+    existingBanks: v('sr-existing-banks'), cibil: v('sr-cibil'), timeline: v('sr-timeline'),
+    security: v('sr-security'), description: v('sr-description'),
+    estYear: v('sr-estyr'), employees: v('sr-emp'), netWorth: v('sr-networth'),
+    sales: v('sr-sales'), profit: v('sr-profit'), debt: v('sr-debt'), npa: v('sr-npa'), udyam: v('sr-udyam'),
+    contactMode: v('sr-contact-mode'), referral: v('sr-referral'), refName: v('sr-ref-name'),
+    notes: v('sr-notes'), timestamp: new Date().toLocaleString('en-IN')
+  };
+}
+function v(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+
+function saveProgress(){
+  const data=collectData();
+  localStorage.setItem('scg_sr_draft',JSON.stringify(data));
+  alert('✅ Progress saved! Your data will be here when you return.');
+}
+function loadProgress(){
+  const saved=localStorage.getItem('scg_sr_draft');
+  if(!saved)return;
+  try{
+    const d=JSON.parse(saved);
+    const fields=['sr-name','sr-contact','sr-mobile','sr-email','sr-city','sr-constitution','sr-industry','sr-turnover','sr-amount','sr-purpose','sr-bank','sr-existing-banks','sr-cibil','sr-timeline','sr-security','sr-description','sr-estyr','sr-emp','sr-networth','sr-sales','sr-profit','sr-debt','sr-npa','sr-udyam','sr-contact-mode','sr-referral','sr-ref-name','sr-notes'];
+    const map={
+      'sr-name':d.name,'sr-contact':d.contact,'sr-mobile':d.mobile,'sr-email':d.email,'sr-city':d.city,
+      'sr-constitution':d.constitution,'sr-industry':d.industry,'sr-turnover':d.turnover,'sr-amount':d.amount,
+      'sr-purpose':d.purpose,'sr-bank':d.bank,'sr-existing-banks':d.existingBanks,'sr-cibil':d.cibil,
+      'sr-timeline':d.timeline,'sr-security':d.security,'sr-description':d.description,'sr-estyr':d.estYear,
+      'sr-emp':d.employees,'sr-networth':d.netWorth,'sr-sales':d.sales,'sr-profit':d.profit,'sr-debt':d.debt,
+      'sr-npa':d.npa,'sr-udyam':d.udyam,'sr-contact-mode':d.contactMode,'sr-referral':d.referral,'sr-ref-name':d.refName,'sr-notes':d.notes
+    };
+    Object.entries(map).forEach(([id,val])=>{const el=document.getElementById(id);if(el&&val)el.value=val;});
+  }catch(e){}
+}
+function clearForm(){if(confirm('Clear all form data? This cannot be undone.')){localStorage.removeItem('scg_sr_draft');location.reload();}}
+
+function submitServiceRequest(){
+  const nm=v('sr-name'),mob=v('sr-mobile'),desc=v('sr-description');
+  if(!nm){alert('Please enter applicant name.');document.getElementById('sr-name').focus();return;}
+  if(!mob){alert('Please enter mobile number.');document.getElementById('sr-mobile').focus();return;}
+  if(!document.getElementById('sr-declare').checked){alert('Please confirm the declaration to proceed.');return;}
+  if(!document.getElementById('sr-privacy').checked){alert('Please confirm the privacy consent.');return;}
+
+  const data=collectData();
+  // Save to IndexedDB
+  if(db){
+    const tx=db.transaction('service_requests','readwrite');
+    tx.objectStore('service_requests').add(data);
+  }
+  // Save to localStorage archive
+  const arch=JSON.parse(localStorage.getItem('scg_sr_archive')||'[]');
+  arch.push(data);
+  localStorage.setItem('scg_sr_archive',JSON.stringify(arch));
+  localStorage.removeItem('scg_sr_draft');
+
+  // Show success
+  document.getElementById('success-panel').classList.add('show');
+  document.getElementById('success-ref').textContent=data.ref;
+
+  // WhatsApp message
+  const waMsg=`*SCG SERVICE REQUEST*\n*Ref:* ${data.ref}\n*Date:* ${data.timestamp}\n\n*Client:* ${data.name}\n*Contact:* ${data.contact}\n*Mobile:* ${data.mobile}\n*City:* ${data.city}\n*Constitution:* ${data.constitution}\n*Industry:* ${data.industry}\n*Turnover:* ${data.turnover}\n\n*Services Required:*\n${data.services||'Not specified'}\n\n*Finance Amount:* ${data.amount||'Not specified'}\n*Purpose:* ${data.purpose}\n*Preferred Bank:* ${data.bank}\n*Timeline:* ${data.timeline}\n*CIBIL:* ${data.cibil}\n\n*Description:*\n${data.description}\n\n*Financial Snapshot:*\nSales: ${data.sales} | Profit: ${data.profit} | Debt: ${data.debt}\nNet Worth: ${data.netWorth} | NPA Status: ${data.npa}`;
+  document.getElementById('wa-link').href='https://wa.me/919979021275?text='+encodeURIComponent(waMsg);
+
+  document.getElementById('success-panel').scrollIntoView({behavior:'smooth'});
+  // Show preview too
+  previewRequest(data);
+}
+
+function previewRequest(existingData){
+  const data=existingData||collectData();
+  const panel=document.getElementById('preview-panel');
+  panel.classList.add('show');
+  panel.innerHTML=`
+    <div class="preview-header">
+      <div class="logo-area">SHIVA CONSULTANCY GROUP</div>
+      <div class="sub">Financial Advisory · Ahmedabad · +91 99790 21275</div>
+      <div style="font-size:1.1rem;font-weight:700;color:#2d3f5a;margin-top:8px;">SERVICE REQUISITION</div>
+    </div>
+    <div class="preview-ref">Ref: ${data.ref||'—'} &nbsp;|&nbsp; Date: ${data.timestamp||new Date().toLocaleString('en-IN')}</div>
+    <div class="preview-section">
+      <h4>Client Identification</h4>
+      <div class="preview-grid">
+        <div class="pf"><span class="pf-label">Applicant Name</span><span class="pf-value">${data.name||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Contact Person</span><span class="pf-value">${data.contact||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Mobile</span><span class="pf-value">${data.mobile||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Email</span><span class="pf-value">${data.email||'—'}</span></div>
+        <div class="pf"><span class="pf-label">City</span><span class="pf-value">${data.city||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Constitution</span><span class="pf-value">${data.constitution||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Industry</span><span class="pf-value">${data.industry||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Annual Turnover</span><span class="pf-value">${data.turnover||'—'}</span></div>
+      </div>
+    </div>
+    <div class="preview-section">
+      <h4>Services Required</h4>
+      <div class="pf-value">${data.services||'Not specified'}</div>
+    </div>
+    <div class="preview-section">
+      <h4>Finance Requirement</h4>
+      <div class="preview-grid">
+        <div class="pf"><span class="pf-label">Amount Required</span><span class="pf-value">${data.amount||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Purpose</span><span class="pf-value">${data.purpose||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Preferred Bank</span><span class="pf-value">${data.bank||'No Preference'}</span></div>
+        <div class="pf"><span class="pf-label">Timeline</span><span class="pf-value">${data.timeline||'—'}</span></div>
+        <div class="pf"><span class="pf-label">CIBIL Score</span><span class="pf-value">${data.cibil||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Existing Banks</span><span class="pf-value">${data.existingBanks||'—'}</span></div>
+      </div>
+    </div>
+    <div class="preview-section">
+      <h4>Financial Snapshot</h4>
+      <div class="preview-grid">
+        <div class="pf"><span class="pf-label">Annual Sales</span><span class="pf-value">${data.sales||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Net Profit</span><span class="pf-value">${data.profit||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Net Worth</span><span class="pf-value">${data.netWorth||'—'}</span></div>
+        <div class="pf"><span class="pf-label">Total Debt</span><span class="pf-value">${data.debt||'—'}</span></div>
+        <div class="pf"><span class="pf-label">NPA Status</span><span class="pf-value">${data.npa||'—'}</span></div>
+        <div class="pf"><span class="pf-label">UDYAM No.</span><span class="pf-value">${data.udyam||'—'}</span></div>
+      </div>
+    </div>
+    <div class="preview-section">
+      <h4>Requirement Description</h4>
+      <div class="pf-value" style="white-space:pre-wrap;">${data.description||'—'}</div>
+    </div>
+    <div class="preview-section">
+      <h4>Security / Collateral Available</h4>
+      <div class="pf-value" style="white-space:pre-wrap;">${data.security||'Not specified'}</div>
+    </div>
+    <div style="margin-top:20px;padding-top:14px;border-top:1px solid #e0e8f0;font-size:0.72rem;color:#888;text-align:center;">
+      This Service Requisition is prepared by Shiva Consultancy Group, Ahmedabad | +91 99790 21275 | rksjha@gmail.com<br>
+      For advisory use only. Strictly confidential.
+    </div>`;
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+initDB();
+</script>
+</body>
+</html>

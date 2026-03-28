@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCG Financial Advisory Portal | Shiva Consultancy Group</title>
+<meta name="description" content="Professional financial application portal by Shiva Consultancy Group — Loan Applications, DPR, CMA Data, Bank Proposals and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#071220;--navy2:#0C1C35;--navy3:#122444;
+  --scg-blue:#3B5EA6;--scg-green:#4A9A3C;
+  --gold:#C9A84C;--gold2:#E8C96A;--gold-dim:rgba(201,168,76,0.12);
+  --white:#FFFFFF;--text-mid:#B0C0D8;--text-muted:#6B80A0;
+  --border:rgba(201,168,76,0.18);--border2:rgba(59,94,166,0.25);
+  --shadow:0 8px 32px rgba(7,18,32,0.5);--radius:6px;
+  --transition:0.28s cubic-bezier(0.4,0,0.2,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;line-height:1.6;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--navy);}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:900;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(7,18,32,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo{height:40px;width:auto;filter:brightness(0) invert(1);opacity:0.9;}
+.nav-brand-text{display:flex;flex-direction:column;}
+.nav-brand-main{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--gold);letter-spacing:0.03em;line-height:1.1;}
+.nav-brand-sub{font-size:0.55rem;font-weight:600;color:var(--text-muted);letter-spacing:0.2em;text-transform:uppercase;}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none;}
+.nav-links a{color:var(--text-mid);text-decoration:none;font-size:0.75rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:6px 12px;border-radius:4px;transition:all var(--transition);}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);background:var(--gold-dim);}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy)!important;padding:8px 20px!important;border-radius:4px!important;font-weight:700!important;}
+.nav-cta:hover{box-shadow:0 4px 16px rgba(201,168,76,0.4);transform:translateY(-1px);}
+
+/* HERO */
+.hero{min-height:88vh;display:flex;align-items:center;padding:80px 40px 60px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 60% 30%,rgba(59,94,166,0.14) 0%,transparent 55%),radial-gradient(ellipse 40% 50% at 5% 85%,rgba(74,154,60,0.07) 0%,transparent 50%),linear-gradient(160deg,#071220 0%,#0C1C35 45%,#071220 100%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(59,94,166,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(59,94,166,0.04) 1px,transparent 1px);background-size:60px 60px;}
+.hero-orb{position:absolute;top:10%;right:6%;width:340px;height:340px;border-radius:50%;border:1px solid rgba(201,168,76,0.07);animation:spin 40s linear infinite;}
+.hero-orb::before{content:'';position:absolute;inset:30px;border-radius:50%;border:1px solid rgba(59,94,166,0.07);}
+@keyframes spin{to{transform:rotate(360deg);}}
+.hero-content{position:relative;z-index:2;max-width:700px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(59,94,166,0.15);border:1px solid rgba(59,94,166,0.35);border-radius:30px;padding:5px 14px;font-size:0.68rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#7CA4E0;margin-bottom:24px;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--scg-green);animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(74,154,60,0.6);}50%{box-shadow:0 0 0 5px rgba(74,154,60,0);}}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,5vw,4.8rem);font-weight:700;line-height:1.05;color:var(--white);margin-bottom:8px;}
+.hero h1 em{font-style:italic;color:var(--gold);}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,2.5vw,2rem);font-weight:400;font-style:italic;color:var(--text-mid);margin-bottom:24px;}
+.hero-desc{font-size:0.95rem;font-weight:300;color:rgba(176,192,216,0.85);max-width:520px;margin-bottom:36px;line-height:1.75;}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);padding:13px 30px;font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border-radius:var(--radius);transition:all var(--transition);}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,76,0.45);}
+.btn-ghost{background:transparent;color:var(--white);padding:12px 26px;font-size:0.82rem;font-weight:500;letter-spacing:0.07em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.2);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border-radius:var(--radius);transition:all var(--transition);}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.hero-stats{display:flex;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:rgba(12,28,53,0.6);backdrop-filter:blur(10px);max-width:560px;}
+.stat{flex:1;padding:16px 20px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:2px;}
+.stat:last-child{border-right:none;}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--gold);line-height:1;}
+.stat-lbl{font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);}
+
+/* APPS GRID */
+.apps-section{padding:80px 40px;background:var(--navy);}
+.section-header{text-align:center;margin-bottom:56px;}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:0.65rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+.eyebrow::before,.eyebrow::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);width:40px;}
+.section-header h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:700;color:var(--white);margin-bottom:12px;}
+.section-header h2 em{font-style:italic;color:var(--gold);}
+.section-header p{font-size:0.9rem;color:var(--text-mid);max-width:500px;margin:0 auto;font-weight:300;}
+.apps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;max-width:1160px;margin:0 auto;}
+.app-card{background:var(--navy2);padding:36px 30px;position:relative;overflow:hidden;transition:all var(--transition);display:flex;flex-direction:column;cursor:default;}
+.app-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--scg-blue),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform 0.4s;}
+.app-card:hover{background:var(--navy3);transform:translateY(-2px);box-shadow:var(--shadow);}
+.app-card:hover::after{transform:scaleX(1);}
+.app-card.featured{border-top:2px solid rgba(74,154,60,0.4);background:linear-gradient(135deg,rgba(74,154,60,0.06),var(--navy2));}
+.app-num{position:absolute;top:14px;right:20px;font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:700;color:rgba(201,168,76,0.05);line-height:1;}
+.app-icon{width:50px;height:50px;background:rgba(59,94,166,0.12);border:1px solid rgba(59,94,166,0.28);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:18px;transition:all var(--transition);}
+.app-card.featured .app-icon{background:rgba(74,154,60,0.12);border-color:rgba(74,154,60,0.28);}
+.app-card:hover .app-icon{background:rgba(59,94,166,0.25);border-color:var(--scg-blue);}
+.app-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.2;}
+.app-desc{font-size:0.82rem;font-weight:300;color:var(--text-mid);line-height:1.65;margin-bottom:16px;flex:1;}
+.app-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px;}
+.tag{font-size:0.6rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);padding:3px 8px;border-radius:3px;}
+.app-link{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:linear-gradient(135deg,var(--scg-blue),#2A4A8A);color:var(--white);text-decoration:none;font-size:0.75rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;border-radius:var(--radius);transition:all var(--transition);border:1px solid rgba(59,94,166,0.4);}
+.app-link:hover{background:linear-gradient(135deg,#4A6EC0,#3B5EA6);box-shadow:0 4px 16px rgba(59,94,166,0.4);transform:translateY(-1px);}
+.app-card.featured .app-link{background:linear-gradient(135deg,var(--scg-green),#3A7A2C);}
+.app-card.featured .app-link:hover{background:linear-gradient(135deg,#5ABD4A,var(--scg-green));box-shadow:0 4px 16px rgba(74,154,60,0.4);}
+
+/* SERVICES */
+.services-section{padding:80px 40px;background:var(--navy2);border-top:1px solid var(--border);}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:1160px;margin:0 auto;}
+.svc-item{padding:24px;background:rgba(7,18,32,0.5);border:1px solid var(--border2);border-radius:var(--radius);transition:all var(--transition);}
+.svc-item:hover{border-color:var(--gold);background:var(--gold-dim);}
+.svc-icon{font-size:1.6rem;margin-bottom:10px;}
+.svc-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--white);margin-bottom:6px;}
+.svc-text{font-size:0.78rem;color:var(--text-muted);line-height:1.6;}
+
+/* CONTACT */
+.contact-section{padding:80px 40px;background:var(--navy);}
+.contact-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;}
+.contact-info h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--white);margin-bottom:16px;}
+.contact-info p{font-size:0.88rem;color:var(--text-mid);line-height:1.7;margin-bottom:24px;}
+.contact-list{display:flex;flex-direction:column;gap:12px;}
+.contact-item{display:flex;align-items:center;gap:12px;font-size:0.85rem;color:var(--text-mid);}
+.contact-item a{color:var(--gold);text-decoration:none;}
+.contact-item a:hover{text-decoration:underline;}
+.ci-icon{width:34px;height:34px;background:rgba(59,94,166,0.15);border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;}
+.quick-form{background:var(--navy2);border:1px solid var(--border);border-radius:var(--radius);padding:32px;}
+.quick-form h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--gold);margin-bottom:20px;}
+.form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.form-row label{font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);}
+.form-row input,.form-row select,.form-row textarea{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:var(--white);padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:0.85rem;border-radius:var(--radius);outline:none;transition:border-color var(--transition);width:100%;}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--gold);background:rgba(201,168,76,0.04);}
+.form-row input::placeholder,.form-row textarea::placeholder{color:var(--text-muted);}
+.form-row select option{background:var(--navy2);}
+.form-row textarea{height:80px;resize:vertical;}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);padding:13px;font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;border-radius:var(--radius);transition:all var(--transition);margin-top:6px;}
+.btn-submit:hover{box-shadow:0 6px 20px rgba(201,168,76,0.45);transform:translateY(-1px);}
+
+/* FOOTER */
+footer{background:var(--navy2);border-top:1px solid var(--border);padding:40px;text-align:center;}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--gold);margin-bottom:8px;}
+.footer-tagline{font-size:0.75rem;color:var(--text-muted);letter-spacing:0.1em;margin-bottom:20px;}
+.footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:20px;}
+.footer-links a{font-size:0.75rem;color:var(--text-muted);text-decoration:none;transition:color var(--transition);}
+.footer-links a:hover{color:var(--gold);}
+.footer-copy{font-size:0.7rem;color:rgba(107,128,160,0.6);}
+
+/* MARQUEE */
+.marquee-bar{background:linear-gradient(90deg,var(--scg-blue),#2A4A8A,var(--scg-blue));overflow:hidden;position:relative;border-top:1px solid rgba(59,94,166,0.4);border-bottom:1px solid rgba(201,168,76,0.15);}
+.marquee-track{display:flex;animation:marquee 28s linear infinite;width:max-content;}
+.marquee-track:hover{animation-play-state:paused;}
+@keyframes marquee{to{transform:translateX(-50%);}}
+.m-item{display:flex;align-items:center;gap:8px;padding:10px 24px;white-space:nowrap;font-size:0.68rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.9);}
+.m-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:0.7;}
+
+@media(max-width:768px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  .hero{padding:90px 20px 50px;}
+  .apps-section,.services-section,.contact-section{padding:60px 20px;}
+  .contact-inner{grid-template-columns:1fr;gap:40px;}
+  .hero-stats{flex-wrap:wrap;}
+}
+@media print{nav,.marquee-bar,footer{display:none;}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="../1 Logo Shiva Consultancy Group (Rakesh Jha) (1).jpg" alt="SCG Logo" class="nav-logo">
+    <div class="nav-brand-text">
+      <div class="nav-brand-main">Shiva Consultancy Group</div>
+      <div class="nav-brand-sub">Financial Advisory Portal</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="service-requisition.html">Service Request</a></li>
+    <li><a href="loan-application.html">Loan App</a></li>
+    <li><a href="dpr-preparation.html">DPR</a></li>
+    <li><a href="bank-proposal.html">Bank Proposal</a></li>
+    <li><a href="cma-data.html">CMA Data</a></li>
+    <li><a href="service-requisition.html" class="nav-cta">Start Now →</a></li>
+  </ul>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <div class="m-item">Debt Syndication<span class="m-dot"></span></div>
+    <div class="m-item">Project Finance<span class="m-dot"></span></div>
+    <div class="m-item">Working Capital<span class="m-dot"></span></div>
+    <div class="m-item">DPR Preparation<span class="m-dot"></span></div>
+    <div class="m-item">CMA Data<span class="m-dot"></span></div>
+    <div class="m-item">Bank Proposals<span class="m-dot"></span></div>
+    <div class="m-item">OTS &amp; NCLT<span class="m-dot"></span></div>
+    <div class="m-item">TEV Studies<span class="m-dot"></span></div>
+    <div class="m-item">Equipment Finance<span class="m-dot"></span></div>
+    <div class="m-item">Export Credit<span class="m-dot"></span></div>
+    <div class="m-item">Private Equity<span class="m-dot"></span></div>
+    <div class="m-item">Grants &amp; Subsidies<span class="m-dot"></span></div>
+    <div class="m-item">Debt Syndication<span class="m-dot"></span></div>
+    <div class="m-item">Project Finance<span class="m-dot"></span></div>
+    <div class="m-item">Working Capital<span class="m-dot"></span></div>
+    <div class="m-item">DPR Preparation<span class="m-dot"></span></div>
+    <div class="m-item">CMA Data<span class="m-dot"></span></div>
+    <div class="m-item">Bank Proposals<span class="m-dot"></span></div>
+    <div class="m-item">OTS &amp; NCLT<span class="m-dot"></span></div>
+    <div class="m-item">TEV Studies<span class="m-dot"></span></div>
+    <div class="m-item">Equipment Finance<span class="m-dot"></span></div>
+    <div class="m-item">Export Credit<span class="m-dot"></span></div>
+    <div class="m-item">Private Equity<span class="m-dot"></span></div>
+    <div class="m-item">Grants &amp; Subsidies<span class="m-dot"></span></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="badge-dot"></span> SCG Financial Advisory Portal — Est. 2005</div>
+    <h1>Your <em>Complete</em><br>Financial Advisory<br>Platform</h1>
+    <div class="hero-sub">Professional Applications · Expert Guidance · Seamless Submission</div>
+    <p class="hero-desc">Prepare professional loan applications, Detailed Project Reports, CMA data, bank proposals and more — guided step-by-step by India's trusted financial advisory team. All data is securely captured and professionally formatted for immediate bank submission.</p>
+    <div class="hero-actions">
+      <a href="service-requisition.html" class="btn-gold">📋 Start Service Request →</a>
+      <a href="loan-application.html" class="btn-ghost">💼 Loan Application</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">₹500Cr+</span><span class="stat-lbl">Funds Raised</span></div>
+      <div class="stat"><span class="stat-num">500+</span><span class="stat-lbl">Clients Served</span></div>
+      <div class="stat"><span class="stat-num">20+</span><span class="stat-lbl">Years Experience</span></div>
+      <div class="stat"><span class="stat-num">100+</span><span class="stat-lbl">DPRs Prepared</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- APPS GRID -->
+<section class="apps-section">
+  <div class="section-header">
+    <div class="eyebrow">Our Digital Tools</div>
+    <h2>Professional <em>Financial Apps</em></h2>
+    <p>Five powerful tools to prepare, submit and track your financial applications — guided by 20+ years of Indian banking expertise.</p>
+  </div>
+
+  <div class="apps-grid">
+
+    <!-- App 1: Service Requisition -->
+    <div class="app-card featured">
+      <div class="app-num">01</div>
+      <div class="app-icon">📋</div>
+      <div class="app-title">Service Requisition</div>
+      <div class="app-desc">Begin here. Tell us what financial service you need — debt syndication, restructuring, DPR, bank proposal or any other. We capture your complete requirement and our team will contact you within 24 hours.</div>
+      <div class="app-tags">
+        <span class="tag">First Step</span>
+        <span class="tag">All Services</span>
+        <span class="tag">Free Consultation</span>
+      </div>
+      <a href="service-requisition.html" class="app-link">Open App →</a>
+    </div>
+
+    <!-- App 2: Loan Application -->
+    <div class="app-card">
+      <div class="app-num">02</div>
+      <div class="app-icon">💼</div>
+      <div class="app-title">All-in-One Loan Application</div>
+      <div class="app-desc">Complete, RBI-aligned loan application covering applicant details, business profile, financial data, assets, collateral, existing banking, promoter details and declaration — ready for direct bank submission.</div>
+      <div class="app-tags">
+        <span class="tag">Term Loan</span>
+        <span class="tag">Working Capital</span>
+        <span class="tag">Project Finance</span>
+        <span class="tag">MSME</span>
+      </div>
+      <a href="loan-application.html" class="app-link">Open App →</a>
+    </div>
+
+    <!-- App 3: DPR -->
+    <div class="app-card">
+      <div class="app-num">03</div>
+      <div class="app-icon">📊</div>
+      <div class="app-title">DPR Preparation</div>
+      <div class="app-desc">Detailed Project Report wizard covering project overview, technical feasibility, project cost, means of finance, market analysis, 5-year financial projections, DSCR, IRR, NPV and break-even analysis.</div>
+      <div class="app-tags">
+        <span class="tag">Greenfield</span>
+        <span class="tag">Brownfield</span>
+        <span class="tag">Projections</span>
+        <span class="tag">TEV</span>
+      </div>
+      <a href="dpr-preparation.html" class="app-link">Open App →</a>
+    </div>
+
+    <!-- App 4: Bank Proposal -->
+    <div class="app-card">
+      <div class="app-num">04</div>
+      <div class="app-icon">🏦</div>
+      <div class="app-title">Bank Note / Proposal</div>
+      <div class="app-desc">Generate institution-grade credit proposals and bank notes. Covers borrower profile, industry analysis, financial assessment, security structure, risk analysis and structured sanction recommendation.</div>
+      <div class="app-tags">
+        <span class="tag">Credit Proposal</span>
+        <span class="tag">Bank Note</span>
+        <span class="tag">Risk Assessment</span>
+      </div>
+      <a href="bank-proposal.html" class="app-link">Open App →</a>
+    </div>
+
+    <!-- App 5: CMA Data -->
+    <div class="app-card">
+      <div class="app-num">05</div>
+      <div class="app-icon">📈</div>
+      <div class="app-title">CMA Data Preparation</div>
+      <div class="app-desc">Credit Monitoring Arrangement data as per Indian banking norms — Operating Statement, Balance Sheet, Working Capital Assessment, Fund Flow Statement and key financial ratios for 3 actual + 2 projected years.</div>
+      <div class="app-tags">
+        <span class="tag">P&amp;L Statement</span>
+        <span class="tag">Balance Sheet</span>
+        <span class="tag">Working Capital</span>
+        <span class="tag">Ratios</span>
+      </div>
+      <a href="cma-data.html" class="app-link">Open App →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section">
+  <div class="section-header">
+    <div class="eyebrow">What We Do</div>
+    <h2>Complete <em>Financial Advisory</em> Services</h2>
+    <p>Shiva Consultancy Group — your expert partner across the entire spectrum of corporate and MSME financial services.</p>
+  </div>
+  <div class="services-grid">
+    <div class="svc-item">
+      <div class="svc-icon">💰</div>
+      <div class="svc-name">Debt Syndication</div>
+      <div class="svc-text">Arrange term loans, working capital, project finance from banks and FIs for MSME, corporate and startup clients.</div>
+    </div>
+    <div class="svc-item">
+      <div class="svc-icon">🔄</div>
+      <div class="svc-name">Debt Restructuring &amp; OTS</div>
+      <div class="svc-text">Strategic restructuring, One-Time Settlement negotiations and relief for stressed borrowers.</div>
+    </div>
+    <div class="svc-item">
+      <div class="svc-icon">⚖️</div>
+      <div class="svc-name">NCLT &amp; IBC Resolution</div>
+      <div class="svc-text">Insolvency resolution, NCLT proceedings, SARFAESI advisory and creditor-debtor negotiations.</div>
+    </div>
+    <div class="svc-item">
+      <div class="svc-icon">🏗️</div>
+      <div class="svc-name">Project Finance &amp; DPR</div>
+      <div class="svc-text">End-to-end project finance structuring, Detailed Project Reports and TEV studies for new projects.</div>
+    </div>
+    <div class="svc-item">
+      <div class="svc-icon">🏭</div>
+      <div class="svc-name">Working Capital Finance</div>
+      <div class="svc-text">Cash Credit, Overdraft, Bill Discounting, Export Packing Credit, Non-Fund Based limits — LC, BG.</div>
+    </div>
+    <div class="svc-item">
+      <div class="svc-icon">⚙️</div>
+      <div class="svc-name">Equipment Finance</div>
+      <div class="svc-text">Term loans for machinery and equipment purchase, sale-leaseback structures and hire purchase advisory.</div>
+    </div>
+    <div class="svc-item">
+      <div class="svc-icon">📤</div>
+      <div class="svc-name">Export Finance</div>
+      <div class="svc-text">Pre and post-shipment credit, Export Packing Credit, LC advisory, ECGC guarantee facilitation.</div>
+    </div>
+    <div class="svc-item">
+      <div class="svc-icon">📣</div>
+      <div class="svc-name">IPO &amp; Private Equity</div>
+      <div class="svc-text">SME IPO preparation, private equity syndication, venture funding advisory and investor relations.</div>
+    </div>
+    <div class="svc-item">
+      <div class="svc-icon">🏛️</div>
+      <div class="svc-name">Grants &amp; Subsidies</div>
+      <div class="svc-text">State and central government scheme identification, MSME subsidy applications, PLI scheme advisory.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <h3>Talk to Our <em style="font-style:italic;color:var(--gold)">Expert Team</em></h3>
+      <p>With over 20 years of experience in Indian banking and financial advisory, our team is ready to help you achieve your financial goals. Free initial consultation for all new clients.</p>
+      <div class="contact-list">
+        <div class="contact-item">
+          <div class="ci-icon">📞</div>
+          <div><strong>Rakesh Jha</strong><br><a href="tel:+919979021275">+91 99790 21275</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">✉️</div>
+          <div><a href="mailto:rksjha@gmail.com">rksjha@gmail.com</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">💬</div>
+          <div><a href="https://wa.me/919979021275" target="_blank">WhatsApp: +91 99790 21275</a></div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">📍</div>
+          <div>Ahmedabad, Gujarat, India</div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">🌐</div>
+          <div><a href="https://rksjha.github.io/SHIVACSG/" target="_blank">rksjha.github.io/SHIVACSG</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="quick-form">
+      <h3>Quick Enquiry</h3>
+      <div class="form-row">
+        <label>Your Name *</label>
+        <input type="text" id="qf-name" placeholder="Full Name / Company Name">
+      </div>
+      <div class="form-row">
+        <label>Mobile / WhatsApp *</label>
+        <input type="tel" id="qf-phone" placeholder="+91 XXXXX XXXXX">
+      </div>
+      <div class="form-row">
+        <label>Service Required</label>
+        <select id="qf-service">
+          <option value="">— Select Service —</option>
+          <option>Debt Syndication / Loan</option>
+          <option>Debt Restructuring / OTS</option>
+          <option>NCLT / IBC Resolution</option>
+          <option>DPR Preparation</option>
+          <option>CMA Data Preparation</option>
+          <option>Bank Proposal / Credit Note</option>
+          <option>Working Capital Finance</option>
+          <option>Equipment Finance</option>
+          <option>Export Finance</option>
+          <option>IPO / Private Equity</option>
+          <option>Grants &amp; Subsidies</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Brief Requirement</label>
+        <textarea id="qf-msg" placeholder="Briefly describe your requirement (loan amount, purpose, current situation...)"></textarea>
+      </div>
+      <button class="btn-submit" onclick="submitQuickEnquiry()">Send Enquiry →</button>
+      <div id="qf-success" style="display:none;margin-top:12px;padding:10px;background:rgba(74,154,60,0.15);border:1px solid rgba(74,154,60,0.3);border-radius:4px;font-size:0.82rem;color:#7ED86A;text-align:center;">
+        ✅ Enquiry submitted! We will contact you within 24 hours.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Shiva Consultancy Group — Financial Advisory Portal</div>
+  <div class="footer-tagline">MSME · Corporate · Startup · Retail · Project Finance · Debt Syndication</div>
+  <div class="footer-links">
+    <a href="service-requisition.html">Service Requisition</a>
+    <a href="loan-application.html">Loan Application</a>
+    <a href="dpr-preparation.html">DPR Preparation</a>
+    <a href="bank-proposal.html">Bank Proposal</a>
+    <a href="cma-data.html">CMA Data</a>
+    <a href="https://rksjha.github.io/shiva-financial-solutions/" target="_blank">Main Website</a>
+  </div>
+  <div class="footer-copy">© 2025 Shiva Consultancy Group, Ahmedabad. All rights reserved. | For Advisory Services Only — Not a Bank or NBFC.</div>
+</footer>
+
+<script>
+// Quick Enquiry DB
+const DB_NAME = 'SCG_Portal_DB';
+const DB_VERSION = 1;
+let db;
+
+function initDB() {
+  const req = indexedDB.open(DB_NAME, DB_VERSION);
+  req.onupgradeneeded = e => {
+    const d = e.target.result;
+    if (!d.objectStoreNames.contains('enquiries')) d.createObjectStore('enquiries', {keyPath:'id',autoIncrement:true});
+    if (!d.objectStoreNames.contains('loan_applications')) d.createObjectStore('loan_applications', {keyPath:'id',autoIncrement:true});
+    if (!d.objectStoreNames.contains('service_requests')) d.createObjectStore('service_requests', {keyPath:'id',autoIncrement:true});
+    if (!d.objectStoreNames.contains('dpr_reports')) d.createObjectStore('dpr_reports', {keyPath:'id',autoIncrement:true});
+    if (!d.objectStoreNames.contains('bank_proposals')) d.createObjectStore('bank_proposals', {keyPath:'id',autoIncrement:true});
+    if (!d.objectStoreNames.contains('cma_data')) d.createObjectStore('cma_data', {keyPath:'id',autoIncrement:true});
+  };
+  req.onsuccess = e => { db = e.target.result; };
+}
+
+function saveToStore(storeName, data) {
+  return new Promise((resolve, reject) => {
+    if (!db) { reject('DB not ready'); return; }
+    const tx = db.transaction(storeName, 'readwrite');
+    const store = tx.objectStore(storeName);
+    const req = store.add({...data, timestamp: new Date().toISOString()});
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function generateRef(type) {
+  const d = new Date();
+  const dt = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+  const rand = Math.floor(1000+Math.random()*9000);
+  return `SCG-${type}-${dt}-${rand}`;
+}
+
+function submitQuickEnquiry() {
+  const name = document.getElementById('qf-name').value.trim();
+  const phone = document.getElementById('qf-phone').value.trim();
+  if (!name || !phone) { alert('Please enter your name and mobile number.'); return; }
+  const data = {
+    ref: generateRef('ENQ'),
+    name, phone,
+    service: document.getElementById('qf-service').value,
+    message: document.getElementById('qf-msg').value.trim(),
+    source: 'Portal Home Page'
+  };
+  saveToStore('enquiries', data).catch(()=>{});
+  // Also save to localStorage
+  const stored = JSON.parse(localStorage.getItem('scg_enquiries') || '[]');
+  stored.push(data);
+  localStorage.setItem('scg_enquiries', JSON.stringify(stored));
+  // Show success
+  document.getElementById('qf-success').style.display = 'block';
+  document.getElementById('qf-name').value = '';
+  document.getElementById('qf-phone').value = '';
+  document.getElementById('qf-service').value = '';
+  document.getElementById('qf-msg').value = '';
+  // Open WhatsApp with details
+  setTimeout(() => {
+    const msg = `Hello SCG Team,\n\nNew Enquiry:\nName: ${data.name}\nPhone: ${data.phone}\nService: ${data.service||'Not specified'}\nRef: ${data.ref}\n\nMessage: ${data.message||'No message'}`;
+    window.open('https://wa.me/919979021275?text='+encodeURIComponent(msg), '_blank');
+  }, 800);
+}
+
+initDB();
+</script>
+</body>
+</html>

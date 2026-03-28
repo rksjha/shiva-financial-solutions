@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DPR Preparation | SCG Financial Advisory Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#071220;--navy2:#0C1C35;--navy3:#122444;--scg-blue:#3B5EA6;--scg-green:#4A9A3C;--gold:#C9A84C;--gold2:#E8C96A;--gold-dim:rgba(201,168,76,0.10);--white:#FFFFFF;--text-mid:#B0C0D8;--text-muted:#6B80A0;--border:rgba(201,168,76,0.18);--border2:rgba(59,94,166,0.25);--fg:#F0F4FA;--fg2:#E8EFF8;--fg3:#C8D6ED;--shadow:0 4px 20px rgba(7,18,32,0.25);--radius:6px;--transition:0.22s cubic-bezier(0.4,0,0.2,1);--ink:#1A2840;--ink2:#2D3F5A;--ink3:#4A6080;}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
+nav{position:sticky;top:0;z-index:900;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:rgba(7,18,32,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo{height:36px;width:auto;filter:brightness(0) invert(1);opacity:0.9;}
+.nav-brand-main{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--gold);}
+.nav-brand-sub{font-size:0.52rem;font-weight:600;color:var(--text-muted);letter-spacing:0.18em;text-transform:uppercase;}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none;}
+.nav-links a{color:var(--text-mid);text-decoration:none;font-size:0.72rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:5px 10px;border-radius:4px;transition:all var(--transition);}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);background:var(--gold-dim);}
+@media(max-width:768px){.nav-links{display:none;}}
+.step-nav{background:var(--navy2);border-bottom:1px solid var(--border);padding:0 36px;overflow-x:auto;}
+.step-nav-inner{display:flex;min-width:max-content;}
+.step-btn{display:flex;align-items:center;gap:7px;padding:13px 16px;font-size:0.7rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;transition:all var(--transition);white-space:nowrap;}
+.step-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.step-btn.done{color:var(--scg-green);}
+.step-num{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:0.62rem;font-weight:700;flex-shrink:0;}
+.step-btn.active .step-num{background:var(--gold);color:var(--navy);}
+.step-btn.done .step-num{background:var(--scg-green);color:white;}
+.page-header{padding:36px 36px 22px;background:linear-gradient(160deg,#071220,#0C1C35);border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(74,154,60,0.08),transparent);}
+.page-header-inner{position:relative;z-index:2;}
+.page-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(74,154,60,0.15);border:1px solid rgba(74,154,60,0.3);border-radius:20px;padding:4px 12px;font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#7ED86A;margin-bottom:10px;}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:var(--white);margin-bottom:6px;}
+.page-header h1 em{font-style:italic;color:var(--gold);}
+.page-header p{font-size:0.84rem;color:var(--text-mid);max-width:640px;font-weight:300;}
+.main{max-width:960px;margin:0 auto;padding:28px 36px 80px;}
+.step-panel{display:none;}.step-panel.active{display:block;}
+.form-card{background:var(--fg);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:18px;}
+.form-card-header{background:linear-gradient(135deg,var(--navy2),var(--navy3));padding:15px 22px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.fch-icon{width:34px;height:34px;background:rgba(74,154,60,0.15);border:1px solid rgba(74,154,60,0.3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.fch-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--gold);}
+.fch-sub{font-size:0.68rem;color:var(--text-muted);}
+.form-card-body{padding:20px 22px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:13px;}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:11px;}
+.field{display:flex;flex-direction:column;gap:4px;}
+.field label{font-size:0.67rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink2);}
+.req{color:#C0392B;margin-left:2px;}
+.field input,.field select,.field textarea{background:var(--white);border:1.5px solid var(--fg3);color:var(--ink);padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:0.85rem;border-radius:var(--radius);outline:none;transition:border-color var(--transition);width:100%;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--scg-green);box-shadow:0 0 0 3px rgba(74,154,60,0.1);}
+.field input::placeholder,.field textarea::placeholder{color:#9BACC0;}
+.field select option{color:var(--ink);}
+.field textarea{resize:vertical;}
+.field .hint{font-size:0.65rem;color:var(--ink3);}
+.s-divider{font-size:0.67rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--scg-green);padding:3px 0 9px;border-bottom:1px solid var(--fg3);margin:12px 0 13px;display:flex;align-items:center;gap:8px;}
+.s-divider::after{content:'';flex:1;height:1px;background:var(--fg3);}
+.data-table{width:100%;border-collapse:collapse;font-size:0.8rem;}
+.data-table th{background:var(--navy2);color:var(--gold);font-size:0.63rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:9px 8px;border:1px solid var(--border);}
+.data-table td{padding:5px 6px;border:1px solid var(--fg3);background:var(--white);}
+.data-table td input,.data-table td select{width:100%;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--ink);padding:3px 4px;}
+.data-table td.total-cell{background:#EEF4FF;font-weight:700;font-size:0.82rem;color:var(--scg-blue);}
+.add-row-btn{margin-top:7px;font-size:0.73rem;font-weight:600;color:var(--scg-green);background:rgba(74,154,60,0.08);border:1px dashed rgba(74,154,60,0.3);padding:6px 14px;border-radius:var(--radius);cursor:pointer;transition:all var(--transition);}
+.add-row-btn:hover{background:rgba(74,154,60,0.15);}
+.proj-table{width:100%;border-collapse:collapse;font-size:0.78rem;}
+.proj-table th{background:var(--navy2);color:var(--text-mid);font-size:0.62rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:8px 7px;border:1px solid var(--border);}
+.proj-table th:first-child,.proj-table td:first-child{text-align:left;min-width:160px;}
+.proj-table th:not(:first-child){text-align:center;color:var(--gold);}
+.proj-table td{padding:5px 7px;border:1px solid var(--fg3);background:var(--white);text-align:right;}
+.proj-table td:first-child{background:var(--fg2);color:var(--ink2);font-weight:600;font-size:0.76rem;text-align:left;}
+.proj-table td input{width:100%;border:none;outline:none;background:transparent;text-align:right;font-family:'DM Sans',sans-serif;font-size:0.78rem;color:var(--ink);padding:2px 3px;}
+.proj-table tr.subtotal td{background:#EEF4FF;font-weight:700;}
+.proj-table tr.subtotal td:first-child{color:var(--scg-blue);}
+.proj-table tr.key td{background:#FFFBEF;font-weight:700;}
+.proj-table tr.key td:first-child{color:var(--gold);}
+.step-actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+.btn-primary{background:linear-gradient(135deg,var(--scg-green),#3A7A2C);color:var(--white);padding:11px 24px;font-size:0.78rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;border:none;cursor:pointer;border-radius:var(--radius);transition:all var(--transition);}
+.btn-primary:hover{box-shadow:0 6px 18px rgba(74,154,60,0.45);transform:translateY(-1px);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);padding:11px 24px;font-size:0.78rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;border:none;cursor:pointer;border-radius:var(--radius);transition:all var(--transition);}
+.btn-gold:hover{box-shadow:0 6px 18px rgba(201,168,76,0.45);transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--ink2);padding:10px 20px;font-size:0.78rem;font-weight:600;border:1.5px solid var(--fg3);cursor:pointer;border-radius:var(--radius);transition:all var(--transition);}
+.btn-outline:hover{border-color:var(--scg-green);color:var(--scg-green);}
+.btn-back{background:transparent;color:var(--text-muted);padding:10px 20px;font-size:0.78rem;font-weight:500;border:1px solid rgba(255,255,255,0.12);cursor:pointer;border-radius:var(--radius);transition:all var(--transition);}
+.btn-back:hover{color:var(--white);}
+.summary-card{background:var(--navy2);border:1px solid var(--border2);border-radius:var(--radius);padding:14px 18px;display:flex;flex-direction:column;gap:4px;}
+.summary-card .s-label{font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);}
+.summary-card .s-value{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--gold);}
+.success-panel{display:none;background:rgba(74,154,60,0.08);border:1px solid rgba(74,154,60,0.3);border-radius:10px;padding:28px;text-align:center;margin-top:20px;}
+.success-panel.show{display:block;}
+.print-preview{display:none;background:var(--white);border-radius:10px;padding:36px;margin-top:20px;color:var(--ink);}
+.print-preview.show{display:block;}
+.pp-header{text-align:center;border-bottom:3px double var(--scg-blue);padding-bottom:14px;margin-bottom:18px;}
+.pp-company{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--scg-blue);}
+.pp-section{margin-bottom:16px;}
+.pp-section-title{font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--scg-blue);background:#EEF4FF;padding:5px 10px;border-left:3px solid var(--scg-blue);margin-bottom:10px;}
+.pp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px 18px;margin-bottom:8px;}
+.pp-field .pp-label{font-size:0.61rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.05em;}
+.pp-field .pp-value{font-size:0.83rem;color:var(--ink);border-bottom:1px solid #E8EFF8;padding-bottom:2px;min-height:20px;}
+.pp-table{width:100%;border-collapse:collapse;font-size:0.75rem;}
+.pp-table th{background:#EEF4FF;color:var(--ink2);font-size:0.62rem;font-weight:700;text-transform:uppercase;padding:6px 7px;border:1px solid #D0DDED;letter-spacing:0.05em;}
+.pp-table td{padding:5px 7px;border:1px solid #D0DDED;text-align:right;}
+.pp-table td:first-child{text-align:left;font-weight:600;}
+.pp-table tr:nth-child(even) td{background:#F5F8FC;}
+.pp-table tr.total td{background:#EEF4FF;font-weight:700;}
+@media(max-width:680px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}}
+@media print{nav,.step-nav,.step-actions,.page-header{display:none!important;}.step-panel{display:none!important;}.print-preview{display:block!important;box-shadow:none;margin:0;padding:20px;border-radius:0;}body{background:white;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="../1 Logo Shiva Consultancy Group (Rakesh Jha) (1).jpg" alt="SCG" class="nav-logo">
+    <div><div class="nav-brand-main">Shiva Consultancy Group</div><div class="nav-brand-sub">Financial Advisory Portal</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="service-requisition.html">Service Request</a></li>
+    <li><a href="loan-application.html">Loan App</a></li>
+    <li><a href="dpr-preparation.html" class="active">DPR</a></li>
+    <li><a href="bank-proposal.html">Bank Proposal</a></li>
+    <li><a href="cma-data.html">CMA Data</a></li>
+  </ul>
+</nav>
+
+<div class="step-nav">
+  <div class="step-nav-inner">
+    <button class="step-btn active" onclick="goStep(1)" id="sb1"><span class="step-num">1</span> Project Overview</button>
+    <button class="step-btn" onclick="goStep(2)" id="sb2"><span class="step-num">2</span> Promoter Background</button>
+    <button class="step-btn" onclick="goStep(3)" id="sb3"><span class="step-num">3</span> Technical Details</button>
+    <button class="step-btn" onclick="goStep(4)" id="sb4"><span class="step-num">4</span> Project Cost</button>
+    <button class="step-btn" onclick="goStep(5)" id="sb5"><span class="step-num">5</span> Means of Finance</button>
+    <button class="step-btn" onclick="goStep(6)" id="sb6"><span class="step-num">6</span> Market Analysis</button>
+    <button class="step-btn" onclick="goStep(7)" id="sb7"><span class="step-num">7</span> Financial Projections</button>
+    <button class="step-btn" onclick="goStep(8)" id="sb8"><span class="step-num">8</span> Viability &amp; Submit</button>
+  </div>
+</div>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-badge">📊 DPR Preparation Wizard</div>
+    <h1>Detailed Project <em>Report (DPR)</em></h1>
+    <p>Step-by-step DPR wizard — covers all 8 sections required by Indian banks: project overview, technical feasibility, market analysis, financial projections, DSCR, IRR, NPV and break-even analysis.</p>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- STEP 1: PROJECT OVERVIEW -->
+<div class="step-panel active" id="step1">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">🏗️</div><div><div class="fch-title">Section 1 — Project Overview</div><div class="fch-sub">Basic project identification and concept</div></div></div>
+    <div class="form-card-body">
+      <div class="grid-2">
+        <div class="field"><label>Project / Scheme Name <span class="req">*</span></label><input type="text" id="d-proj-name" placeholder="Official name of the project"></div>
+        <div class="field"><label>Promoter / Applicant Name <span class="req">*</span></label><input type="text" id="d-promoter" placeholder="Name of individual, firm or company"></div>
+      </div>
+      <div class="grid-3">
+        <div class="field"><label>Project Location <span class="req">*</span></label><input type="text" id="d-location" placeholder="Village/Town, Taluka, District, State"></div>
+        <div class="field"><label>Project Type <span class="req">*</span></label>
+          <select id="d-proj-type"><option value="">— Select —</option><option>Greenfield (New Project)</option><option>Brownfield (Expansion)</option><option>Modernisation / Upgradation</option><option>Diversification</option><option>Rehabilitation</option></select>
+        </div>
+        <div class="field"><label>Industry / Sector <span class="req">*</span></label>
+          <select id="d-sector"><option value="">— Select —</option><option>Manufacturing — Engineering</option><option>Manufacturing — Chemical</option><option>Manufacturing — Food Processing</option><option>Manufacturing — Textile</option><option>Manufacturing — Pharma</option><option>Manufacturing — Agro-based</option><option>Services — IT/ITES</option><option>Services — Healthcare</option><option>Services — Education</option><option>Services — Hospitality</option><option>Infrastructure / EPC</option><option>Real Estate</option><option>Renewable Energy</option><option>Agriculture / Horticulture</option><option>Cold Chain / Warehousing</option><option>Logistics / Transport</option><option>Other</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Product(s) / Service(s) to be Offered <span class="req">*</span></label>
+        <textarea id="d-products" placeholder="List all products/services with specifications, grades, end-uses..." style="height:75px;"></textarea></div>
+      <div class="grid-3">
+        <div class="field"><label>Proposed Installed Capacity</label><input type="text" id="d-capacity" placeholder="e.g. 500 MT/year, 10,000 sq ft/year"></div>
+        <div class="field"><label>Unit of Measurement</label><input type="text" id="d-uom" placeholder="e.g. MT, KL, Nos, sq ft, KW"></div>
+        <div class="field"><label>Capacity Utilisation (Year 1 %)</label><input type="number" id="d-util-y1" placeholder="e.g. 60" min="0" max="100"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Expected Date of Commencement</label><input type="date" id="d-commence"></div>
+        <div class="field"><label>Gestation Period (Project Implementation)</label><input type="text" id="d-gestation" placeholder="e.g. 12 months from loan sanction"></div>
+      </div>
+      <div class="field"><label>Project Brief / Executive Summary <span class="req">*</span></label>
+        <textarea id="d-summary" placeholder="Write a comprehensive executive summary of the project — concept, rationale, strategic fit, competitive advantages, impact..." style="height:110px;"></textarea></div>
+      <div class="grid-3">
+        <div class="field"><label>Land Area (Sq. Mtrs / Acres)</label><input type="text" id="d-land-area" placeholder="e.g. 2500 sq mtrs or 0.5 acres"></div>
+        <div class="field"><label>Land Ownership Status</label>
+          <select id="d-land-status"><option value="">— Select —</option><option>Owned — Freehold</option><option>Owned — Leasehold</option><option>Industrial Plot (GIDC / MIDC etc.)</option><option>Rented / Leased</option><option>To be Purchased</option><option>Govt. Allotment Pending</option></select>
+        </div>
+        <div class="field"><label>Building Area (Sq. Mtrs)</label><input type="text" id="d-bld-area" placeholder="e.g. 1800 sq mtrs factory shed"></div>
+      </div>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-primary" onclick="nextStep(1)">Next: Promoter Background →</button>
+    <button class="btn-outline" onclick="saveDraft()">💾 Save</button>
+  </div>
+</div>
+
+<!-- STEP 2: PROMOTER -->
+<div class="step-panel" id="step2">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">👤</div><div><div class="fch-title">Section 2 — Promoter Background</div><div class="fch-sub">Experience, track record and financial strength of promoters</div></div></div>
+    <div class="form-card-body">
+      <div class="grid-3">
+        <div class="field"><label>Promoter(s) Full Name(s) <span class="req">*</span></label><input type="text" id="d-prom-name" placeholder="All promoters, comma separated"></div>
+        <div class="field"><label>Qualification(s)</label><input type="text" id="d-prom-qual" placeholder="e.g. B.E. Mech, MBA Finance"></div>
+        <div class="field"><label>Industry Experience (Years)</label><input type="number" id="d-prom-exp" placeholder="e.g. 15" min="0"></div>
+      </div>
+      <div class="field"><label>Promoter Background &amp; Track Record <span class="req">*</span></label>
+        <textarea id="d-prom-bg" placeholder="Describe promoter experience in this industry, previous ventures, achievements, technical knowledge, management capabilities..." style="height:100px;"></textarea></div>
+      <div class="field"><label>Similar Projects Executed (If Any)</label>
+        <textarea id="d-prev-projects" placeholder="Name of previous projects, scale, outcome..." style="height:70px;"></textarea></div>
+      <div class="grid-3">
+        <div class="field"><label>Total Net Worth of All Promoters (₹)</label><input type="text" id="d-prom-nw" placeholder="e.g. ₹2,50,00,000"></div>
+        <div class="field"><label>Promoter Contribution to Project (₹)</label><input type="text" id="d-prom-contrib" placeholder="e.g. ₹80,00,000"></div>
+        <div class="field"><label>Source of Promoter Contribution</label>
+          <select id="d-prom-source"><option value="">— Select —</option><option>Own Savings / Bank Balance</option><option>Sale of Assets</option><option>Gifts / Family Loans</option><option>ESOP / Share Sale</option><option>Other Businesses</option></select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Key Technical Personnel</label><input type="text" id="d-tech-team" placeholder="Names, qualifications and role of key technical staff"></div>
+        <div class="field"><label>Key Management Personnel</label><input type="text" id="d-mgmt-team" placeholder="Names, qualifications and role of key management staff"></div>
+      </div>
+      <div class="field"><label>Certifications / Awards / Memberships</label>
+        <input type="text" id="d-certs" placeholder="e.g. ISO 9001:2015, HACCP, BIS, Export House certification, Industry association memberships"></div>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(1)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(2)">Next: Technical Details →</button>
+    <button class="btn-outline" onclick="saveDraft()">💾 Save</button>
+  </div>
+</div>
+
+<!-- STEP 3: TECHNICAL -->
+<div class="step-panel" id="step3">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">⚙️</div><div><div class="fch-title">Section 3 — Technical Details</div><div class="fch-sub">Manufacturing process, machinery, raw materials and utilities</div></div></div>
+    <div class="form-card-body">
+      <div class="field"><label>Manufacturing / Service Delivery Process <span class="req">*</span></label>
+        <textarea id="d-process" placeholder="Step-by-step process description — raw material receipt, process flow, quality control, packaging, dispatch..." style="height:100px;"></textarea></div>
+      <div class="grid-2">
+        <div class="field"><label>Technology Used</label><input type="text" id="d-tech" placeholder="e.g. Imported German technology, indigenously developed, licensed process"></div>
+        <div class="field"><label>Technology Source / Supplier</label><input type="text" id="d-tech-source" placeholder="Name and country of technology supplier"></div>
+      </div>
+
+      <div class="s-divider">Machinery &amp; Equipment</div>
+      <table class="data-table">
+        <thead><tr><th>Machinery / Equipment</th><th>Specifications</th><th>Qty</th><th>Country of Origin</th><th>Supplier Name</th><th>Cost (₹ Lakhs)</th></tr></thead>
+        <tbody id="machinery-rows">
+          <tr><td><input type="text" placeholder="e.g. Injection Moulding Machine"></td><td><input type="text" placeholder="Specs / Capacity"></td><td><input type="number" placeholder="1" style="width:50px;"></td><td><select style="font-size:0.78rem;"><option>India</option><option>Germany</option><option>Japan</option><option>China</option><option>Italy</option><option>USA</option><option>Korea</option><option>Other</option></select></td><td><input type="text" placeholder="Supplier name"></td><td><input type="number" placeholder="0.00"></td></tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addMachRow()">+ Add Machinery</button>
+
+      <div class="s-divider" style="margin-top:16px;">Raw Materials</div>
+      <table class="data-table">
+        <thead><tr><th>Raw Material</th><th>Annual Requirement</th><th>Unit</th><th>Rate (₹/Unit)</th><th>Annual Cost (₹ Lakhs)</th><th>Source / Supplier</th><th>Availability</th></tr></thead>
+        <tbody id="rm-rows">
+          <tr><td><input type="text" placeholder="Raw material name"></td><td><input type="number" placeholder="Qty"></td><td><input type="text" placeholder="MT/KL/Nos" style="width:60px;"></td><td><input type="number" placeholder="Rate"></td><td><input type="number" placeholder="Value"></td><td><input type="text" placeholder="Local / Imported"></td><td><select style="font-size:0.78rem;"><option>Readily Available</option><option>Seasonal</option><option>Imported</option><option>Limited Supply</option></select></td></tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRMRow()">+ Add Raw Material</button>
+
+      <div class="s-divider" style="margin-top:16px;">Utilities &amp; Infrastructure</div>
+      <div class="grid-4">
+        <div class="field"><label>Power Requirement (KW)</label><input type="text" id="d-power" placeholder="e.g. 250 KW"></div>
+        <div class="field"><label>Power Source</label><select id="d-power-src"><option>State Grid (EB)</option><option>Grid + Solar</option><option>Generator (DG)</option><option>Captive Power Plant</option><option>Wind Energy</option></select></div>
+        <div class="field"><label>Water Requirement (KL/Day)</label><input type="text" id="d-water" placeholder="e.g. 50 KL/day"></div>
+        <div class="field"><label>Water Source</label><select id="d-water-src"><option>Borewell</option><option>Municipal Supply</option><option>Canal / River</option><option>Tanker</option></select></div>
+      </div>
+      <div class="grid-3">
+        <div class="field"><label>Manpower — Skilled Workers</label><input type="number" id="d-skilled" placeholder="No. of skilled workers"></div>
+        <div class="field"><label>Manpower — Unskilled Workers</label><input type="number" id="d-unskilled" placeholder="No. of unskilled workers"></div>
+        <div class="field"><label>Manpower — Supervisory / Managerial</label><input type="number" id="d-mgmt-cnt" placeholder="No. of supervisors / managers"></div>
+      </div>
+      <div class="field"><label>Effluent / Waste Management</label>
+        <input type="text" id="d-waste" placeholder="ETP, STP, Solid Waste Disposal method, Pollution Control Board clearance status"></div>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(2)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(3)">Next: Project Cost →</button>
+    <button class="btn-outline" onclick="saveDraft()">💾 Save</button>
+  </div>
+</div>
+
+<!-- STEP 4: PROJECT COST -->
+<div class="step-panel" id="step4">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">💰</div><div><div class="fch-title">Section 4 — Project Cost Estimate</div><div class="fch-sub">Detailed cost of the project (₹ in Lakhs)</div></div></div>
+    <div class="form-card-body">
+      <table class="data-table" id="cost-table">
+        <thead><tr><th style="width:5%">Sr.</th><th style="width:35%">Cost Component</th><th style="width:25%">Description / Basis</th><th style="width:15%">Amount (₹ Lakhs)</th><th style="width:20%">Remarks</th></tr></thead>
+        <tbody>
+          <tr><td style="text-align:center;font-weight:700;background:var(--fg2);">A</td><td style="font-weight:700;background:var(--fg2);">FIXED ASSETS</td><td></td><td></td><td></td></tr>
+          <tr><td>1</td><td>Land &amp; Site Development</td><td><input type="text" placeholder="Own / Purchased / GIDC"></td><td><input type="number" id="c-land" placeholder="0.00" oninput="calcCost()"></td><td><input type="text" placeholder="Remarks"></td></tr>
+          <tr><td>2</td><td>Building &amp; Civil Works</td><td><input type="text" placeholder="Factory, Office, Utilities"></td><td><input type="number" id="c-bld" placeholder="0.00" oninput="calcCost()"></td><td><input type="text" placeholder="Remarks"></td></tr>
+          <tr><td>3</td><td>Plant &amp; Machinery</td><td><input type="text" placeholder="Indigenous + Imported"></td><td><input type="number" id="c-mach" placeholder="0.00" oninput="calcCost()"></td><td><input type="text" placeholder="Remarks"></td></tr>
+          <tr><td>4</td><td>Electrification &amp; Installation</td><td><input type="text" placeholder="HT/LT Lines, Panel, Transformers"></td><td><input type="number" id="c-elect" placeholder="0.00" oninput="calcCost()"></td><td><input type="text" placeholder="Remarks"></td></tr>
+          <tr><td>5</td><td>Furniture, Fixtures &amp; Equipment</td><td><input type="text" placeholder="Office furniture, computers"></td><td><input type="number" id="c-furn" placeholder="0.00" oninput="calcCost()"></td><td><input type="text" placeholder="Remarks"></td></tr>
+          <tr><td>6</td><td>Vehicles &amp; Transport Equipment</td><td><input type="text" placeholder="Material handling, delivery van"></td><td><input type="number" id="c-veh" placeholder="0.00" oninput="calcCost()"></td><td><input type="text" placeholder="Remarks"></td></tr>
+          <tr><td>7</td><td>Other Fixed Assets</td><td><input type="text" placeholder="Specify"></td><td><input type="number" id="c-other-fa" placeholder="0.00" oninput="calcCost()"></td><td><input type="text" placeholder="Remarks"></td></tr>
+          <tr style="background:#EEF4FF;"><td colspan="3" style="font-weight:700;color:var(--scg-blue);padding:7px 8px;">Sub-Total — Fixed Assets (A)</td><td id="c-fa-total" style="font-weight:700;color:var(--scg-blue);padding:7px 8px;"></td><td></td></tr>
+          <tr><td style="text-align:center;font-weight:700;background:var(--fg2);">B</td><td style="font-weight:700;background:var(--fg2);">PRE-OPERATIVE EXPENSES</td><td></td><td></td><td></td></tr>
+          <tr><td>8</td><td>Preliminary &amp; Pre-operative Expenses</td><td><input type="text" placeholder="DPR, Registration, Legal fees"></td><td><input type="number" id="c-preop" placeholder="0.00" oninput="calcCost()"></td><td></td></tr>
+          <tr><td>9</td><td>Interest During Construction (IDC)</td><td><input type="text" placeholder="Gestation period interest"></td><td><input type="number" id="c-idc" placeholder="0.00" oninput="calcCost()"></td><td></td></tr>
+          <tr><td>10</td><td>Contingency (@ 5-10%)</td><td><input type="text" placeholder="On Fixed Assets cost"></td><td><input type="number" id="c-cont" placeholder="0.00" oninput="calcCost()"></td><td></td></tr>
+          <tr style="background:#EEF4FF;"><td colspan="3" style="font-weight:700;color:var(--scg-blue);padding:7px 8px;">Sub-Total — Pre-operative (B)</td><td id="c-po-total" style="font-weight:700;color:var(--scg-blue);padding:7px 8px;"></td><td></td></tr>
+          <tr><td style="text-align:center;font-weight:700;background:var(--fg2);">C</td><td style="font-weight:700;background:var(--fg2);">WORKING CAPITAL MARGIN</td><td></td><td></td><td></td></tr>
+          <tr><td>11</td><td>Working Capital Margin Money</td><td><input type="text" placeholder="25% of WC requirement or as applicable"></td><td><input type="number" id="c-wcm" placeholder="0.00" oninput="calcCost()"></td><td></td></tr>
+          <tr style="background:#FFFBEF;"><td colspan="3" style="font-weight:700;color:var(--gold);font-size:0.9rem;padding:9px 8px;">TOTAL PROJECT COST (A+B+C)</td><td id="c-total" style="font-weight:700;color:var(--gold);font-size:0.9rem;padding:9px 8px;"></td><td></td></tr>
+        </tbody>
+      </table>
+      <div class="grid-4" style="margin-top:14px;">
+        <div class="summary-card"><span class="s-label">Fixed Assets</span><span class="s-value" id="s-fa">₹ 0.00 L</span></div>
+        <div class="summary-card"><span class="s-label">Pre-operative</span><span class="s-value" id="s-po">₹ 0.00 L</span></div>
+        <div class="summary-card"><span class="s-label">WC Margin</span><span class="s-value" id="s-wcm">₹ 0.00 L</span></div>
+        <div class="summary-card"><span class="s-label">Total Project Cost</span><span class="s-value" id="s-total">₹ 0.00 L</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(3)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(4)">Next: Means of Finance →</button>
+    <button class="btn-outline" onclick="saveDraft()">💾 Save</button>
+  </div>
+</div>
+
+<!-- STEP 5: MEANS OF FINANCE -->
+<div class="step-panel" id="step5">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">🏦</div><div><div class="fch-title">Section 5 — Means of Finance</div><div class="fch-sub">How the project cost will be funded (₹ in Lakhs)</div></div></div>
+    <div class="form-card-body">
+      <table class="data-table" id="mof-table">
+        <thead><tr><th>Source of Finance</th><th>Details / Bank Name</th><th>Amount (₹ Lakhs)</th><th>% of Project Cost</th><th>Rate of Interest</th><th>Repayment Period</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;background:var(--fg2);">A. Promoter's Equity</td><td><input type="text" placeholder="Own funds, family, FDs etc."></td><td><input type="number" id="mof-equity" placeholder="0.00" oninput="calcMOF()"></td><td id="mof-eq-pct">0%</td><td>—</td><td>—</td></tr>
+          <tr><td style="font-weight:700;background:var(--fg2);">B. Term Loan — Bank / FI</td><td><input type="text" id="mof-bank" placeholder="Name of bank / financial institution"></td><td><input type="number" id="mof-tl" placeholder="0.00" oninput="calcMOF()"></td><td id="mof-tl-pct">0%</td><td><input type="text" id="mof-tl-rate" placeholder="e.g. MCLR+1.5%"></td><td><input type="text" id="mof-tl-tenor" placeholder="e.g. 7 Years"></td></tr>
+          <tr><td style="font-weight:700;background:var(--fg2);">C. Govt. Subsidy / Grant</td><td><input type="text" id="mof-sub-name" placeholder="Scheme name (PMEGP, State Subsidy etc.)"></td><td><input type="number" id="mof-sub" placeholder="0.00" oninput="calcMOF()"></td><td id="mof-sub-pct">0%</td><td>—</td><td>—</td></tr>
+          <tr><td style="font-weight:700;background:var(--fg2);">D. Unsecured Loans</td><td><input type="text" placeholder="Friends, family, directors"></td><td><input type="number" id="mof-uns" placeholder="0.00" oninput="calcMOF()"></td><td id="mof-uns-pct">0%</td><td><input type="text" placeholder="Rate"></td><td><input type="text" placeholder="Period"></td></tr>
+          <tr><td style="font-weight:700;background:var(--fg2);">E. Other Sources</td><td><input type="text" placeholder="Asset sale, venture capital etc."></td><td><input type="number" id="mof-other" placeholder="0.00" oninput="calcMOF()"></td><td id="mof-oth-pct">0%</td><td>—</td><td>—</td></tr>
+          <tr style="background:#FFFBEF;"><td colspan="2" style="font-weight:700;color:var(--gold);padding:8px;"><strong>TOTAL (Should Equal Project Cost)</strong></td><td id="mof-total" style="font-weight:700;color:var(--gold);padding:8px;"></td><td id="mof-total-pct" style="font-weight:700;padding:8px;">0%</td><td colspan="2"></td></tr>
+        </tbody>
+      </table>
+      <div class="grid-3" style="margin-top:14px;">
+        <div class="summary-card"><span class="s-label">Debt-Equity Ratio</span><span class="s-value" id="s-de-ratio">—</span></div>
+        <div class="summary-card"><span class="s-label">Promoter Contribution</span><span class="s-value" id="s-promo-pct">0%</span></div>
+        <div class="summary-card"><span class="s-label">Total Project Cost</span><span class="s-value" id="s-proj-cost-mof">₹ 0.00 L</span></div>
+      </div>
+      <div class="s-divider" style="margin-top:14px;">Repayment Schedule (Term Loan)</div>
+      <div class="grid-3">
+        <div class="field"><label>Moratorium Period</label><input type="text" id="d-morat" placeholder="e.g. 12 months from first disbursement"></div>
+        <div class="field"><label>Repayment Mode</label><select id="d-repay-mode"><option>EMI (Monthly)</option><option>Quarterly Instalments (DEMI)</option><option>Step-up Instalments</option><option>Bullet / Balloon</option><option>As per Cash Flow</option></select></div>
+        <div class="field"><label>Total Repayment Period</label><input type="text" id="d-repay-period" placeholder="e.g. 7 years (incl. moratorium)"></div>
+      </div>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(4)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(5)">Next: Market Analysis →</button>
+    <button class="btn-outline" onclick="saveDraft()">💾 Save</button>
+  </div>
+</div>
+
+<!-- STEP 6: MARKET ANALYSIS -->
+<div class="step-panel" id="step6">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">📊</div><div><div class="fch-title">Section 6 — Market Analysis</div><div class="fch-sub">Industry overview, target market and sales strategy</div></div></div>
+    <div class="form-card-body">
+      <div class="field"><label>Industry Overview &amp; Growth Trends <span class="req">*</span></label>
+        <textarea id="d-industry-ovw" placeholder="Describe the overall industry, market size (India and global), growth rate (CAGR), key drivers, government policies supporting this sector..." style="height:90px;"></textarea></div>
+      <div class="grid-2">
+        <div class="field"><label>Domestic Market Size (₹ Crore / Year)</label><input type="text" id="d-mkt-size-dom" placeholder="e.g. ₹45,000 Crore in 2024"></div>
+        <div class="field"><label>Industry Growth Rate (% CAGR)</label><input type="text" id="d-mkt-cagr" placeholder="e.g. 12.5% CAGR over 5 years"></div>
+      </div>
+      <div class="field"><label>Target Market &amp; Customer Segments</label>
+        <textarea id="d-target-mkt" placeholder="Identify your target customers — geography, industry segment, size, decision-makers, buying patterns..." style="height:70px;"></textarea></div>
+      <div class="field"><label>Competition Analysis</label>
+        <textarea id="d-competition" placeholder="List major competitors, their market share, strengths/weaknesses, pricing, and how your project differentiates..." style="height:80px;"></textarea></div>
+      <div class="field"><label>Marketing Strategy &amp; Sales Plan <span class="req">*</span></label>
+        <textarea id="d-mkt-strategy" placeholder="How will you sell — direct sales, distributors, e-commerce, exports, tenders, OEM supply? Pricing strategy, promotional plans, key sales milestones..." style="height:90px;"></textarea></div>
+      <div class="s-divider">5-Year Sales Projection</div>
+      <table class="data-table">
+        <thead><tr><th>Year</th><th>Capacity Utilisation %</th><th>Production (Units)</th><th>Sales Price (₹/Unit)</th><th>Sales Revenue (₹ Lakhs)</th><th>Key Markets</th></tr></thead>
+        <tbody id="sales-proj-rows">
+          <tr><td>Year 1</td><td><input type="number" placeholder="60" id="sp-util1"></td><td><input type="text" placeholder="Units / MT"></td><td><input type="text" placeholder="₹"></td><td><input type="number" id="sp-rev1" placeholder="₹ Lakhs"></td><td><input type="text" placeholder="Domestic / Export"></td></tr>
+          <tr><td>Year 2</td><td><input type="number" placeholder="70" id="sp-util2"></td><td><input type="text" placeholder="Units / MT"></td><td><input type="text" placeholder="₹"></td><td><input type="number" id="sp-rev2" placeholder="₹ Lakhs"></td><td><input type="text" placeholder=""></td></tr>
+          <tr><td>Year 3</td><td><input type="number" placeholder="80" id="sp-util3"></td><td><input type="text" placeholder="Units / MT"></td><td><input type="text" placeholder="₹"></td><td><input type="number" id="sp-rev3" placeholder="₹ Lakhs"></td><td><input type="text" placeholder=""></td></tr>
+          <tr><td>Year 4</td><td><input type="number" placeholder="85" id="sp-util4"></td><td><input type="text" placeholder="Units / MT"></td><td><input type="text" placeholder="₹"></td><td><input type="number" id="sp-rev4" placeholder="₹ Lakhs"></td><td><input type="text" placeholder=""></td></tr>
+          <tr><td>Year 5</td><td><input type="number" placeholder="90" id="sp-util5"></td><td><input type="text" placeholder="Units / MT"></td><td><input type="text" placeholder="₹"></td><td><input type="number" id="sp-rev5" placeholder="₹ Lakhs"></td><td><input type="text" placeholder=""></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(5)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(6)">Next: Financial Projections →</button>
+    <button class="btn-outline" onclick="saveDraft()">💾 Save</button>
+  </div>
+</div>
+
+<!-- STEP 7: PROJECTIONS -->
+<div class="step-panel" id="step7">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">📈</div><div><div class="fch-title">Section 7 — 5-Year Financial Projections</div><div class="fch-sub">P&amp;L, cash flow and balance sheet projections (₹ in Lakhs)</div></div></div>
+    <div class="form-card-body">
+      <div class="s-divider">Projected Profit &amp; Loss Statement</div>
+      <table class="proj-table">
+        <thead><tr><th>Particulars</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Year 4</th><th>Year 5</th></tr></thead>
+        <tbody>
+          <tr><td>Net Sales / Revenue</td><td><input type="number" id="pj-s1"></td><td><input type="number" id="pj-s2"></td><td><input type="number" id="pj-s3"></td><td><input type="number" id="pj-s4"></td><td><input type="number" id="pj-s5"></td></tr>
+          <tr><td>Cost of Raw Materials</td><td><input type="number" id="pj-rm1"></td><td><input type="number" id="pj-rm2"></td><td><input type="number" id="pj-rm3"></td><td><input type="number" id="pj-rm4"></td><td><input type="number" id="pj-rm5"></td></tr>
+          <tr><td>Manufacturing Expenses (Direct)</td><td><input type="number" id="pj-mfg1"></td><td><input type="number" id="pj-mfg2"></td><td><input type="number" id="pj-mfg3"></td><td><input type="number" id="pj-mfg4"></td><td><input type="number" id="pj-mfg5"></td></tr>
+          <tr class="subtotal"><td>Gross Profit</td><td><input type="number" id="pj-gp1" readonly></td><td><input type="number" id="pj-gp2" readonly></td><td><input type="number" id="pj-gp3" readonly></td><td><input type="number" id="pj-gp4" readonly></td><td><input type="number" id="pj-gp5" readonly></td></tr>
+          <tr><td>Selling &amp; Admin Expenses</td><td><input type="number" id="pj-sga1"></td><td><input type="number" id="pj-sga2"></td><td><input type="number" id="pj-sga3"></td><td><input type="number" id="pj-sga4"></td><td><input type="number" id="pj-sga5"></td></tr>
+          <tr><td>Depreciation</td><td><input type="number" id="pj-dep1"></td><td><input type="number" id="pj-dep2"></td><td><input type="number" id="pj-dep3"></td><td><input type="number" id="pj-dep4"></td><td><input type="number" id="pj-dep5"></td></tr>
+          <tr><td>Interest on Term Loan</td><td><input type="number" id="pj-int1"></td><td><input type="number" id="pj-int2"></td><td><input type="number" id="pj-int3"></td><td><input type="number" id="pj-int4"></td><td><input type="number" id="pj-int5"></td></tr>
+          <tr><td>Interest on Working Capital</td><td><input type="number" id="pj-wci1"></td><td><input type="number" id="pj-wci2"></td><td><input type="number" id="pj-wci3"></td><td><input type="number" id="pj-wci4"></td><td><input type="number" id="pj-wci5"></td></tr>
+          <tr class="subtotal"><td>PBT (Profit Before Tax)</td><td><input type="number" id="pj-pbt1" readonly></td><td><input type="number" id="pj-pbt2" readonly></td><td><input type="number" id="pj-pbt3" readonly></td><td><input type="number" id="pj-pbt4" readonly></td><td><input type="number" id="pj-pbt5" readonly></td></tr>
+          <tr><td>Income Tax</td><td><input type="number" id="pj-tax1"></td><td><input type="number" id="pj-tax2"></td><td><input type="number" id="pj-tax3"></td><td><input type="number" id="pj-tax4"></td><td><input type="number" id="pj-tax5"></td></tr>
+          <tr class="subtotal"><td>Net Profit After Tax (PAT)</td><td><input type="number" id="pj-pat1" readonly></td><td><input type="number" id="pj-pat2" readonly></td><td><input type="number" id="pj-pat3" readonly></td><td><input type="number" id="pj-pat4" readonly></td><td><input type="number" id="pj-pat5" readonly></td></tr>
+          <tr class="key"><td>Term Loan Repayment (Principal)</td><td><input type="number" id="pj-rep1"></td><td><input type="number" id="pj-rep2"></td><td><input type="number" id="pj-rep3"></td><td><input type="number" id="pj-rep4"></td><td><input type="number" id="pj-rep5"></td></tr>
+          <tr class="key"><td>DSCR (Computed)</td><td><input type="number" id="pj-dscr1" readonly></td><td><input type="number" id="pj-dscr2" readonly></td><td><input type="number" id="pj-dscr3" readonly></td><td><input type="number" id="pj-dscr4" readonly></td><td><input type="number" id="pj-dscr5" readonly></td></tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="calcProjections()" style="margin-top:10px;background:rgba(59,94,166,0.1);border-color:rgba(59,94,166,0.3);color:var(--scg-blue);">🔢 Calculate All Values &amp; DSCR</button>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(6)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(7)">Next: Viability &amp; Submit →</button>
+    <button class="btn-outline" onclick="saveDraft()">💾 Save</button>
+  </div>
+</div>
+
+<!-- STEP 8: VIABILITY -->
+<div class="step-panel" id="step8">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">✅</div><div><div class="fch-title">Section 8 — Financial Viability &amp; Submission</div><div class="fch-sub">Key viability indicators, risk assessment and final submission</div></div></div>
+    <div class="form-card-body">
+      <div class="s-divider">Key Viability Indicators</div>
+      <div class="grid-4">
+        <div class="field"><label>IRR — Internal Rate of Return (%)</label><input type="text" id="d-irr" placeholder="e.g. 22.5%"></div>
+        <div class="field"><label>NPV — Net Present Value (₹ Lakhs)</label><input type="text" id="d-npv" placeholder="e.g. ₹48.5 Lakhs"></div>
+        <div class="field"><label>Payback Period</label><input type="text" id="d-payback" placeholder="e.g. 4.5 Years"></div>
+        <div class="field"><label>Average DSCR</label><input type="text" id="d-avg-dscr" placeholder="e.g. 1.85x"></div>
+      </div>
+      <div class="grid-3">
+        <div class="field"><label>Break-even Capacity Utilisation (%)</label><input type="text" id="d-bep-util" placeholder="e.g. 52%"></div>
+        <div class="field"><label>Break-even Sales (₹ Lakhs)</label><input type="text" id="d-bep-sales" placeholder="e.g. ₹145 Lakhs"></div>
+        <div class="field"><label>Debt-Equity Ratio</label><input type="text" id="d-de-ratio" placeholder="e.g. 2.5:1"></div>
+      </div>
+
+      <div class="s-divider">Risk Assessment &amp; Mitigation</div>
+      <table class="data-table">
+        <thead><tr><th>Risk Category</th><th>Risk Description</th><th>Severity</th><th>Mitigation Strategy</th></tr></thead>
+        <tbody id="risk-rows">
+          <tr><td><select style="font-size:0.78rem;"><option>Market Risk</option><option>Raw Material Risk</option><option>Technology Risk</option><option>Regulatory Risk</option><option>Management Risk</option><option>Financial Risk</option><option>Environmental Risk</option><option>Competition Risk</option></select></td><td><input type="text" placeholder="Describe the risk"></td><td><select style="font-size:0.78rem;"><option>Low</option><option>Medium</option><option>High</option></select></td><td><input type="text" placeholder="How will this be mitigated?"></td></tr>
+          <tr><td><select style="font-size:0.78rem;"><option>Market Risk</option><option>Raw Material Risk</option><option>Technology Risk</option><option>Regulatory Risk</option><option>Management Risk</option><option>Financial Risk</option><option>Environmental Risk</option><option>Competition Risk</option></select></td><td><input type="text" placeholder="Describe the risk"></td><td><select style="font-size:0.78rem;"><option>Low</option><option>Medium</option><option>High</option></select></td><td><input type="text" placeholder="How will this be mitigated?"></td></tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRiskRow()">+ Add Risk</button>
+
+      <div class="s-divider" style="margin-top:16px;">Social Impact</div>
+      <div class="grid-3">
+        <div class="field"><label>Employment Generation (Direct)</label><input type="text" id="d-emp-direct" placeholder="e.g. 45 direct jobs"></div>
+        <div class="field"><label>Employment (Indirect)</label><input type="text" id="d-emp-indirect" placeholder="e.g. 120 indirect jobs"></div>
+        <div class="field"><label>Social / Environmental Benefit</label><input type="text" id="d-social" placeholder="e.g. Women employment, rural development, import substitution"></div>
+      </div>
+
+      <div class="s-divider" style="margin-top:14px;">Conclusion &amp; Recommendation</div>
+      <div class="field"><label>Conclusion / SCG Recommendation <span class="req">*</span></label>
+        <textarea id="d-conclusion" placeholder="Write the overall conclusion — financial viability summary, bank recommendation, any special conditions or advice..." style="height:90px;"></textarea></div>
+
+      <div class="s-divider" style="margin-top:14px;">Declaration</div>
+      <div style="margin-bottom:12px;">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+          <input type="checkbox" id="d-declare" style="margin-top:3px;width:16px;height:16px;accent-color:var(--scg-green);">
+          <span style="font-size:0.84rem;color:var(--ink2);">I certify that the information provided in this DPR is accurate and based on reasonable estimates. I authorise Shiva Consultancy Group to use this information for preparing the bank proposal and loan application.</span>
+        </label>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Place</label><input type="text" id="d-place" placeholder="e.g. Ahmedabad"></div>
+        <div class="field"><label>Date</label><input type="date" id="d-date"></div>
+      </div>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(7)">← Back</button>
+    <button class="btn-gold" onclick="submitDPR()">📨 Submit &amp; Generate DPR →</button>
+    <button class="btn-primary" onclick="generatePreview()">👁 Preview DPR</button>
+    <button class="btn-outline" onclick="saveDraft()">💾 Save Draft</button>
+    <button class="btn-outline" onclick="window.print()">🖨 Print</button>
+  </div>
+  <div class="success-panel" id="dpr-success">
+    <div style="font-size:3rem;margin-bottom:10px;">🎉</div>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--white);margin-bottom:8px;">DPR Submitted Successfully!</h3>
+    <div id="dpr-ref" style="display:inline-block;background:var(--navy2);color:var(--gold);padding:7px 18px;border-radius:20px;font-size:0.78rem;font-weight:700;margin:10px 0;"></div>
+    <p style="font-size:0.84rem;color:var(--text-mid);">Your DPR has been saved. Our team will review and prepare the bank proposal within 2-3 business days.</p>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
+      <a id="dpr-wa" href="#" target="_blank" class="btn-gold" style="text-decoration:none;">💬 Send via WhatsApp</a>
+      <a href="bank-proposal.html" class="btn-primary" style="text-decoration:none;">Next: Bank Proposal →</a>
+    </div>
+  </div>
+</div>
+
+<div class="print-preview" id="print-preview"></div>
+</div>
+
+<script>
+let currentStep=1;
+const DB_NAME='SCG_Portal_DB';
+let db;
+function initDB(){const req=indexedDB.open(DB_NAME,1);req.onupgradeneeded=e=>{const d=e.target.result;['dpr_reports','loan_applications','service_requests','bank_proposals','cma_data'].forEach(s=>{if(!d.objectStoreNames.contains(s))d.createObjectStore(s,{keyPath:'id',autoIncrement:true});});};req.onsuccess=e=>{db=e.target.result;loadDraft();};}
+function v(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+function sv(id,val){const el=document.getElementById(id);if(el)el.value=val;}
+function generateRef(){const d=new Date();return `SCG-DPR-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${Math.floor(1000+Math.random()*9000)}`;}
+
+function goStep(n){
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  document.querySelectorAll('.step-btn').forEach((b,i)=>{b.classList.remove('active','done');if(i+1===n)b.classList.add('active');else if(i+1<n)b.classList.add('done');});
+  currentStep=n;window.scrollTo({top:0,behavior:'smooth'});
+}
+function nextStep(from){
+  if(from===1&&!v('d-proj-name')){alert('Enter the Project Name.');document.getElementById('d-proj-name').focus();return;}
+  saveDraft();goStep(from+1);
+}
+
+function calcCost(){
+  const ids=['c-land','c-bld','c-mach','c-elect','c-furn','c-veh','c-other-fa'];
+  const fa=ids.reduce((s,id)=>s+(parseFloat(document.getElementById(id)?.value)||0),0);
+  const po=(parseFloat(v('c-preop'))||0)+(parseFloat(v('c-idc'))||0)+(parseFloat(v('c-cont'))||0);
+  const wcm=parseFloat(v('c-wcm'))||0;
+  const total=fa+po+wcm;
+  const fmt=n=>`${n.toFixed(2)}`;
+  sv('c-fa-total',fmt(fa));sv('c-po-total',fmt(po));sv('c-total',fmt(total));
+  document.getElementById('s-fa').textContent=`₹ ${fmt(fa)} L`;
+  document.getElementById('s-po').textContent=`₹ ${fmt(po)} L`;
+  document.getElementById('s-wcm').textContent=`₹ ${wcm.toFixed(2)} L`;
+  document.getElementById('s-total').textContent=`₹ ${fmt(total)} L`;
+  document.getElementById('s-proj-cost-mof').textContent=`₹ ${fmt(total)} L`;
+  calcMOF();
+}
+function calcMOF(){
+  const eq=parseFloat(v('mof-equity'))||0;
+  const tl=parseFloat(v('mof-tl'))||0;
+  const sub=parseFloat(v('mof-sub'))||0;
+  const uns=parseFloat(v('mof-uns'))||0;
+  const oth=parseFloat(v('mof-other'))||0;
+  const total=eq+tl+sub+uns+oth;
+  const pct=n=>total>0?`${((n/total)*100).toFixed(1)}%`:'0%';
+  sv('mof-total',total.toFixed(2));
+  sv('mof-eq-pct',pct(eq));sv('mof-tl-pct',pct(tl));sv('mof-sub-pct',pct(sub));sv('mof-uns-pct',pct(uns));sv('mof-oth-pct',pct(oth));sv('mof-total-pct','100%');
+  const debt=tl+uns;
+  const equity=eq+sub+oth;
+  document.getElementById('s-de-ratio').textContent=equity>0?`${(debt/equity).toFixed(2)}:1`:'—';
+  document.getElementById('s-promo-pct').textContent=total>0?`${((eq/total)*100).toFixed(1)}%`:'0%';
+}
+
+function calcProjections(){
+  for(let i=1;i<=5;i++){
+    const s=parseFloat(document.getElementById('pj-s'+i)?.value)||0;
+    const rm=parseFloat(document.getElementById('pj-rm'+i)?.value)||0;
+    const mfg=parseFloat(document.getElementById('pj-mfg'+i)?.value)||0;
+    const sga=parseFloat(document.getElementById('pj-sga'+i)?.value)||0;
+    const dep=parseFloat(document.getElementById('pj-dep'+i)?.value)||0;
+    const int1=parseFloat(document.getElementById('pj-int'+i)?.value)||0;
+    const wci=parseFloat(document.getElementById('pj-wci'+i)?.value)||0;
+    const tax=parseFloat(document.getElementById('pj-tax'+i)?.value)||0;
+    const rep=parseFloat(document.getElementById('pj-rep'+i)?.value)||0;
+    const gp=s-rm-mfg;
+    const pbt=gp-sga-dep-int1-wci;
+    const pat=pbt-tax;
+    const dscr=rep+int1>0?(pat+dep+int1)/(rep+int1):0;
+    sv('pj-gp'+i,gp.toFixed(2));sv('pj-pbt'+i,pbt.toFixed(2));sv('pj-pat'+i,pat.toFixed(2));sv('pj-dscr'+i,dscr.toFixed(2));
+  }
+  alert('Values calculated. DSCR = (PAT + Depreciation + Interest) / (Principal + Interest). Please review and adjust if needed.');
+}
+
+// Add rows
+function addMachRow(){const tb=document.getElementById('machinery-rows');const tr=document.createElement('tr');tr.innerHTML=`<td><input type="text" placeholder="Machinery name"></td><td><input type="text" placeholder="Specs"></td><td><input type="number" placeholder="1" style="width:50px;"></td><td><select style="font-size:0.78rem;"><option>India</option><option>Germany</option><option>Japan</option><option>China</option><option>Italy</option><option>USA</option><option>Other</option></select></td><td><input type="text" placeholder="Supplier"></td><td><input type="number" placeholder="0.00"></td>`;tb.appendChild(tr);}
+function addRMRow(){const tb=document.getElementById('rm-rows');const tr=document.createElement('tr');tr.innerHTML=`<td><input type="text" placeholder="Raw material"></td><td><input type="number" placeholder="Qty"></td><td><input type="text" placeholder="Unit" style="width:60px;"></td><td><input type="number" placeholder="Rate"></td><td><input type="number" placeholder="Value"></td><td><input type="text" placeholder="Source"></td><td><select style="font-size:0.78rem;"><option>Readily Available</option><option>Seasonal</option><option>Imported</option><option>Limited</option></select></td>`;tb.appendChild(tr);}
+function addRiskRow(){const tb=document.getElementById('risk-rows');const tr=document.createElement('tr');tr.innerHTML=`<td><select style="font-size:0.78rem;"><option>Market Risk</option><option>Raw Material Risk</option><option>Technology Risk</option><option>Regulatory Risk</option><option>Management Risk</option><option>Financial Risk</option></select></td><td><input type="text" placeholder="Describe risk"></td><td><select style="font-size:0.78rem;"><option>Low</option><option>Medium</option><option>High</option></select></td><td><input type="text" placeholder="Mitigation"></td>`;tb.appendChild(tr);}
+
+function getData(){
+  return {
+    ref:generateRef(),timestamp:new Date().toLocaleString('en-IN'),
+    projName:v('d-proj-name'),promoter:v('d-promoter'),location:v('d-location'),projType:v('d-proj-type'),sector:v('d-sector'),
+    products:v('d-products'),capacity:v('d-capacity'),uom:v('d-uom'),utilY1:v('d-util-y1'),commence:v('d-commence'),gestation:v('d-gestation'),summary:v('d-summary'),landArea:v('d-land-area'),landStatus:v('d-land-status'),
+    promName:v('d-prom-name'),promQual:v('d-prom-qual'),promExp:v('d-prom-exp'),promBg:v('d-prom-bg'),promNW:v('d-prom-nw'),promContrib:v('d-prom-contrib'),
+    process:v('d-process'),tech:v('d-tech'),power:v('d-power'),water:v('d-water'),skilled:v('d-skilled'),unskilled:v('d-unskilled'),
+    cLand:v('c-land'),cBld:v('c-bld'),cMach:v('c-mach'),cFaTotal:document.getElementById('c-fa-total')?.textContent||'',cTotal:document.getElementById('c-total')?.textContent||'',
+    mofEquity:v('mof-equity'),mofTL:v('mof-tl'),mofBank:v('mof-bank'),mofSub:v('mof-sub'),mofTotal:v('mof-total'),mofTLRate:v('mof-tl-rate'),mofTLTenor:v('mof-tl-tenor'),deRatio:document.getElementById('s-de-ratio')?.textContent||'',morat:v('d-morat'),repayPeriod:v('d-repay-period'),
+    industryOvw:v('d-industry-ovw'),mktSizeDom:v('d-mkt-size-dom'),mktCAGR:v('d-mkt-cagr'),competition:v('d-competition'),mktStrategy:v('d-mkt-strategy'),
+    pjS1:v('pj-s1'),pjS2:v('pj-s2'),pjS3:v('pj-s3'),pjPAT1:v('pj-pat1'),pjPAT2:v('pj-pat2'),pjPAT3:v('pj-pat3'),pjDSCR1:v('pj-dscr1'),pjDSCR2:v('pj-dscr2'),pjDSCR3:v('pj-dscr3'),
+    irr:v('d-irr'),npv:v('d-npv'),payback:v('d-payback'),avgDSCR:v('d-avg-dscr'),bepUtil:v('d-bep-util'),bepSales:v('d-bep-sales'),
+    empDirect:v('d-emp-direct'),empIndirect:v('d-emp-indirect'),conclusion:v('d-conclusion'),place:v('d-place'),date:v('d-date')
+  };
+}
+
+function saveDraft(){const d=getData();localStorage.setItem('scg_dpr_draft',JSON.stringify(d));}
+function loadDraft(){
+  const saved=localStorage.getItem('scg_dpr_draft');
+  if(!saved)return;
+  try{const d=JSON.parse(saved);
+    const map={'d-proj-name':d.projName,'d-promoter':d.promoter,'d-location':d.location,'d-proj-type':d.projType,'d-sector':d.sector,'d-products':d.products,'d-capacity':d.capacity,'d-util-y1':d.utilY1,'d-gestation':d.gestation,'d-summary':d.summary,'d-prom-name':d.promName,'d-prom-qual':d.promQual,'d-prom-exp':d.promExp,'d-prom-bg':d.promBg,'d-prom-nw':d.promNW,'d-prom-contrib':d.promContrib,'d-process':d.process,'d-tech':d.tech,'d-power':d.power,'d-water':d.water,'d-skilled':d.skilled,'d-unskilled':d.unskilled,'c-land':d.cLand,'c-bld':d.cBld,'c-mach':d.cMach,'mof-equity':d.mofEquity,'mof-tl':d.mofTL,'mof-bank':d.mofBank,'mof-tl-rate':d.mofTLRate,'mof-tl-tenor':d.mofTLTenor,'d-morat':d.morat,'d-repay-period':d.repayPeriod,'d-industry-ovw':d.industryOvw,'d-competition':d.competition,'d-mkt-strategy':d.mktStrategy,'d-irr':d.irr,'d-npv':d.npv,'d-payback':d.payback,'d-avg-dscr':d.avgDSCR,'d-bep-util':d.bepUtil,'d-bep-sales':d.bepSales,'d-emp-direct':d.empDirect,'d-conclusion':d.conclusion,'d-place':d.place,'d-date':d.date};
+    Object.entries(map).forEach(([id,val])=>{const el=document.getElementById(id);if(el&&val)el.value=val;});
+    calcCost();calcMOF();
+  }catch(e){}
+}
+
+function submitDPR(){
+  if(!v('d-proj-name')){alert('Project Name is required.');goStep(1);return;}
+  if(!document.getElementById('d-declare').checked){alert('Please confirm the declaration.');return;}
+  const d=getData();
+  if(db){const tx=db.transaction('dpr_reports','readwrite');tx.objectStore('dpr_reports').add(d);}
+  const arch=JSON.parse(localStorage.getItem('scg_dpr_archive')||'[]');arch.push(d);localStorage.setItem('scg_dpr_archive',JSON.stringify(arch));localStorage.removeItem('scg_dpr_draft');
+  document.getElementById('dpr-ref').textContent=d.ref;
+  document.getElementById('dpr-success').classList.add('show');
+  const msg=`*SCG DPR SUBMISSION*\n*Ref:* ${d.ref}\n*Project:* ${d.projName}\n*Promoter:* ${d.promoter}\n*Location:* ${d.location}\n*Type:* ${d.projType}\n*Sector:* ${d.sector}\n*Total Project Cost:* ₹${d.cTotal} Lakhs\n*Term Loan:* ₹${d.mofTL} Lakhs from ${d.mofBank}\n*D:E Ratio:* ${d.deRatio}\n*IRR:* ${d.irr} | *DSCR:* ${d.avgDSCR}\n*Payback:* ${d.payback}`;
+  document.getElementById('dpr-wa').href='https://wa.me/919979021275?text='+encodeURIComponent(msg);
+  document.getElementById('dpr-success').scrollIntoView({behavior:'smooth'});
+  generatePreview(d);
+}
+
+function generatePreview(existingData){
+  const d=existingData||getData();
+  const panel=document.getElementById('print-preview');
+  panel.classList.add('show');
+  panel.innerHTML=`
+    <div class="pp-header"><div class="pp-company">SHIVA CONSULTANCY GROUP</div><div style="font-size:0.7rem;color:#666;">Financial Advisory · Ahmedabad · +91 99790 21275</div><div class="pp-title" style="font-size:0.95rem;font-weight:700;color:#2d3f5a;margin-top:8px;letter-spacing:0.05em;text-transform:uppercase;">DETAILED PROJECT REPORT (DPR)</div></div>
+    <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#666;margin-bottom:16px;"><span><strong>Ref:</strong> ${d.ref||'—'}</span><span><strong>Date:</strong> ${d.timestamp||'—'}</span></div>
+    <div class="pp-section"><div class="pp-section-title">1. Project Overview</div>
+    <div class="pp-grid">
+      <div class="pp-field"><span class="pp-label">Project Name</span><span class="pp-value"><strong>${d.projName||'—'}</strong></span></div>
+      <div class="pp-field"><span class="pp-label">Promoter</span><span class="pp-value">${d.promoter||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Location</span><span class="pp-value">${d.location||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Project Type</span><span class="pp-value">${d.projType||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Sector</span><span class="pp-value">${d.sector||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Installed Capacity</span><span class="pp-value">${d.capacity||'—'} ${d.uom||''}</span></div>
+      <div class="pp-field"><span class="pp-label">Commencement</span><span class="pp-value">${d.commence||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Gestation Period</span><span class="pp-value">${d.gestation||'—'}</span></div>
+    </div>
+    <div style="margin-top:10px;font-size:0.82rem;color:var(--ink);background:#F5F8FC;padding:10px;border-left:3px solid var(--scg-blue);">${d.summary||'—'}</div>
+    </div>
+    <div class="pp-section"><div class="pp-section-title">2. Promoter Background</div>
+    <div class="pp-grid">
+      <div class="pp-field"><span class="pp-label">Promoter(s)</span><span class="pp-value">${d.promName||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Qualification</span><span class="pp-value">${d.promQual||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Experience</span><span class="pp-value">${d.promExp||'—'} Years</span></div>
+      <div class="pp-field"><span class="pp-label">Net Worth</span><span class="pp-value">${d.promNW||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Promoter Contribution</span><span class="pp-value">${d.promContrib||'—'}</span></div>
+    </div></div>
+    <div class="pp-section"><div class="pp-section-title">4. Project Cost &amp; 5. Means of Finance (₹ in Lakhs)</div>
+    <table class="pp-table">
+      <tr><th>Cost Component</th><th>Amount (₹ L)</th><th>Source of Finance</th><th>Amount (₹ L)</th></tr>
+      <tr><td>Land &amp; Site Development</td><td>${d.cLand||'—'}</td><td>Promoter's Equity</td><td>${d.mofEquity||'—'}</td></tr>
+      <tr><td>Building &amp; Civil Works</td><td>${d.cBld||'—'}</td><td>Term Loan (${d.mofBank||'—'})</td><td>${d.mofTL||'—'}</td></tr>
+      <tr><td>Plant &amp; Machinery</td><td>${d.cMach||'—'}</td><td>Govt. Subsidy</td><td>${d.mofSub||'—'}</td></tr>
+      <tr class="total"><td><strong>Total Fixed Assets</strong></td><td><strong>${d.cFaTotal||'—'}</strong></td><td><strong>TOTAL</strong></td><td><strong>${d.mofTotal||'—'}</strong></td></tr>
+      <tr class="total"><td><strong>TOTAL PROJECT COST</strong></td><td><strong>${d.cTotal||'—'}</strong></td><td>D:E Ratio</td><td>${d.deRatio||'—'}</td></tr>
+    </table></div>
+    <div class="pp-section"><div class="pp-section-title">7. Financial Projections Summary</div>
+    <table class="pp-table">
+      <tr><th>Particulars</th><th>Year 1</th><th>Year 2</th><th>Year 3</th></tr>
+      <tr><td>Net Sales (₹ L)</td><td>${d.pjS1||'—'}</td><td>${d.pjS2||'—'}</td><td>${d.pjS3||'—'}</td></tr>
+      <tr><td>Net Profit - PAT (₹ L)</td><td>${d.pjPAT1||'—'}</td><td>${d.pjPAT2||'—'}</td><td>${d.pjPAT3||'—'}</td></tr>
+      <tr class="total"><td>DSCR</td><td>${d.pjDSCR1||'—'}</td><td>${d.pjDSCR2||'—'}</td><td>${d.pjDSCR3||'—'}</td></tr>
+    </table></div>
+    <div class="pp-section"><div class="pp-section-title">8. Financial Viability</div>
+    <div class="pp-grid">
+      <div class="pp-field"><span class="pp-label">IRR</span><span class="pp-value">${d.irr||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">NPV</span><span class="pp-value">${d.npv||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Payback Period</span><span class="pp-value">${d.payback||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Average DSCR</span><span class="pp-value">${d.avgDSCR||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Break-even Utilisation</span><span class="pp-value">${d.bepUtil||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Employment Created</span><span class="pp-value">${d.empDirect||'—'} direct</span></div>
+    </div>
+    <div style="margin-top:10px;font-size:0.82rem;background:#F5F8FC;padding:10px;border-left:3px solid var(--scg-green);"><strong>Conclusion:</strong> ${d.conclusion||'—'}</div>
+    </div>
+    <div style="margin-top:20px;border-top:1px solid #ddd;padding-top:12px;font-size:0.66rem;color:#888;text-align:center;">
+      Prepared by Shiva Consultancy Group, Ahmedabad | +91 99790 21275 | For Bank Submission — Strictly Confidential
+    </div>
+    <div style="text-align:center;margin-top:10px;"><button onclick="window.print()" style="background:#4A9A3C;color:white;border:none;padding:9px 22px;border-radius:4px;cursor:pointer;font-weight:700;font-size:0.78rem;">🖨 Print DPR</button></div>`;
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+document.getElementById('d-date').value=new Date().toISOString().split('T')[0];
+initDB();
+setInterval(saveDraft,60000);
+</script>
+</body>
+</html>

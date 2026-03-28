@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loan Application | SCG Financial Advisory Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#071220;--navy2:#0C1C35;--navy3:#122444;
+  --scg-blue:#3B5EA6;--scg-green:#4A9A3C;
+  --gold:#C9A84C;--gold2:#E8C96A;--gold-dim:rgba(201,168,76,0.10);
+  --white:#FFFFFF;--text-mid:#B0C0D8;--text-muted:#6B80A0;
+  --border:rgba(201,168,76,0.18);--border2:rgba(59,94,166,0.25);
+  --fg:#F0F4FA;--fg2:#E8EFF8;--fg3:#C8D6ED;
+  --shadow:0 4px 20px rgba(7,18,32,0.25);--radius:6px;
+  --transition:0.22s cubic-bezier(0.4,0,0.2,1);
+  --ink:#1A2840;--ink2:#2D3F5A;--ink3:#4A6080;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);line-height:1.6;}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px;}
+
+nav{position:sticky;top:0;z-index:900;height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:rgba(7,18,32,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo{height:36px;width:auto;filter:brightness(0) invert(1);opacity:0.9;}
+.nav-brand-main{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--gold);}
+.nav-brand-sub{font-size:0.52rem;font-weight:600;color:var(--text-muted);letter-spacing:0.18em;text-transform:uppercase;}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none;}
+.nav-links a{color:var(--text-mid);text-decoration:none;font-size:0.72rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:5px 10px;border-radius:4px;transition:all var(--transition);}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);background:var(--gold-dim);}
+@media(max-width:768px){.nav-links{display:none;}}
+
+/* STEP NAV */
+.step-nav{background:var(--navy2);border-bottom:1px solid var(--border);padding:0 36px;overflow-x:auto;}
+.step-nav-inner{display:flex;gap:0;min-width:max-content;}
+.step-btn{display:flex;align-items:center;gap:8px;padding:14px 18px;font-size:0.72rem;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);border:none;background:transparent;cursor:pointer;border-bottom:2px solid transparent;transition:all var(--transition);white-space:nowrap;}
+.step-btn:hover{color:var(--text-mid);}
+.step-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.step-btn.done{color:var(--scg-green);}
+.step-num{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;flex-shrink:0;}
+.step-btn.active .step-num{background:var(--gold);color:var(--navy);}
+.step-btn.done .step-num{background:var(--scg-green);color:white;}
+
+/* PAGE HEADER */
+.page-header{padding:40px 36px 24px;background:linear-gradient(160deg,#071220,#0C1C35);border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.page-header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(59,94,166,0.1),transparent);}
+.page-header-inner{position:relative;z-index:2;}
+.page-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(59,94,166,0.15);border:1px solid rgba(59,94,166,0.35);border-radius:20px;padding:4px 12px;font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#7CA4E0;margin-bottom:12px;}
+.page-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:var(--white);margin-bottom:6px;}
+.page-header h1 em{font-style:italic;color:var(--gold);}
+.page-header p{font-size:0.85rem;color:var(--text-mid);max-width:660px;font-weight:300;}
+
+/* MAIN */
+.main{max-width:960px;margin:0 auto;padding:32px 36px 80px;}
+
+/* STEP PANEL */
+.step-panel{display:none;}.step-panel.active{display:block;}
+
+/* FORM CARD */
+.form-card{background:var(--fg);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:20px;}
+.form-card-header{background:linear-gradient(135deg,var(--navy2),var(--navy3));padding:16px 22px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);}
+.fch-icon{width:36px;height:36px;background:rgba(59,94,166,0.2);border:1px solid rgba(59,94,166,0.35);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0;}
+.fch-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:var(--gold);}
+.fch-sub{font-size:0.7rem;color:var(--text-muted);}
+.form-card-body{padding:22px;}
+
+/* FIELDS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;}
+.field{display:flex;flex-direction:column;gap:4px;}
+.field label{font-size:0.68rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink2);}
+.req{color:#C0392B;margin-left:2px;}
+.field input,.field select,.field textarea{background:var(--white);border:1.5px solid var(--fg3);color:var(--ink);padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:0.85rem;border-radius:var(--radius);outline:none;transition:border-color var(--transition);width:100%;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--scg-blue);box-shadow:0 0 0 3px rgba(59,94,166,0.1);}
+.field input::placeholder,.field textarea::placeholder{color:#9BACC0;}
+.field select option{color:var(--ink);}
+.field textarea{resize:vertical;}
+.field .hint{font-size:0.66rem;color:var(--ink3);}
+.s-divider{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--scg-blue);padding:4px 0 10px;border-bottom:1px solid var(--fg3);margin:14px 0 14px;display:flex;align-items:center;gap:8px;}
+.s-divider::after{content:'';flex:1;height:1px;background:var(--fg3);}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+.data-table th{background:var(--navy2);color:var(--text-mid);font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:10px 10px;text-align:left;border:1px solid var(--border);}
+.data-table td{padding:6px 6px;border:1px solid var(--fg3);background:var(--white);}
+.data-table td input,.data-table td select{width:100%;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:0.82rem;color:var(--ink);padding:4px 6px;}
+.data-table td input:focus,.data-table td select:focus{background:rgba(59,94,166,0.05);}
+.data-table tr:hover td{background:#F5F8FF;}
+.add-row-btn{margin-top:8px;font-size:0.75rem;font-weight:600;color:var(--scg-blue);background:rgba(59,94,166,0.08);border:1px dashed rgba(59,94,166,0.3);padding:7px 16px;border-radius:var(--radius);cursor:pointer;transition:all var(--transition);}
+.add-row-btn:hover{background:rgba(59,94,166,0.15);}
+
+/* FINANCIAL TABLE */
+.fin-table{width:100%;border-collapse:collapse;font-size:0.8rem;}
+.fin-table th{background:var(--navy2);color:var(--gold);font-size:0.65rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:10px 8px;text-align:center;border:1px solid var(--border);}
+.fin-table th:first-child{text-align:left;}
+.fin-table td{padding:6px 8px;border:1px solid var(--fg3);background:var(--white);}
+.fin-table td:first-child{font-size:0.78rem;font-weight:600;color:var(--ink2);background:var(--fg2);}
+.fin-table td input{width:100%;border:none;outline:none;background:transparent;text-align:right;font-family:'DM Sans',sans-serif;font-size:0.8rem;color:var(--ink);padding:2px 4px;}
+.fin-table td input:focus{background:rgba(59,94,166,0.05);}
+.fin-table tr.subtotal td{background:#EEF4FF;font-weight:700;}
+.fin-table tr.subtotal td:first-child{color:var(--scg-blue);}
+
+/* ACTIONS */
+.step-actions{display:flex;gap:10px;margin-top:24px;align-items:center;flex-wrap:wrap;}
+.btn-primary{background:linear-gradient(135deg,var(--scg-blue),#2A4A8A);color:var(--white);padding:12px 26px;font-size:0.8rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;border:none;cursor:pointer;border-radius:var(--radius);transition:all var(--transition);display:inline-flex;align-items:center;gap:7px;}
+.btn-primary:hover{box-shadow:0 6px 18px rgba(59,94,166,0.45);transform:translateY(-1px);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);padding:12px 26px;font-size:0.8rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;border:none;cursor:pointer;border-radius:var(--radius);transition:all var(--transition);}
+.btn-gold:hover{box-shadow:0 6px 18px rgba(201,168,76,0.45);transform:translateY(-1px);}
+.btn-outline{background:transparent;color:var(--ink2);padding:11px 22px;font-size:0.8rem;font-weight:600;border:1.5px solid var(--fg3);cursor:pointer;border-radius:var(--radius);transition:all var(--transition);}
+.btn-outline:hover{border-color:var(--scg-blue);color:var(--scg-blue);}
+.btn-back{background:transparent;color:var(--text-muted);padding:11px 22px;font-size:0.8rem;font-weight:500;border:1px solid rgba(255,255,255,0.12);cursor:pointer;border-radius:var(--radius);transition:all var(--transition);}
+.btn-back:hover{color:var(--white);border-color:rgba(255,255,255,0.25);}
+
+/* SUCCESS */
+.success-panel{display:none;background:linear-gradient(135deg,rgba(74,154,60,0.1),rgba(74,154,60,0.05));border:1px solid rgba(74,154,60,0.3);border-radius:10px;padding:32px;text-align:center;margin-top:24px;}
+.success-panel.show{display:block;}
+.success-icon{font-size:3rem;margin-bottom:12px;}
+.success-ref{display:inline-block;background:var(--navy2);color:var(--gold);padding:8px 20px;border-radius:20px;font-size:0.8rem;font-weight:700;letter-spacing:0.1em;margin:10px 0;}
+.success-panel h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--white);margin-bottom:8px;}
+.success-panel p{font-size:0.85rem;color:var(--text-mid);}
+
+/* PRINT / PREVIEW */
+.print-preview{display:none;background:var(--white);border-radius:10px;padding:40px;margin-top:24px;color:var(--ink);}
+.print-preview.show{display:block;}
+.pp-header{text-align:center;border-bottom:3px double var(--scg-blue);padding-bottom:16px;margin-bottom:20px;}
+.pp-company{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--scg-blue);letter-spacing:0.02em;}
+.pp-title{font-size:1rem;font-weight:700;color:var(--ink2);margin-top:4px;letter-spacing:0.05em;text-transform:uppercase;}
+.pp-ref{display:flex;justify-content:space-between;font-size:0.75rem;color:#666;margin-bottom:18px;}
+.pp-section{margin-bottom:18px;}
+.pp-section-title{font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--scg-blue);background:#EEF4FF;padding:6px 10px;border-left:3px solid var(--scg-blue);margin-bottom:10px;}
+.pp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px 20px;}
+.pp-field{display:flex;flex-direction:column;}
+.pp-label{font-size:0.62rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.05em;}
+.pp-value{font-size:0.85rem;color:var(--ink);border-bottom:1px solid #E8EFF8;padding-bottom:2px;min-height:22px;}
+.pp-table{width:100%;border-collapse:collapse;font-size:0.78rem;margin-bottom:8px;}
+.pp-table th{background:#EEF4FF;color:var(--ink2);font-size:0.65rem;font-weight:700;text-transform:uppercase;padding:7px 8px;border:1px solid #D0DDED;letter-spacing:0.06em;}
+.pp-table td{padding:6px 8px;border:1px solid #D0DDED;}
+.pp-table tr:nth-child(even) td{background:#F5F8FC;}
+
+@media(max-width:680px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}.pp-grid{grid-template-columns:1fr 1fr;}}
+@media print{
+  nav,.step-nav,.step-actions,.page-header,#step-nav-bar{display:none!important;}
+  .step-panel{display:none!important;}
+  .print-preview{display:block!important;box-shadow:none;margin:0;padding:20px;border-radius:0;}
+  body{background:white;color:black;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="../1 Logo Shiva Consultancy Group (Rakesh Jha) (1).jpg" alt="SCG" class="nav-logo">
+    <div><div class="nav-brand-main">Shiva Consultancy Group</div><div class="nav-brand-sub">Financial Advisory Portal</div></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="service-requisition.html">Service Request</a></li>
+    <li><a href="loan-application.html" class="active">Loan App</a></li>
+    <li><a href="dpr-preparation.html">DPR</a></li>
+    <li><a href="bank-proposal.html">Bank Proposal</a></li>
+    <li><a href="cma-data.html">CMA Data</a></li>
+  </ul>
+</nav>
+
+<!-- STEP NAV -->
+<div class="step-nav" id="step-nav-bar">
+  <div class="step-nav-inner">
+    <button class="step-btn active" onclick="goStep(1)" id="sb1"><span class="step-num">1</span> Applicant Details</button>
+    <button class="step-btn" onclick="goStep(2)" id="sb2"><span class="step-num">2</span> Business Profile</button>
+    <button class="step-btn" onclick="goStep(3)" id="sb3"><span class="step-num">3</span> Promoters</button>
+    <button class="step-btn" onclick="goStep(4)" id="sb4"><span class="step-num">4</span> Loan Requirements</button>
+    <button class="step-btn" onclick="goStep(5)" id="sb5"><span class="step-num">5</span> Financial Data</button>
+    <button class="step-btn" onclick="goStep(6)" id="sb6"><span class="step-num">6</span> Assets &amp; Security</button>
+    <button class="step-btn" onclick="goStep(7)" id="sb7"><span class="step-num">7</span> Existing Banking</button>
+    <button class="step-btn" onclick="goStep(8)" id="sb8"><span class="step-num">8</span> Declaration</button>
+  </div>
+</div>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-badge">💼 All-in-One Loan Application</div>
+    <h1>Professional <em>Loan Application</em></h1>
+    <p>Complete RBI-aligned loan application — covers all 8 sections required by Indian banks and financial institutions. Your data is auto-saved at every step.</p>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══ STEP 1: APPLICANT DETAILS ═══ -->
+<div class="step-panel active" id="step1">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">🏢</div><div><div class="fch-title">Part A — Applicant / Borrower Details</div><div class="fch-sub">Legal identity and contact information of the borrowing entity</div></div></div>
+    <div class="form-card-body">
+      <div class="s-divider">Basic Identity</div>
+      <div class="grid-2">
+        <div class="field"><label>Name of Applicant / Firm / Company <span class="req">*</span></label><input type="text" id="la-name" placeholder="Full legal name as per registration"></div>
+        <div class="field"><label>Constitution / Entity Type <span class="req">*</span></label>
+          <select id="la-constitution">
+            <option value="">— Select —</option>
+            <option>Sole Proprietorship</option><option>Partnership Firm</option><option>Limited Liability Partnership (LLP)</option>
+            <option>Private Limited Company</option><option>Public Limited Company</option><option>Trust / Society / NGO</option>
+            <option>HUF (Hindu Undivided Family)</option><option>Individual</option><option>Cooperative Society</option><option>Startup (DPIIT Recognised)</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="field"><label>Date of Incorporation / Establishment <span class="req">*</span></label><input type="date" id="la-doi"></div>
+        <div class="field"><label>PAN Number <span class="req">*</span></label><input type="text" id="la-pan" placeholder="AAAPA0000A" maxlength="10" style="text-transform:uppercase;"></div>
+        <div class="field"><label>GSTIN</label><input type="text" id="la-gst" placeholder="22AAAAA0000A1Z5" maxlength="15" style="text-transform:uppercase;"></div>
+      </div>
+      <div class="grid-3">
+        <div class="field"><label>CIN (Companies only)</label><input type="text" id="la-cin" placeholder="U00000XX0000PTC000000"></div>
+        <div class="field"><label>UDYAM Registration No.</label><input type="text" id="la-udyam" placeholder="UDYAM-XX-00-0000000"></div>
+        <div class="field"><label>MSME Category</label>
+          <select id="la-msme"><option value="">— Not MSME —</option><option>Micro Enterprise</option><option>Small Enterprise</option><option>Medium Enterprise</option></select>
+        </div>
+      </div>
+
+      <div class="s-divider">Registered Address</div>
+      <div class="field"><label>Registered Address (Door No., Street, Area) <span class="req">*</span></label><input type="text" id="la-reg-addr" placeholder="Full registered address"></div>
+      <div class="grid-3">
+        <div class="field"><label>City / Town <span class="req">*</span></label><input type="text" id="la-reg-city" placeholder="City"></div>
+        <div class="field"><label>State <span class="req">*</span></label>
+          <select id="la-reg-state">
+            <option value="">— State —</option>
+            <option>Gujarat</option><option>Maharashtra</option><option>Rajasthan</option><option>Madhya Pradesh</option><option>Uttar Pradesh</option>
+            <option>Delhi</option><option>Karnataka</option><option>Tamil Nadu</option><option>Telangana</option><option>Andhra Pradesh</option>
+            <option>West Bengal</option><option>Punjab</option><option>Haryana</option><option>Bihar</option><option>Odisha</option>
+            <option>Kerala</option><option>Assam</option><option>Jharkhand</option><option>Chhattisgarh</option><option>Uttarakhand</option>
+            <option>Himachal Pradesh</option><option>Goa</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>PIN Code <span class="req">*</span></label><input type="text" id="la-reg-pin" placeholder="6-digit PIN" maxlength="6"></div>
+      </div>
+
+      <div class="s-divider">Communication Address (if different)</div>
+      <div class="field"><label>Communication / Corporate Address</label><input type="text" id="la-comm-addr" placeholder="Leave blank if same as registered address"></div>
+      <div class="grid-3">
+        <div class="field"><label>City</label><input type="text" id="la-comm-city" placeholder="City"></div>
+        <div class="field"><label>State</label><input type="text" id="la-comm-state" placeholder="State"></div>
+        <div class="field"><label>PIN Code</label><input type="text" id="la-comm-pin" placeholder="6-digit PIN" maxlength="6"></div>
+      </div>
+
+      <div class="s-divider">Contact Information</div>
+      <div class="grid-3">
+        <div class="field"><label>Mobile / WhatsApp <span class="req">*</span></label><input type="tel" id="la-mobile" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="field"><label>Alternate Phone</label><input type="tel" id="la-phone2" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="field"><label>Email Address <span class="req">*</span></label><input type="email" id="la-email" placeholder="email@company.com"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Website / Social Media</label><input type="text" id="la-website" placeholder="www.yourcompany.com"></div>
+        <div class="field"><label>Contact Person (Authorised Signatory)</label><input type="text" id="la-cp" placeholder="Name and Designation"></div>
+      </div>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-primary" onclick="nextStep(1)">Next: Business Profile →</button>
+    <button class="btn-outline" onclick="saveAll()">💾 Save Progress</button>
+  </div>
+</div>
+
+<!-- ═══ STEP 2: BUSINESS PROFILE ═══ -->
+<div class="step-panel" id="step2">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">🏭</div><div><div class="fch-title">Part B — Business Profile</div><div class="fch-sub">Nature, operations and overview of the business</div></div></div>
+    <div class="form-card-body">
+      <div class="grid-2">
+        <div class="field"><label>Nature of Business / Activity <span class="req">*</span></label>
+          <select id="la-biz-type">
+            <option value="">— Select —</option>
+            <option>Manufacturing</option><option>Trading (Wholesale)</option><option>Trading (Retail)</option>
+            <option>Services</option><option>Agriculture / Agro-Processing</option><option>Real Estate / Construction</option>
+            <option>Infrastructure / EPC</option><option>Healthcare / Pharma</option><option>IT / Software / SaaS</option>
+            <option>Export / Import</option><option>Hospitality / Tourism</option><option>Education</option>
+            <option>Textile / Garment</option><option>Chemical / Petrochem</option><option>Food Processing</option>
+            <option>Renewable Energy</option><option>Logistics / Transport</option><option>Financial Services</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Industry / Sector</label><input type="text" id="la-industry" placeholder="e.g. Textile Weaving, API Manufacturing, Steel Rolling"></div>
+      </div>
+      <div class="grid-3">
+        <div class="field"><label>NIC Code (if known)</label><input type="text" id="la-nic" placeholder="e.g. 13111"></div>
+        <div class="field"><label>Year of Commencement</label><input type="number" id="la-yr-start" placeholder="e.g. 2012" min="1900" max="2026"></div>
+        <div class="field"><label>Total Employees (Current)</label><input type="number" id="la-emp" placeholder="e.g. 85"></div>
+      </div>
+      <div class="field"><label>Products / Services Offered <span class="req">*</span></label>
+        <textarea id="la-products" placeholder="Describe your main products or services, manufacturing process, or service delivery model..." style="height:80px;"></textarea></div>
+      <div class="grid-2">
+        <div class="field"><label>Key Customers (Top 3–5)</label>
+          <textarea id="la-customers" placeholder="Name, Location, Approximate Annual Business..." style="height:70px;"></textarea></div>
+        <div class="field"><label>Key Raw Material Suppliers</label>
+          <textarea id="la-suppliers" placeholder="Name, Location, Credit Terms..." style="height:70px;"></textarea></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Main Competitors</label><input type="text" id="la-competitors" placeholder="Names of main competitors in your market"></div>
+        <div class="field"><label>Competitive Advantage / USP</label><input type="text" id="la-usp" placeholder="What makes your business different?"></div>
+      </div>
+      <div class="grid-3">
+        <div class="field"><label>Annual Export Turnover (₹)</label><input type="text" id="la-exports" placeholder="0 if no exports"></div>
+        <div class="field"><label>Installed Capacity (if Mfg.)</label><input type="text" id="la-capacity" placeholder="e.g. 500 MT/month"></div>
+        <div class="field"><label>Current Capacity Utilisation (%)</label><input type="number" id="la-util" placeholder="e.g. 72" min="0" max="100"></div>
+      </div>
+      <div class="field"><label>Business Description (For Bank Proposal)</label>
+        <textarea id="la-biz-desc" placeholder="Write a comprehensive paragraph about your business — history, operations, achievements, certifications, awards, quality standards, expansion plans..." style="height:100px;"></textarea></div>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(1)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(2)">Next: Promoter Details →</button>
+    <button class="btn-outline" onclick="saveAll()">💾 Save</button>
+  </div>
+</div>
+
+<!-- ═══ STEP 3: PROMOTERS ═══ -->
+<div class="step-panel" id="step3">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">👤</div><div><div class="fch-title">Part C — Promoter / Director / Partner Details</div><div class="fch-sub">Personal details of all promoters, directors, partners, and guarantors</div></div></div>
+    <div class="form-card-body" id="promoters-container">
+      <!-- Promoter 1 -->
+      <div class="promoter-block" id="promo-1">
+        <div class="s-divider">Promoter / Director 1</div>
+        <div class="grid-3">
+          <div class="field"><label>Full Name <span class="req">*</span></label><input type="text" id="p1-name" placeholder="As per PAN"></div>
+          <div class="field"><label>Father's / Husband's Name</label><input type="text" id="p1-father" placeholder="Father's / Husband's name"></div>
+          <div class="field"><label>Date of Birth</label><input type="date" id="p1-dob"></div>
+        </div>
+        <div class="grid-3">
+          <div class="field"><label>PAN Number <span class="req">*</span></label><input type="text" id="p1-pan" placeholder="AAAPA0000A" style="text-transform:uppercase;" maxlength="10"></div>
+          <div class="field"><label>Aadhar Number</label><input type="text" id="p1-aadhar" placeholder="XXXX XXXX XXXX" maxlength="14"></div>
+          <div class="field"><label>Mobile</label><input type="tel" id="p1-mobile" placeholder="+91 XXXXX XXXXX"></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>Designation / Role</label>
+            <select id="p1-role">
+              <option value="">— Select —</option><option>Proprietor</option><option>Managing Director</option><option>Director</option>
+              <option>Executive Director</option><option>Partner</option><option>Designated Partner</option>
+              <option>Guarantor</option><option>Co-Applicant</option>
+            </select>
+          </div>
+          <div class="field"><label>% Shareholding / Ownership</label><input type="number" id="p1-share" placeholder="e.g. 60" min="0" max="100"></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>Educational Qualification</label><input type="text" id="p1-edu" placeholder="e.g. B.E. Mechanical, MBA Finance"></div>
+          <div class="field"><label>Years of Industry Experience</label><input type="number" id="p1-exp" placeholder="e.g. 18" min="0"></div>
+        </div>
+        <div class="field"><label>Residential Address</label><input type="text" id="p1-addr" placeholder="Full residential address"></div>
+        <div class="grid-3">
+          <div class="field"><label>Net Worth (₹) <span class="req">*</span></label><input type="text" id="p1-nw" placeholder="e.g. ₹1,20,00,000"></div>
+          <div class="field"><label>Annual Income (₹)</label><input type="text" id="p1-income" placeholder="e.g. ₹18,00,000"></div>
+          <div class="field"><label>Personal CIBIL Score</label>
+            <select id="p1-cibil"><option value="">— Select —</option><option>750+</option><option>700–750</option><option>650–700</option><option>Below 650</option><option>NTC</option></select>
+          </div>
+        </div>
+        <div class="field"><label>Other Business Interests / Directorships</label><input type="text" id="p1-other-biz" placeholder="Name of other companies where this person is a director / partner"></div>
+      </div>
+    </div>
+    <div style="padding:0 22px 22px;">
+      <button class="add-row-btn" onclick="addPromoter()">+ Add Another Promoter / Director</button>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(2)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(3)">Next: Loan Requirements →</button>
+    <button class="btn-outline" onclick="saveAll()">💾 Save</button>
+  </div>
+</div>
+
+<!-- ═══ STEP 4: LOAN REQUIREMENTS ═══ -->
+<div class="step-panel" id="step4">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">💰</div><div><div class="fch-title">Part D — Loan / Credit Facility Requirements</div><div class="fch-sub">Details of the credit facilities required from the bank</div></div></div>
+    <div class="form-card-body">
+      <div class="s-divider">Facility Details</div>
+      <table class="data-table" id="facility-table">
+        <thead>
+          <tr>
+            <th style="width:22%">Facility Type</th>
+            <th style="width:16%">Amount (₹)</th>
+            <th style="width:18%">Purpose / End Use</th>
+            <th style="width:14%">Tenor / Period</th>
+            <th style="width:16%">Moratorium</th>
+            <th style="width:14%">Repayment Mode</th>
+          </tr>
+        </thead>
+        <tbody id="facility-rows">
+          <tr>
+            <td><select style="font-size:0.78rem;"><option>Term Loan</option><option>Cash Credit (CC)</option><option>Overdraft (OD)</option><option>Letter of Credit (LC)</option><option>Bank Guarantee (BG)</option><option>Equipment Finance</option><option>Export Packing Credit (EPC)</option><option>WCDL</option><option>MSME Loan</option><option>ECLGS</option><option>Other</option></select></td>
+            <td><input type="text" placeholder="e.g. 2,50,00,000"></td>
+            <td><input type="text" placeholder="Purchase of machinery"></td>
+            <td><input type="text" placeholder="84 months / 7 yrs"></td>
+            <td><input type="text" placeholder="6 months"></td>
+            <td><select style="font-size:0.78rem;"><option>EMI (Monthly)</option><option>Quarterly Instalments</option><option>Bullet Repayment</option><option>Revolving</option><option>As per Cash Flows</option></select></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addFacilityRow()">+ Add Another Facility</button>
+
+      <div class="s-divider" style="margin-top:20px;">Total &amp; Preferred Lender</div>
+      <div class="grid-3">
+        <div class="field"><label>Total Credit Requirement (₹) <span class="req">*</span></label><input type="text" id="la-total-loan" placeholder="e.g. ₹3,50,00,000"></div>
+        <div class="field"><label>Preferred Bank / FI</label>
+          <select id="la-pref-bank">
+            <option value="">— No Preference —</option>
+            <option>SBI</option><option>Bank of Baroda</option><option>Punjab National Bank</option><option>Union Bank of India</option>
+            <option>Canara Bank</option><option>Bank of India</option><option>HDFC Bank</option><option>ICICI Bank</option>
+            <option>Axis Bank</option><option>Kotak Mahindra Bank</option><option>SIDBI</option><option>NABARD</option>
+            <option>Yes Bank</option><option>IndusInd Bank</option><option>RBL Bank</option><option>Other NBFC</option>
+          </select>
+        </div>
+        <div class="field"><label>Expected Interest Rate (%)</label><input type="text" id="la-int-rate" placeholder="e.g. 10.5% p.a. or Linked to MCLR"></div>
+      </div>
+      <div class="field"><label>Detailed Purpose / End Use of Funds <span class="req">*</span></label>
+        <textarea id="la-purpose" placeholder="Describe exactly how the loan amount will be used — e.g. purchase of CNC machines (₹1.2 Cr), construction of factory shed 5000 sq ft (₹80L), working capital for raw material procurement (₹70L)..." style="height:90px;"></textarea></div>
+      <div class="grid-2">
+        <div class="field"><label>Proposed Commencement of Business / Production</label><input type="date" id="la-commence"></div>
+        <div class="field"><label>Government Scheme / Subsidy Applied For</label>
+          <select id="la-scheme">
+            <option value="">— None / Not Applicable —</option>
+            <option>CGTMSE (Credit Guarantee)</option><option>PMEGP</option><option>MUDRA Loan</option><option>Stand-Up India</option>
+            <option>Startup India</option><option>MSME Cluster Development</option><option>State Govt Subsidy</option>
+            <option>NSIC</option><option>SIDBI Scheme</option><option>PLI Scheme</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(3)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(4)">Next: Financial Data →</button>
+    <button class="btn-outline" onclick="saveAll()">💾 Save</button>
+  </div>
+</div>
+
+<!-- ═══ STEP 5: FINANCIAL DATA ═══ -->
+<div class="step-panel" id="step5">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">📈</div><div><div class="fch-title">Part E — Financial Information</div><div class="fch-sub">Actual figures for last 3 years + projections (₹ in Lakhs)</div></div></div>
+    <div class="form-card-body">
+      <div class="grid-3" style="margin-bottom:16px;">
+        <div class="field"><label>Financial Year 1 (Actual)</label><input type="text" id="fy1" placeholder="e.g. 2022-23"></div>
+        <div class="field"><label>Financial Year 2 (Actual)</label><input type="text" id="fy2" placeholder="e.g. 2023-24"></div>
+        <div class="field"><label>Financial Year 3 (Actual/Estimated)</label><input type="text" id="fy3" placeholder="e.g. 2024-25"></div>
+      </div>
+      <div class="s-divider">Profit &amp; Loss Account (₹ in Lakhs)</div>
+      <table class="fin-table">
+        <thead><tr><th style="width:30%">Particulars</th><th id="th-fy1">FY 1</th><th id="th-fy2">FY 2</th><th id="th-fy3">FY 3</th></tr></thead>
+        <tbody>
+          <tr><td>Net Sales / Revenue</td><td><input type="number" id="f-sales1"></td><td><input type="number" id="f-sales2"></td><td><input type="number" id="f-sales3"></td></tr>
+          <tr><td>Raw Material / Purchases</td><td><input type="number" id="f-rm1"></td><td><input type="number" id="f-rm2"></td><td><input type="number" id="f-rm3"></td></tr>
+          <tr class="subtotal"><td>Gross Profit</td><td><input type="number" id="f-gp1" readonly></td><td><input type="number" id="f-gp2" readonly></td><td><input type="number" id="f-gp3" readonly></td></tr>
+          <tr><td>Manufacturing / Operating Expenses</td><td><input type="number" id="f-opex1"></td><td><input type="number" id="f-opex2"></td><td><input type="number" id="f-opex3"></td></tr>
+          <tr><td>Selling &amp; Administrative Expenses</td><td><input type="number" id="f-sga1"></td><td><input type="number" id="f-sga2"></td><td><input type="number" id="f-sga3"></td></tr>
+          <tr class="subtotal"><td>EBITDA</td><td><input type="number" id="f-ebitda1" readonly></td><td><input type="number" id="f-ebitda2" readonly></td><td><input type="number" id="f-ebitda3" readonly></td></tr>
+          <tr><td>Interest &amp; Finance Charges</td><td><input type="number" id="f-int1"></td><td><input type="number" id="f-int2"></td><td><input type="number" id="f-int3"></td></tr>
+          <tr><td>Depreciation</td><td><input type="number" id="f-dep1"></td><td><input type="number" id="f-dep2"></td><td><input type="number" id="f-dep3"></td></tr>
+          <tr class="subtotal"><td>Profit Before Tax (PBT)</td><td><input type="number" id="f-pbt1" readonly></td><td><input type="number" id="f-pbt2" readonly></td><td><input type="number" id="f-pbt3" readonly></td></tr>
+          <tr><td>Income Tax / MAT</td><td><input type="number" id="f-tax1"></td><td><input type="number" id="f-tax2"></td><td><input type="number" id="f-tax3"></td></tr>
+          <tr class="subtotal"><td>Net Profit After Tax (PAT)</td><td><input type="number" id="f-pat1" readonly></td><td><input type="number" id="f-pat2" readonly></td><td><input type="number" id="f-pat3" readonly></td></tr>
+        </tbody>
+      </table>
+
+      <div class="s-divider" style="margin-top:18px;">Balance Sheet Summary (₹ in Lakhs)</div>
+      <table class="fin-table">
+        <thead><tr><th style="width:30%">Particulars</th><th>FY 1</th><th>FY 2</th><th>FY 3</th></tr></thead>
+        <tbody>
+          <tr><td colspan="4" style="background:#F0F4FA;font-size:0.7rem;font-weight:700;color:var(--scg-blue);padding:6px 8px;letter-spacing:0.08em;text-transform:uppercase;">ASSETS</td></tr>
+          <tr><td>Net Fixed Assets (Tangible)</td><td><input type="number" id="b-fa1"></td><td><input type="number" id="b-fa2"></td><td><input type="number" id="b-fa3"></td></tr>
+          <tr><td>Inventories / Stock</td><td><input type="number" id="b-inv1"></td><td><input type="number" id="b-inv2"></td><td><input type="number" id="b-inv3"></td></tr>
+          <tr><td>Debtors / Trade Receivables</td><td><input type="number" id="b-dr1"></td><td><input type="number" id="b-dr2"></td><td><input type="number" id="b-dr3"></td></tr>
+          <tr><td>Cash &amp; Bank Balance</td><td><input type="number" id="b-cash1"></td><td><input type="number" id="b-cash2"></td><td><input type="number" id="b-cash3"></td></tr>
+          <tr><td>Other Current Assets</td><td><input type="number" id="b-oca1"></td><td><input type="number" id="b-oca2"></td><td><input type="number" id="b-oca3"></td></tr>
+          <tr class="subtotal"><td>TOTAL ASSETS</td><td><input type="number" id="b-ta1" readonly></td><td><input type="number" id="b-ta2" readonly></td><td><input type="number" id="b-ta3" readonly></td></tr>
+          <tr><td colspan="4" style="background:#F0F4FA;font-size:0.7rem;font-weight:700;color:var(--scg-blue);padding:6px 8px;letter-spacing:0.08em;text-transform:uppercase;">LIABILITIES &amp; NET WORTH</td></tr>
+          <tr><td>Share Capital / Capital Introduced</td><td><input type="number" id="b-cap1"></td><td><input type="number" id="b-cap2"></td><td><input type="number" id="b-cap3"></td></tr>
+          <tr><td>Reserves &amp; Surplus</td><td><input type="number" id="b-res1"></td><td><input type="number" id="b-res2"></td><td><input type="number" id="b-res3"></td></tr>
+          <tr class="subtotal"><td>Net Worth / Tangible Net Worth</td><td><input type="number" id="b-nw1" readonly></td><td><input type="number" id="b-nw2" readonly></td><td><input type="number" id="b-nw3" readonly></td></tr>
+          <tr><td>Term Loans (Long Term Debt)</td><td><input type="number" id="b-tl1"></td><td><input type="number" id="b-tl2"></td><td><input type="number" id="b-tl3"></td></tr>
+          <tr><td>Working Capital Limits (CC/OD)</td><td><input type="number" id="b-wc1"></td><td><input type="number" id="b-wc2"></td><td><input type="number" id="b-wc3"></td></tr>
+          <tr><td>Creditors / Trade Payables</td><td><input type="number" id="b-cr1"></td><td><input type="number" id="b-cr2"></td><td><input type="number" id="b-cr3"></td></tr>
+          <tr><td>Other Liabilities</td><td><input type="number" id="b-ol1"></td><td><input type="number" id="b-ol2"></td><td><input type="number" id="b-ol3"></td></tr>
+          <tr class="subtotal"><td>TOTAL LIABILITIES</td><td><input type="number" id="b-tl-tot1" readonly></td><td><input type="number" id="b-tl-tot2" readonly></td><td><input type="number" id="b-tl-tot3" readonly></td></tr>
+        </tbody>
+      </table>
+
+      <div class="s-divider" style="margin-top:18px;">Key Ratios (Auto-Calculated)</div>
+      <div class="grid-4">
+        <div class="field"><label>Current Ratio (FY3)</label><input type="text" id="r-cr" readonly placeholder="Auto"></div>
+        <div class="field"><label>Debt-Equity Ratio (FY3)</label><input type="text" id="r-de" readonly placeholder="Auto"></div>
+        <div class="field"><label>Net Profit Margin % (FY3)</label><input type="text" id="r-npm" readonly placeholder="Auto"></div>
+        <div class="field"><label>DSCR (Estimated)</label><input type="text" id="r-dscr" placeholder="Enter manually or from projections"></div>
+      </div>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(4)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(5)">Next: Assets &amp; Security →</button>
+    <button class="btn-outline" onclick="calcRatios()">🔢 Calculate Ratios</button>
+    <button class="btn-outline" onclick="saveAll()">💾 Save</button>
+  </div>
+</div>
+
+<!-- ═══ STEP 6: ASSETS & SECURITY ═══ -->
+<div class="step-panel" id="step6">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">🏠</div><div><div class="fch-title">Part F — Assets &amp; Security Details</div><div class="fch-sub">Details of primary and collateral security to be offered</div></div></div>
+    <div class="form-card-body">
+      <div class="s-divider">Primary Security (Hypothecation / Mortgage of Financed Assets)</div>
+      <table class="data-table" id="prim-sec-table">
+        <thead><tr><th>Type of Security</th><th>Description of Asset</th><th>Location</th><th>Market Value (₹)</th><th>Forced Sale Value (₹)</th><th>Document Type</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><select style="font-size:0.78rem;"><option>Hypothecation of Stock</option><option>Hypothecation of Debtors</option><option>Hypothecation of Plant &amp; Machinery</option><option>Mortgage of Land &amp; Building</option><option>Pledge of Shares/FD</option><option>Lien on FDR</option><option>Assignment of Receivables</option></select></td>
+            <td><input type="text" placeholder="Description"></td>
+            <td><input type="text" placeholder="City / Location"></td>
+            <td><input type="text" placeholder="₹"></td>
+            <td><input type="text" placeholder="₹"></td>
+            <td><select style="font-size:0.78rem;"><option>Registered Mortgage</option><option>Equitable Mortgage</option><option>Hypothecation Agreement</option><option>Pledge Agreement</option><option>Lien</option></select></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addSecRow('prim-sec-table')">+ Add Security Item</button>
+
+      <div class="s-divider" style="margin-top:20px;">Collateral Security (Additional)</div>
+      <table class="data-table" id="coll-sec-table">
+        <thead><tr><th>Type</th><th>Description</th><th>Owner</th><th>Location</th><th>Market Value (₹)</th><th>Document Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><select style="font-size:0.78rem;"><option>Residential Property</option><option>Commercial Property</option><option>Industrial Property</option><option>Agricultural Land</option><option>FDR / NSC / LIC</option><option>Shares / Demat</option><option>Vehicle</option><option>Other</option></select></td>
+            <td><input type="text" placeholder="Survey No., Area, Description"></td>
+            <td><input type="text" placeholder="Owner Name"></td>
+            <td><input type="text" placeholder="City, State"></td>
+            <td><input type="text" placeholder="Market Value ₹"></td>
+            <td><select style="font-size:0.78rem;"><option>Clear Title</option><option>Under Valuation</option><option>Partial Documents</option><option>To be Arranged</option></select></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addCollSecRow()">+ Add Collateral</button>
+
+      <div class="s-divider" style="margin-top:20px;">Personal / Corporate Guarantee</div>
+      <div class="grid-2">
+        <div class="field"><label>Personal Guarantor(s)</label><input type="text" id="la-pg" placeholder="Names of all personal guarantors with net worth"></div>
+        <div class="field"><label>Corporate / Third-Party Guarantee</label><input type="text" id="la-cg" placeholder="Name of corporate guarantor entity (if any)"></div>
+      </div>
+
+      <div class="s-divider" style="margin-top:16px;">Fixed Assets Schedule</div>
+      <table class="data-table">
+        <thead><tr><th>Asset Category</th><th>Description</th><th>Year of Purchase</th><th>Original Cost (₹)</th><th>WDV / Book Value (₹)</th><th>Mortgage Status</th></tr></thead>
+        <tbody id="fa-rows">
+          <tr>
+            <td><select style="font-size:0.78rem;"><option>Land</option><option>Building</option><option>Plant &amp; Machinery</option><option>Vehicle</option><option>Furniture &amp; Fixtures</option><option>Computer / IT Assets</option><option>Other</option></select></td>
+            <td><input type="text" placeholder="Asset description"></td>
+            <td><input type="text" placeholder="Year"></td>
+            <td><input type="text" placeholder="₹"></td>
+            <td><input type="text" placeholder="₹"></td>
+            <td><select style="font-size:0.78rem;"><option>Unencumbered</option><option>Mortgaged to Bank</option><option>Under Charge</option><option>Jointly Held</option></select></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addFARow()">+ Add Asset</button>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(5)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(6)">Next: Existing Banking →</button>
+    <button class="btn-outline" onclick="saveAll()">💾 Save</button>
+  </div>
+</div>
+
+<!-- ═══ STEP 7: EXISTING BANKING ═══ -->
+<div class="step-panel" id="step7">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">🏦</div><div><div class="fch-title">Part G — Existing Banking Facilities &amp; Group Concerns</div><div class="fch-sub">Details of current credit limits and associated entities</div></div></div>
+    <div class="form-card-body">
+      <div class="s-divider">Existing Credit Facilities</div>
+      <table class="data-table">
+        <thead><tr><th>Bank / NBFC Name</th><th>Branch</th><th>Facility Type</th><th>Sanctioned (₹)</th><th>Outstanding (₹)</th><th>Overdue (₹)</th><th>Security</th><th>Account Status</th></tr></thead>
+        <tbody id="banking-rows">
+          <tr>
+            <td><input type="text" placeholder="Bank Name"></td>
+            <td><input type="text" placeholder="Branch, City"></td>
+            <td><select style="font-size:0.78rem;"><option>CC / OD</option><option>Term Loan</option><option>Equipment Loan</option><option>Vehicle Loan</option><option>Home Loan</option><option>LC</option><option>BG</option><option>Other</option></select></td>
+            <td><input type="text" placeholder="₹"></td>
+            <td><input type="text" placeholder="₹"></td>
+            <td><input type="text" placeholder="0 or ₹"></td>
+            <td><input type="text" placeholder="Security type"></td>
+            <td><select style="font-size:0.78rem;"><option>Standard</option><option>SMA-0</option><option>SMA-1</option><option>SMA-2</option><option>NPA</option></select></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addBankingRow()">+ Add Banking Facility</button>
+
+      <div class="s-divider" style="margin-top:20px;">Group Concerns / Associated Entities</div>
+      <table class="data-table">
+        <thead><tr><th>Entity Name</th><th>Relationship</th><th>Constitution</th><th>Annual Turnover (₹)</th><th>Total Debt (₹)</th><th>Common Directors</th></tr></thead>
+        <tbody id="group-rows">
+          <tr>
+            <td><input type="text" placeholder="Name of group entity"></td>
+            <td><select style="font-size:0.78rem;"><option>Sister Concern</option><option>Subsidiary</option><option>Holding Company</option><option>Associate Company</option><option>Proprietorship of Director</option></select></td>
+            <td><select style="font-size:0.78rem;"><option>Pvt Ltd</option><option>LLP</option><option>Partnership</option><option>Proprietorship</option><option>Public Ltd</option></select></td>
+            <td><input type="text" placeholder="₹"></td>
+            <td><input type="text" placeholder="₹"></td>
+            <td><input type="text" placeholder="Common director names"></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addGroupRow()">+ Add Group Entity</button>
+
+      <div class="s-divider" style="margin-top:20px;">Statutory &amp; Compliance</div>
+      <div class="grid-3">
+        <div class="field"><label>ITR Filing Status</label>
+          <select id="la-itr"><option>Filed for last 3 years</option><option>Filed for last 2 years</option><option>Filed for last 1 year</option><option>Not Filed</option></select>
+        </div>
+        <div class="field"><label>GST Returns Filing</label>
+          <select id="la-gst-filing"><option>Regular — Up to Date</option><option>Filed with delays</option><option>Pending for some periods</option><option>Not Applicable</option></select>
+        </div>
+        <div class="field"><label>Any Litigation / Suit Filed?</label>
+          <select id="la-litigation"><option>No</option><option>Yes — Tax related</option><option>Yes — Civil suit</option><option>Yes — Criminal / IBC</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Any Other Information Relevant to the Application</label>
+        <textarea id="la-other-info" placeholder="Any other relevant information — awards, ISO certification, government contracts, export credentials, etc." style="height:70px;"></textarea></div>
+    </div>
+  </div>
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(6)">← Back</button>
+    <button class="btn-primary" onclick="nextStep(7)">Next: Declaration →</button>
+    <button class="btn-outline" onclick="saveAll()">💾 Save</button>
+  </div>
+</div>
+
+<!-- ═══ STEP 8: DECLARATION ═══ -->
+<div class="step-panel" id="step8">
+  <div class="form-card">
+    <div class="form-card-header"><div class="fch-icon">✍️</div><div><div class="fch-title">Part H — Declaration &amp; Submission</div><div class="fch-sub">Review, confirm and submit the loan application</div></div></div>
+    <div class="form-card-body">
+      <div style="background:var(--fg2);border:1px solid var(--fg3);border-radius:var(--radius);padding:18px;margin-bottom:18px;font-size:0.84rem;color:var(--ink2);line-height:1.7;">
+        <strong>DECLARATION:</strong><br>
+        We / I hereby declare that the information provided in this application and documents submitted along with it are true, correct and complete to the best of our / my knowledge and belief. We / I confirm that no material information has been concealed or suppressed. We / I authorise Shiva Consultancy Group to share this information with banks, financial institutions, credit bureaus and other relevant authorities solely for the purpose of obtaining the applied credit facilities. We / I understand that any false or misleading information will render this application void and may attract legal consequences.
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+          <input type="checkbox" id="la-declare" style="margin-top:3px;width:16px;height:16px;accent-color:var(--scg-blue);">
+          <span style="font-size:0.85rem;color:var(--ink2);">I have read and agree to the above Declaration. I confirm all information is accurate and complete.</span>
+        </label>
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+          <input type="checkbox" id="la-privacy" style="margin-top:3px;width:16px;height:16px;accent-color:var(--scg-blue);">
+          <span style="font-size:0.85rem;color:var(--ink2);">I consent to Shiva Consultancy Group collecting, storing and using the information provided for financial advisory purposes under applicable data privacy norms.</span>
+        </label>
+      </div>
+      <div class="grid-3">
+        <div class="field"><label>Place of Signing</label><input type="text" id="la-place" placeholder="e.g. Ahmedabad"></div>
+        <div class="field"><label>Date</label><input type="date" id="la-date" value=""></div>
+        <div class="field"><label>Authorised Signatory Name</label><input type="text" id="la-signatory" placeholder="Name and Designation"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-actions">
+    <button class="btn-back" onclick="goStep(7)">← Back</button>
+    <button class="btn-gold" onclick="submitLoanApp()">📨 Submit Application →</button>
+    <button class="btn-primary" onclick="generatePreview()">👁 Preview &amp; Print</button>
+    <button class="btn-outline" onclick="saveAll()">💾 Save Draft</button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-panel" id="la-success">
+    <div class="success-icon">🎉</div>
+    <h3>Loan Application Submitted!</h3>
+    <div class="success-ref" id="la-ref"></div>
+    <p>Your comprehensive loan application has been saved. Our team will review and contact you within 24 hours.<br>Share via WhatsApp for faster processing.</p>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap;">
+      <a id="la-wa-link" href="#" target="_blank" class="btn-gold" style="text-decoration:none;">💬 Send via WhatsApp</a>
+      <button class="btn-primary" onclick="generatePreview()">🖨 Print Application</button>
+      <a href="cma-data.html" class="btn-outline" style="color:var(--ink2);text-decoration:none;">Next: CMA Data →</a>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT PREVIEW -->
+<div class="print-preview" id="print-preview">
+  <!-- Filled dynamically -->
+</div>
+
+</div><!-- /main -->
+
+<script>
+let currentStep=1;
+const totalSteps=8;
+const DB_NAME='SCG_Portal_DB';
+let db;
+
+function initDB(){
+  const req=indexedDB.open(DB_NAME,1);
+  req.onupgradeneeded=e=>{const d=e.target.result;['loan_applications','service_requests','enquiries','dpr_reports','bank_proposals','cma_data'].forEach(s=>{if(!d.objectStoreNames.contains(s))d.createObjectStore(s,{keyPath:'id',autoIncrement:true});});};
+  req.onsuccess=e=>{db=e.target.result;loadDraft();};
+}
+function generateRef(){const d=new Date();return `SCG-LOAN-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${Math.floor(1000+Math.random()*9000)}`;}
+function v(id){const el=document.getElementById(id);return el?el.value.trim():'';}
+function sv(id,val){const el=document.getElementById(id);if(el&&val!==undefined)el.value=val;}
+
+function goStep(n){
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+  document.querySelectorAll('.step-btn').forEach((b,i)=>{
+    b.classList.remove('active','done');
+    if(i+1===n)b.classList.add('active');
+    else if(i+1<n)b.classList.add('done');
+  });
+  currentStep=n;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function nextStep(from){
+  // Basic validation for step 1
+  if(from===1&&!v('la-name')){alert('Please enter the Applicant / Company Name.');document.getElementById('la-name').focus();return;}
+  if(from===1&&!v('la-constitution')){alert('Please select the Constitution / Entity Type.');return;}
+  if(from===1&&!v('la-mobile')){alert('Please enter the mobile number.');document.getElementById('la-mobile').focus();return;}
+  saveAll();
+  goStep(from+1);
+}
+
+function calcFinancials(){
+  for(let i=1;i<=3;i++){
+    const sales=parseFloat(document.getElementById('f-sales'+i)?.value)||0;
+    const rm=parseFloat(document.getElementById('f-rm'+i)?.value)||0;
+    const opex=parseFloat(document.getElementById('f-opex'+i)?.value)||0;
+    const sga=parseFloat(document.getElementById('f-sga'+i)?.value)||0;
+    const intC=parseFloat(document.getElementById('f-int'+i)?.value)||0;
+    const dep=parseFloat(document.getElementById('f-dep'+i)?.value)||0;
+    const tax=parseFloat(document.getElementById('f-tax'+i)?.value)||0;
+    const gp=sales-rm;
+    const ebitda=gp-opex-sga;
+    const pbt=ebitda-intC-dep;
+    const pat=pbt-tax;
+    sv('f-gp'+i,gp.toFixed(2));sv('f-ebitda'+i,ebitda.toFixed(2));sv('f-pbt'+i,pbt.toFixed(2));sv('f-pat'+i,pat.toFixed(2));
+    // Balance sheet totals
+    const fa=parseFloat(document.getElementById('b-fa'+i)?.value)||0;
+    const inv=parseFloat(document.getElementById('b-inv'+i)?.value)||0;
+    const dr=parseFloat(document.getElementById('b-dr'+i)?.value)||0;
+    const cash=parseFloat(document.getElementById('b-cash'+i)?.value)||0;
+    const oca=parseFloat(document.getElementById('b-oca'+i)?.value)||0;
+    sv('b-ta'+i,(fa+inv+dr+cash+oca).toFixed(2));
+    const cap=parseFloat(document.getElementById('b-cap'+i)?.value)||0;
+    const res=parseFloat(document.getElementById('b-res'+i)?.value)||0;
+    sv('b-nw'+i,(cap+res).toFixed(2));
+    const tl=parseFloat(document.getElementById('b-tl'+i)?.value)||0;
+    const wc=parseFloat(document.getElementById('b-wc'+i)?.value)||0;
+    const cr=parseFloat(document.getElementById('b-cr'+i)?.value)||0;
+    const ol=parseFloat(document.getElementById('b-ol'+i)?.value)||0;
+    sv('b-tl-tot'+i,(cap+res+tl+wc+cr+ol).toFixed(2));
+  }
+}
+function calcRatios(){
+  calcFinancials();
+  const ca=(parseFloat(v('b-inv3'))||0)+(parseFloat(v('b-dr3'))||0)+(parseFloat(v('b-cash3'))||0)+(parseFloat(v('b-oca3'))||0);
+  const cl=(parseFloat(v('b-wc3'))||0)+(parseFloat(v('b-cr3'))||0);
+  const td=(parseFloat(v('b-tl3'))||0)+(parseFloat(v('b-wc3'))||0);
+  const nw=(parseFloat(v('b-nw3'))||0);
+  const sales=(parseFloat(v('f-sales3'))||0);
+  const pat=(parseFloat(v('f-pat3'))||0);
+  sv('r-cr',cl>0?(ca/cl).toFixed(2):'N/A');
+  sv('r-de',nw>0?(td/nw).toFixed(2):'N/A');
+  sv('r-npm',sales>0?((pat/sales)*100).toFixed(2)+'%':'N/A');
+  alert('Ratios calculated for FY3. Please verify and fill DSCR manually based on projections.');
+}
+
+// Input listeners for auto-calc
+['f-sales','f-rm','f-opex','f-sga','f-int','f-dep','f-tax','b-fa','b-inv','b-dr','b-cash','b-oca','b-cap','b-res','b-tl','b-wc','b-cr','b-ol'].forEach(prefix=>{
+  [1,2,3].forEach(i=>{
+    const el=document.getElementById(prefix+i);
+    if(el)el.addEventListener('input',calcFinancials);
+  });
+});
+
+// Today's date default
+document.getElementById('la-date').value=new Date().toISOString().split('T')[0];
+
+// Add rows
+let promoCount=1;
+function addPromoter(){
+  promoCount++;
+  const n=promoCount;
+  const c=document.getElementById('promoters-container');
+  const div=document.createElement('div');
+  div.className='promoter-block';
+  div.id='promo-'+n;
+  div.innerHTML=`<div class="s-divider">Promoter / Director ${n} <button onclick="document.getElementById('promo-${n}').remove()" style="margin-left:auto;background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.2);color:#C0392B;padding:3px 10px;border-radius:3px;cursor:pointer;font-size:0.7rem;">Remove</button></div>
+  <div class="grid-3"><div class="field"><label>Full Name</label><input type="text" id="p${n}-name" placeholder="As per PAN"></div><div class="field"><label>PAN Number</label><input type="text" id="p${n}-pan" placeholder="AAAPA0000A" style="text-transform:uppercase;" maxlength="10"></div><div class="field"><label>Date of Birth</label><input type="date" id="p${n}-dob"></div></div>
+  <div class="grid-3"><div class="field"><label>Mobile</label><input type="tel" id="p${n}-mobile" placeholder="+91 XXXXX XXXXX"></div><div class="field"><label>Designation</label><select id="p${n}-role"><option>Director</option><option>Managing Director</option><option>Partner</option><option>Proprietor</option><option>Guarantor</option></select></div><div class="field"><label>% Shareholding</label><input type="number" id="p${n}-share" placeholder="e.g. 40"></div></div>
+  <div class="grid-2"><div class="field"><label>Net Worth (₹)</label><input type="text" id="p${n}-nw" placeholder="e.g. ₹80,00,000"></div><div class="field"><label>Residential Address</label><input type="text" id="p${n}-addr" placeholder="Full address"></div></div>`;
+  c.appendChild(div);
+}
+function addFacilityRow(){
+  const tb=document.getElementById('facility-rows');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><select style="font-size:0.78rem;"><option>Term Loan</option><option>Cash Credit (CC)</option><option>Overdraft (OD)</option><option>Letter of Credit (LC)</option><option>Bank Guarantee (BG)</option><option>Equipment Finance</option><option>Export Packing Credit</option><option>Other</option></select></td><td><input type="text" placeholder="₹"></td><td><input type="text" placeholder="Purpose"></td><td><input type="text" placeholder="Months/Years"></td><td><input type="text" placeholder="e.g. 6 months"></td><td><select style="font-size:0.78rem;"><option>EMI</option><option>Quarterly</option><option>Bullet</option><option>Revolving</option></select></td>`;
+  tb.appendChild(tr);
+}
+function addSecRow(tableId){
+  const tb=document.getElementById(tableId).querySelector('tbody');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><select style="font-size:0.78rem;"><option>Hypothecation of Stock</option><option>Hypothecation of Debtors</option><option>Mortgage of Property</option><option>Pledge of FD</option><option>Lien on FDR</option></select></td><td><input type="text" placeholder="Description"></td><td><input type="text" placeholder="Location"></td><td><input type="text" placeholder="₹"></td><td><input type="text" placeholder="₹"></td><td><select style="font-size:0.78rem;"><option>Registered Mortgage</option><option>Equitable Mortgage</option><option>Hypothecation</option></select></td>`;
+  tb.appendChild(tr);
+}
+function addCollSecRow(){
+  const tb=document.getElementById('coll-sec-table').querySelector('tbody');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><select style="font-size:0.78rem;"><option>Residential Property</option><option>Commercial Property</option><option>Industrial Property</option><option>Agricultural Land</option><option>FDR</option><option>Other</option></select></td><td><input type="text" placeholder="Description"></td><td><input type="text" placeholder="Owner name"></td><td><input type="text" placeholder="Location"></td><td><input type="text" placeholder="₹"></td><td><select style="font-size:0.78rem;"><option>Clear Title</option><option>Under Valuation</option><option>To be Arranged</option></select></td>`;
+  tb.appendChild(tr);
+}
+function addFARow(){
+  const tb=document.getElementById('fa-rows');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><select style="font-size:0.78rem;"><option>Land</option><option>Building</option><option>Plant &amp; Machinery</option><option>Vehicle</option><option>Furniture</option><option>Other</option></select></td><td><input type="text" placeholder="Description"></td><td><input type="text" placeholder="Year"></td><td><input type="text" placeholder="₹"></td><td><input type="text" placeholder="₹"></td><td><select style="font-size:0.78rem;"><option>Unencumbered</option><option>Mortgaged</option><option>Under Charge</option></select></td>`;
+  tb.appendChild(tr);
+}
+function addBankingRow(){
+  const tb=document.getElementById('banking-rows');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><input type="text" placeholder="Bank Name"></td><td><input type="text" placeholder="Branch"></td><td><select style="font-size:0.78rem;"><option>CC/OD</option><option>Term Loan</option><option>Equipment Loan</option><option>LC</option><option>BG</option><option>Other</option></select></td><td><input type="text" placeholder="₹"></td><td><input type="text" placeholder="₹"></td><td><input type="text" placeholder="0"></td><td><input type="text" placeholder="Security"></td><td><select style="font-size:0.78rem;"><option>Standard</option><option>SMA-1</option><option>SMA-2</option><option>NPA</option></select></td>`;
+  tb.appendChild(tr);
+}
+function addGroupRow(){
+  const tb=document.getElementById('group-rows');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td><input type="text" placeholder="Entity name"></td><td><select style="font-size:0.78rem;"><option>Sister Concern</option><option>Subsidiary</option><option>Holding Company</option><option>Associate</option></select></td><td><select style="font-size:0.78rem;"><option>Pvt Ltd</option><option>LLP</option><option>Partnership</option><option>Proprietorship</option></select></td><td><input type="text" placeholder="₹"></td><td><input type="text" placeholder="₹"></td><td><input type="text" placeholder="Director names"></td>`;
+  tb.appendChild(tr);
+}
+
+function getFormData(){
+  return {
+    ref:generateRef(),
+    applicantName:v('la-name'),constitution:v('la-constitution'),doi:v('la-doi'),pan:v('la-pan'),gst:v('la-gst'),cin:v('la-cin'),udyam:v('la-udyam'),msme:v('la-msme'),
+    regAddr:v('la-reg-addr'),regCity:v('la-reg-city'),regState:v('la-reg-state'),regPin:v('la-reg-pin'),
+    commAddr:v('la-comm-addr'),mobile:v('la-mobile'),email:v('la-email'),website:v('la-website'),cp:v('la-cp'),
+    bizType:v('la-biz-type'),industry:v('la-industry'),nic:v('la-nic'),yrStart:v('la-yr-start'),emp:v('la-emp'),
+    products:v('la-products'),customers:v('la-customers'),usp:v('la-usp'),exports:v('la-exports'),capacity:v('la-capacity'),util:v('la-util'),bizDesc:v('la-biz-desc'),
+    p1Name:v('p1-name'),p1Pan:v('p1-pan'),p1Dob:v('p1-dob'),p1Mobile:v('p1-mobile'),p1Role:v('p1-role'),p1Share:v('p1-share'),p1Edu:v('p1-edu'),p1Exp:v('p1-exp'),p1Addr:v('p1-addr'),p1Nw:v('p1-nw'),p1Income:v('p1-income'),p1Cibil:v('p1-cibil'),
+    totalLoan:v('la-total-loan'),prefBank:v('la-pref-bank'),intRate:v('la-int-rate'),purpose:v('la-purpose'),scheme:v('la-scheme'),
+    fy1:v('fy1'),fy2:v('fy2'),fy3:v('fy3'),
+    sales1:v('f-sales1'),sales2:v('f-sales2'),sales3:v('f-sales3'),
+    pat1:v('f-pat1'),pat2:v('f-pat2'),pat3:v('f-pat3'),
+    nw1:v('b-nw1'),nw2:v('b-nw2'),nw3:v('b-nw3'),
+    pg:v('la-pg'),cg:v('la-cg'),
+    itr:v('la-itr'),gstFiling:v('la-gst-filing'),
+    signatory:v('la-signatory'),place:v('la-place'),date:v('la-date'),
+    timestamp:new Date().toLocaleString('en-IN')
+  };
+}
+
+function saveAll(){
+  const d=getFormData();
+  localStorage.setItem('scg_loan_draft',JSON.stringify(d));
+}
+function loadDraft(){
+  const saved=localStorage.getItem('scg_loan_draft');
+  if(!saved)return;
+  try{
+    const d=JSON.parse(saved);
+    const map={
+      'la-name':d.applicantName,'la-constitution':d.constitution,'la-doi':d.doi,'la-pan':d.pan,'la-gst':d.gst,'la-cin':d.cin,'la-udyam':d.udyam,'la-msme':d.msme,
+      'la-reg-addr':d.regAddr,'la-reg-city':d.regCity,'la-reg-state':d.regState,'la-reg-pin':d.regPin,'la-comm-addr':d.commAddr,'la-mobile':d.mobile,'la-email':d.email,'la-website':d.website,'la-cp':d.cp,
+      'la-biz-type':d.bizType,'la-industry':d.industry,'la-nic':d.nic,'la-yr-start':d.yrStart,'la-emp':d.emp,'la-products':d.products,'la-customers':d.customers,'la-usp':d.usp,'la-exports':d.exports,'la-capacity':d.capacity,'la-util':d.util,'la-biz-desc':d.bizDesc,
+      'p1-name':d.p1Name,'p1-pan':d.p1Pan,'p1-dob':d.p1Dob,'p1-mobile':d.p1Mobile,'p1-role':d.p1Role,'p1-share':d.p1Share,'p1-edu':d.p1Edu,'p1-exp':d.p1Exp,'p1-addr':d.p1Addr,'p1-nw':d.p1Nw,'p1-income':d.p1Income,'p1-cibil':d.p1Cibil,
+      'la-total-loan':d.totalLoan,'la-pref-bank':d.prefBank,'la-int-rate':d.intRate,'la-purpose':d.purpose,'la-scheme':d.scheme,
+      'fy1':d.fy1,'fy2':d.fy2,'fy3':d.fy3,'f-sales1':d.sales1,'f-sales2':d.sales2,'f-sales3':d.sales3,
+      'la-pg':d.pg,'la-cg':d.cg,'la-itr':d.itr,'la-signatory':d.signatory,'la-place':d.place,'la-date':d.date
+    };
+    Object.entries(map).forEach(([id,val])=>{const el=document.getElementById(id);if(el&&val)el.value=val;});
+  }catch(e){}
+}
+
+function submitLoanApp(){
+  if(!v('la-name')){alert('Applicant name is required.');goStep(1);return;}
+  if(!v('la-mobile')){alert('Mobile number is required.');goStep(1);return;}
+  if(!document.getElementById('la-declare').checked){alert('Please confirm the declaration.');return;}
+  if(!document.getElementById('la-privacy').checked){alert('Please confirm the privacy consent.');return;}
+  const d=getFormData();
+  if(db){const tx=db.transaction('loan_applications','readwrite');tx.objectStore('loan_applications').add(d);}
+  const arch=JSON.parse(localStorage.getItem('scg_loan_archive')||'[]');
+  arch.push(d);
+  localStorage.setItem('scg_loan_archive',JSON.stringify(arch));
+  localStorage.removeItem('scg_loan_draft');
+  document.getElementById('la-ref').textContent=d.ref;
+  document.getElementById('la-success').classList.add('show');
+  const msg=`*SCG LOAN APPLICATION*\n*Ref:* ${d.ref}\n*Date:* ${d.timestamp}\n\n*Applicant:* ${d.applicantName}\n*Constitution:* ${d.constitution}\n*PAN:* ${d.pan}\n*Mobile:* ${d.mobile}\n*Email:* ${d.email}\n*City:* ${d.regCity}, ${d.regState}\n\n*Business:* ${d.bizType} — ${d.industry}\n*Employees:* ${d.emp}\n\n*Loan Required:* ${d.totalLoan}\n*Purpose:* ${d.purpose}\n*Preferred Bank:* ${d.prefBank}\n\n*Financials (${d.fy3}):*\nSales: ₹${d.sales3}L | PAT: ₹${d.pat3}L | Net Worth: ₹${d.nw3}L\n\n*Promoter 1:* ${d.p1Name} | CIBIL: ${d.p1Cibil}`;
+  document.getElementById('la-wa-link').href='https://wa.me/919979021275?text='+encodeURIComponent(msg);
+  document.getElementById('la-success').scrollIntoView({behavior:'smooth'});
+  generatePreview(d);
+}
+
+function generatePreview(existingData){
+  const d=existingData||getFormData();
+  const panel=document.getElementById('print-preview');
+  panel.classList.add('show');
+  panel.innerHTML=`
+    <div class="pp-header">
+      <div class="pp-company">SHIVA CONSULTANCY GROUP</div>
+      <div style="font-size:0.72rem;color:#666;">Financial Advisory · Ahmedabad · +91 99790 21275 · rksjha@gmail.com</div>
+      <div class="pp-title" style="margin-top:10px;">LOAN APPLICATION FORM</div>
+    </div>
+    <div class="pp-ref"><span><strong>Ref:</strong> ${d.ref||'—'}</span><span><strong>Date:</strong> ${d.timestamp||new Date().toLocaleString('en-IN')}</span></div>
+
+    <div class="pp-section"><div class="pp-section-title">A. Applicant Details</div>
+    <div class="pp-grid">
+      <div class="pp-field"><span class="pp-label">Applicant Name</span><span class="pp-value">${d.applicantName||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Constitution</span><span class="pp-value">${d.constitution||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Date of Incorporation</span><span class="pp-value">${d.doi||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">PAN</span><span class="pp-value">${d.pan||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">GSTIN</span><span class="pp-value">${d.gst||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">UDYAM No.</span><span class="pp-value">${d.udyam||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Mobile</span><span class="pp-value">${d.mobile||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Email</span><span class="pp-value">${d.email||'—'}</span></div>
+      <div class="pp-field" style="grid-column:1/-1"><span class="pp-label">Registered Address</span><span class="pp-value">${d.regAddr||'—'}, ${d.regCity||''}, ${d.regState||''} - ${d.regPin||''}</span></div>
+    </div></div>
+
+    <div class="pp-section"><div class="pp-section-title">B. Business Profile</div>
+    <div class="pp-grid">
+      <div class="pp-field"><span class="pp-label">Nature of Business</span><span class="pp-value">${d.bizType||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Industry / Sector</span><span class="pp-value">${d.industry||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Year of Commencement</span><span class="pp-value">${d.yrStart||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Employees</span><span class="pp-value">${d.emp||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Capacity Utilisation</span><span class="pp-value">${d.util||'—'}%</span></div>
+      <div class="pp-field"><span class="pp-label">Exports</span><span class="pp-value">${d.exports||'—'}</span></div>
+      <div class="pp-field" style="grid-column:1/-1"><span class="pp-label">Products / Services</span><span class="pp-value">${d.products||'—'}</span></div>
+    </div></div>
+
+    <div class="pp-section"><div class="pp-section-title">C. Promoter Details</div>
+    <div class="pp-grid">
+      <div class="pp-field"><span class="pp-label">Promoter 1 Name</span><span class="pp-value">${d.p1Name||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">PAN</span><span class="pp-value">${d.p1Pan||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Designation</span><span class="pp-value">${d.p1Role||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Shareholding</span><span class="pp-value">${d.p1Share||'—'}%</span></div>
+      <div class="pp-field"><span class="pp-label">Experience</span><span class="pp-value">${d.p1Exp||'—'} Years</span></div>
+      <div class="pp-field"><span class="pp-label">Net Worth</span><span class="pp-value">${d.p1Nw||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">CIBIL Score</span><span class="pp-value">${d.p1Cibil||'—'}</span></div>
+    </div></div>
+
+    <div class="pp-section"><div class="pp-section-title">D. Loan / Credit Requirement</div>
+    <div class="pp-grid">
+      <div class="pp-field"><span class="pp-label">Total Finance Required</span><span class="pp-value"><strong>${d.totalLoan||'—'}</strong></span></div>
+      <div class="pp-field"><span class="pp-label">Preferred Bank / FI</span><span class="pp-value">${d.prefBank||'No Preference'}</span></div>
+      <div class="pp-field"><span class="pp-label">Interest Rate Expected</span><span class="pp-value">${d.intRate||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Govt. Scheme</span><span class="pp-value">${d.scheme||'None'}</span></div>
+      <div class="pp-field" style="grid-column:1/-1"><span class="pp-label">Purpose / End Use</span><span class="pp-value">${d.purpose||'—'}</span></div>
+    </div></div>
+
+    <div class="pp-section"><div class="pp-section-title">E. Financial Summary (₹ in Lakhs)</div>
+    <table class="pp-table">
+      <tr><th>Particulars</th><th>${d.fy1||'FY1'}</th><th>${d.fy2||'FY2'}</th><th>${d.fy3||'FY3'}</th></tr>
+      <tr><td>Net Sales / Revenue</td><td>${d.sales1||'—'}</td><td>${d.sales2||'—'}</td><td>${d.sales3||'—'}</td></tr>
+      <tr><td>Net Profit (PAT)</td><td>${d.pat1||'—'}</td><td>${d.pat2||'—'}</td><td>${d.pat3||'—'}</td></tr>
+      <tr><td>Tangible Net Worth</td><td>${d.nw1||'—'}</td><td>${d.nw2||'—'}</td><td>${d.nw3||'—'}</td></tr>
+    </table></div>
+
+    <div class="pp-section"><div class="pp-section-title">F. Security</div>
+    <div class="pp-grid">
+      <div class="pp-field"><span class="pp-label">Personal Guarantors</span><span class="pp-value">${d.pg||'—'}</span></div>
+      <div class="pp-field"><span class="pp-label">Corporate Guarantee</span><span class="pp-value">${d.cg||'—'}</span></div>
+    </div></div>
+
+    <div style="margin-top:28px;padding-top:16px;border-top:2px solid #3B5EA6;display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div><div style="height:50px;border-bottom:1px solid #ccc;margin-bottom:6px;"></div><div style="font-size:0.72rem;color:#888;">Signature of Applicant</div><div style="font-size:0.8rem;font-weight:700;color:var(--ink2);">${d.signatory||'___________________'}</div></div>
+      <div><div style="height:50px;border-bottom:1px solid #ccc;margin-bottom:6px;"></div><div style="font-size:0.72rem;color:#888;">Prepared by SCG Advisor</div><div style="font-size:0.8rem;color:#888;">Place: ${d.place||'—'} | Date: ${d.date||'—'}</div></div>
+    </div>
+    <div style="margin-top:16px;text-align:center;font-size:0.68rem;color:#888;">
+      Prepared by Shiva Consultancy Group, Ahmedabad | +91 99790 21275 | rksjha@gmail.com | Strictly Confidential — For Bank Submission Only
+    </div>
+    <div style="text-align:center;margin-top:12px;"><button onclick="window.print()" style="background:#3B5EA6;color:white;border:none;padding:10px 24px;border-radius:4px;cursor:pointer;font-weight:700;font-size:0.8rem;">🖨 Print This Application</button></div>`;
+  panel.scrollIntoView({behavior:'smooth'});
+}
+
+initDB();
+// Auto-save every 60 seconds
+setInterval(saveAll,60000);
+</script>
+</body>
+</html>

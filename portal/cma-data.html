@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMA Data Preparation | SCG Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#071220;--navy2:#0C1C35;--scg-blue:#3B5EA6;--scg-green:#4A9A3C;
+  --gold:#C9A84C;--gold2:#E8C96A;--text:#1a1a2e;--light:#f4f6fb;
+  --border:#d0d9f0;--card:#fff;--accent:#e8f0fe;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--text);font-size:14px}
+/* NAV */
+nav{background:var(--navy);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:62px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo{height:38px;filter:brightness(0) invert(1)}
+.nav-title{color:#fff;font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;line-height:1.2}
+.nav-title span{display:block;font-size:.7rem;color:var(--gold2);font-family:'DM Sans',sans-serif;font-weight:400;letter-spacing:.05em}
+.nav-links{display:flex;gap:6px}
+.nav-links a{color:#cbd5e1;font-size:.78rem;text-decoration:none;padding:6px 10px;border-radius:5px;transition:.2s}
+.nav-links a:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-links a.active{background:var(--gold);color:var(--navy);font-weight:600}
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--navy2) 0%,var(--scg-blue) 100%);color:#fff;padding:28px 32px;display:flex;align-items:center;gap:20px}
+.hero-icon{width:56px;height:56px;background:rgba(201,168,76,.2);border:2px solid var(--gold);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;margin-bottom:4px}
+.hero p{font-size:.82rem;color:#93c5fd;max-width:680px}
+.ref-badge{background:rgba(201,168,76,.15);border:1px solid var(--gold);color:var(--gold2);font-size:.72rem;padding:3px 10px;border-radius:20px;margin-top:8px;display:inline-block;font-weight:600;letter-spacing:.04em}
+/* LAYOUT */
+.container{max-width:1280px;margin:0 auto;padding:24px 20px}
+/* TAB NAV */
+.tab-nav{display:flex;gap:0;background:var(--card);border:1px solid var(--border);border-radius:10px 10px 0 0;overflow:hidden;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:110px;padding:12px 8px;border:none;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:500;color:#64748b;border-bottom:3px solid transparent;transition:.2s;display:flex;flex-direction:column;align-items:center;gap:3px}
+.tab-btn .t-icon{font-size:1.1rem}
+.tab-btn:hover{background:var(--accent);color:var(--scg-blue)}
+.tab-btn.active{background:var(--accent);color:var(--scg-blue);border-bottom-color:var(--scg-blue);font-weight:600}
+.tab-btn.done{color:var(--scg-green);border-bottom-color:var(--scg-green)}
+.tab-btn.done::after{content:'✓';font-size:.7rem;color:var(--scg-green)}
+/* PANELS */
+.tab-panel{display:none;background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:28px}
+.tab-panel.active{display:block}
+/* SECTIONS */
+.section-head{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--navy2);border-bottom:2px solid var(--gold);padding-bottom:6px;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.section-head .sh-icon{font-size:1rem}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:20px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group label{font-size:.75rem;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.04em}
+.form-group input,.form-group select,.form-group textarea{border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--text);background:#fff;transition:.2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--scg-blue);box-shadow:0 0 0 3px rgba(59,94,166,.1)}
+.form-group textarea{resize:vertical;min-height:70px}
+.full-w{grid-column:1/-1}
+/* CMA TABLE */
+.cma-table-wrap{overflow-x:auto;margin-bottom:20px}
+table.cma{width:100%;border-collapse:collapse;font-size:.8rem}
+table.cma th{background:var(--navy2);color:#fff;padding:8px 10px;text-align:center;font-weight:600;white-space:nowrap}
+table.cma th.left{text-align:left}
+table.cma th.gold{background:var(--gold);color:var(--navy)}
+table.cma td{border:1px solid var(--border);padding:6px 8px;vertical-align:middle}
+table.cma td.row-label{background:#f8fafc;font-weight:600;color:var(--navy2);white-space:nowrap;padding-left:10px}
+table.cma td.sub-label{background:#f8fafc;color:#475569;padding-left:24px}
+table.cma td.section-title{background:var(--accent);font-weight:700;color:var(--scg-blue);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+table.cma td.total-row{background:#e8f5e9;font-weight:700;color:var(--scg-green)}
+table.cma td.grand-total{background:#071220;color:#fff;font-weight:700}
+table.cma td.calc{background:#fefce8;font-weight:600;color:#7c3aed;text-align:right}
+table.cma input.cell-input{border:none;background:transparent;width:100%;min-width:70px;text-align:right;font-family:'DM Sans',sans-serif;font-size:.8rem;color:var(--text)}
+table.cma input.cell-input:focus{outline:2px solid var(--scg-blue);border-radius:3px;background:#fff}
+table.cma .yr-header{font-size:.7rem}
+/* INFO CALLOUT */
+.info-box{background:var(--accent);border-left:4px solid var(--scg-blue);border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:16px;font-size:.8rem;color:#1e40af}
+.warn-box{background:#fff7ed;border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:16px;font-size:.8rem;color:#92400e}
+/* RATIO CARDS */
+.ratio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:16px 0}
+.ratio-card{background:linear-gradient(135deg,var(--navy2),var(--scg-blue));border-radius:10px;padding:14px;text-align:center;color:#fff}
+.ratio-card .r-label{font-size:.7rem;color:#93c5fd;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.ratio-card .r-value{font-size:1.4rem;font-weight:700;color:#fff;font-family:'Cormorant Garamond',serif}
+.ratio-card .r-bench{font-size:.65rem;color:var(--gold2);margin-top:2px}
+.ratio-card.good .r-value{color:#86efac}
+.ratio-card.warn .r-value{color:var(--gold2)}
+.ratio-card.bad .r-value{color:#fca5a5}
+/* BUTTONS */
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;justify-content:space-between}
+.btn{padding:10px 20px;border-radius:7px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;transition:.2s;display:flex;align-items:center;gap:6px}
+.btn-primary{background:var(--scg-blue);color:#fff}
+.btn-primary:hover{background:#2d4a8a}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-gold:hover{background:var(--gold2)}
+.btn-success{background:var(--scg-green);color:#fff}
+.btn-success:hover{background:#357a2c}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:#475569}
+.btn-outline:hover{border-color:var(--scg-blue);color:var(--scg-blue)}
+.btn-wa{background:#25D366;color:#fff}
+.btn-wa:hover{background:#1ebe5d}
+.btn-sm{padding:6px 14px;font-size:.78rem}
+/* PROGRESS BAR */
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-bottom:20px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--scg-blue),var(--gold));border-radius:2px;transition:.4s}
+/* ALERT */
+.alert{padding:10px 14px;border-radius:7px;margin-bottom:14px;font-size:.82rem;display:none}
+.alert.success{background:#d1fae5;border:1px solid #6ee7b7;color:#065f46;display:flex;gap:8px}
+.alert.error{background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;display:flex;gap:8px}
+/* WC SUMMARY */
+.wc-summary{background:linear-gradient(135deg,var(--navy2),#1e3a5f);border-radius:12px;padding:20px;color:#fff;margin-top:20px}
+.wc-summary h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:14px;color:var(--gold2)}
+.wc-rows{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.wc-row{background:rgba(255,255,255,.08);border-radius:8px;padding:10px 14px}
+.wc-row .wl{font-size:.7rem;color:#93c5fd;text-transform:uppercase;letter-spacing:.03em}
+.wc-row .wv{font-size:1.1rem;font-weight:700;color:#fff}
+/* PRINT */
+@media print{
+  nav,.tab-nav,.btn-row,.btn,.alert,.progress-bar,#printBtn,#waBtn,#saveBtn{display:none!important}
+  .tab-panel{display:block!important;border:none;padding:10px}
+  .print-header{display:block!important}
+  body{background:#fff;font-size:11px}
+  table.cma{page-break-inside:avoid}
+  .ratio-grid,.wc-summary{page-break-inside:avoid}
+}
+.print-header{display:none;text-align:center;padding:20px 0;border-bottom:3px double #333;margin-bottom:16px}
+.print-header img{height:50px;margin-bottom:8px}
+.print-header h2{font-size:1.1rem;font-weight:700}
+.print-header p{font-size:.8rem;color:#555}
+/* FUND FLOW */
+.ff-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.ff-grid{grid-template-columns:1fr}.tab-btn{min-width:80px;font-size:.68rem}.nav-links{display:none}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="../1 Logo Shiva Consultancy Group (Rakesh Jha) (1).jpg" alt="SCG" class="nav-logo">
+    <div class="nav-title">Shiva Consultancy Group<span>Financial Advisory Portal</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Hub</a>
+    <a href="loan-application.html">Loan App</a>
+    <a href="service-requisition.html">Service Req</a>
+    <a href="dpr-preparation.html">DPR</a>
+    <a href="bank-proposal.html">Bank Proposal</a>
+    <a href="cma-data.html" class="active">CMA Data</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-icon">📊</div>
+  <div>
+    <h1>CMA Data Preparation</h1>
+    <p>Credit Monitoring Arrangement (CMA) data as per RBI/IBA format — Operating Statement, Balance Sheet, Working Capital Assessment, Fund Flow & Key Ratios. Ready for direct bank submission.</p>
+    <div class="ref-badge" id="cmaRef">Generating Reference...</div>
+  </div>
+</div>
+
+<!-- PRINT HEADER (hidden on screen) -->
+<div class="print-header" id="printHead">
+  <img src="../1 Logo Shiva Consultancy Group (Rakesh Jha) (1).jpg" alt="SCG Logo">
+  <h2>CREDIT MONITORING ARRANGEMENT (CMA) DATA</h2>
+  <p>Prepared by: Shiva Consultancy Group | Contact: +91 99790 21275 | www.shivaconsultancygroup.com</p>
+  <p id="printRef"></p>
+</div>
+
+<div class="container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:14%"></div></div>
+
+  <div id="mainAlert" class="alert"></div>
+
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab(0)" id="tab0"><span class="t-icon">🏢</span>Company Info</button>
+    <button class="tab-btn" onclick="switchTab(1)" id="tab1"><span class="t-icon">📈</span>Operating Statement</button>
+    <button class="tab-btn" onclick="switchTab(2)" id="tab2"><span class="t-icon">⚖️</span>Balance Sheet</button>
+    <button class="tab-btn" onclick="switchTab(3)" id="tab3"><span class="t-icon">💰</span>Working Capital</button>
+    <button class="tab-btn" onclick="switchTab(4)" id="tab4"><span class="t-icon">🔄</span>Fund Flow</button>
+    <button class="tab-btn" onclick="switchTab(5)" id="tab5"><span class="t-icon">📐</span>Key Ratios</button>
+    <button class="tab-btn" onclick="switchTab(6)" id="tab6"><span class="t-icon">✅</span>Submit</button>
+  </div>
+
+  <!-- ===== TAB 0: COMPANY INFO ===== -->
+  <div class="tab-panel active" id="panel0">
+    <div class="section-head"><span class="sh-icon">🏢</span> Company & CMA Details</div>
+    <div class="info-box">Fill company details before entering financial data. All figures in Lakhs (₹) unless noted.</div>
+    <div class="form-grid">
+      <div class="form-group"><label>Company / Firm Name *</label><input type="text" id="co_name" placeholder="M/s ABC Industries Pvt Ltd"></div>
+      <div class="form-group"><label>Constitution</label>
+        <select id="co_const"><option>Private Limited</option><option>Public Limited</option><option>Proprietorship</option><option>Partnership</option><option>LLP</option><option>Trust / Society</option></select>
+      </div>
+      <div class="form-group"><label>PAN Number</label><input type="text" id="co_pan" maxlength="10" placeholder="AABCC1234D" style="text-transform:uppercase"></div>
+      <div class="form-group"><label>GSTIN</label><input type="text" id="co_gstin" maxlength="15" placeholder="27AABCC1234D1Z5" style="text-transform:uppercase"></div>
+      <div class="form-group"><label>Industry / Sector</label><input type="text" id="co_industry" placeholder="e.g. Manufacturing – Textiles"></div>
+      <div class="form-group"><label>Year of Establishment</label><input type="number" id="co_estd" min="1900" max="2025" placeholder="2018"></div>
+      <div class="form-group"><label>Banker Name</label><input type="text" id="co_bank" placeholder="State Bank of India, Ahmedabad"></div>
+      <div class="form-group"><label>Existing Limits (₹ Lakhs)</label><input type="number" id="co_existing_limits" placeholder="500.00"></div>
+      <div class="form-group"><label>Limits Applied For (₹ Lakhs)</label><input type="number" id="co_applied_limits" placeholder="750.00"></div>
+      <div class="form-group"><label>Base Year (Actual 1)</label><input type="number" id="yr1" value="2022" min="2010" max="2030" onchange="updateYearHeaders()"></div>
+      <div class="form-group"><label>Purpose of CMA</label>
+        <select id="co_purpose"><option>Fresh Working Capital</option><option>Enhancement of Limits</option><option>Term Loan</option><option>Project Finance</option><option>Renewal of Limits</option><option>Restructuring</option></select>
+      </div>
+      <div class="form-group full-w"><label>Address</label><textarea id="co_address" placeholder="Plot No. 12, GIDC, Vatva, Ahmedabad – 382445, Gujarat" rows="2"></textarea></div>
+    </div>
+    <div class="btn-row">
+      <div></div>
+      <button class="btn btn-primary" onclick="switchTab(1)">Next: Operating Statement →</button>
+    </div>
+  </div>
+
+  <!-- ===== TAB 1: OPERATING STATEMENT (Part A) ===== -->
+  <div class="tab-panel" id="panel1">
+    <div class="section-head"><span class="sh-icon">📈</span> Part A — Operating Statement (₹ in Lakhs)</div>
+    <div class="info-box">Enter 3 years of actuals and 2 projected years. Calculated rows are auto-filled.</div>
+
+    <div class="cma-table-wrap">
+    <table class="cma" id="osTable">
+      <thead>
+        <tr>
+          <th class="left" style="width:240px">Particulars</th>
+          <th class="gold yr-header" id="yr_h1">2022<br>(Actual)</th>
+          <th class="gold yr-header" id="yr_h2">2023<br>(Actual)</th>
+          <th class="gold yr-header" id="yr_h3">2024<br>(Actual)</th>
+          <th style="background:#1e3a5f" class="yr-header" id="yr_h4">2025<br>(Projected)</th>
+          <th style="background:#1e3a5f" class="yr-header" id="yr_h5">2026<br>(Projected)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="section-title" colspan="6">INCOME</td></tr>
+        <tr><td class="row-label">A. Net Sales / Turnover</td><td><input class="cell-input" id="os_sales_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_sales_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_sales_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_sales_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_sales_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Other Income</td><td><input class="cell-input" id="os_other_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_other_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_other_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_other_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_other_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="section-title" colspan="6">COST OF PRODUCTION</td></tr>
+        <tr><td class="sub-label">Raw Material Consumed</td><td><input class="cell-input" id="os_rm_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_rm_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_rm_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_rm_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_rm_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Power & Fuel</td><td><input class="cell-input" id="os_power_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_power_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_power_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_power_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_power_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Direct Labour / Wages</td><td><input class="cell-input" id="os_labour_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_labour_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_labour_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_labour_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_labour_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Repairs & Maintenance</td><td><input class="cell-input" id="os_repair_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_repair_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_repair_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_repair_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_repair_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Depreciation</td><td><input class="cell-input" id="os_dep_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_dep_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_dep_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_dep_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_dep_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="row-label total-row">B. Total Cost of Production</td><td class="calc" id="os_cop_1">0.00</td><td class="calc" id="os_cop_2">0.00</td><td class="calc" id="os_cop_3">0.00</td><td class="calc" id="os_cop_4">0.00</td><td class="calc" id="os_cop_5">0.00</td></tr>
+        <tr><td class="row-label total-row">C. Gross Profit (A - B)</td><td class="calc" id="os_gp_1">0.00</td><td class="calc" id="os_gp_2">0.00</td><td class="calc" id="os_gp_3">0.00</td><td class="calc" id="os_gp_4">0.00</td><td class="calc" id="os_gp_5">0.00</td></tr>
+        <tr><td class="section-title" colspan="6">OPERATING EXPENSES</td></tr>
+        <tr><td class="sub-label">Selling & Distribution</td><td><input class="cell-input" id="os_sell_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_sell_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_sell_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_sell_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_sell_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">General & Admin Expenses</td><td><input class="cell-input" id="os_admin_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_admin_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_admin_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_admin_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_admin_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="row-label total-row">D. PBDIT (C - Op.Exp + Dep)</td><td class="calc" id="os_pbdit_1">0.00</td><td class="calc" id="os_pbdit_2">0.00</td><td class="calc" id="os_pbdit_3">0.00</td><td class="calc" id="os_pbdit_4">0.00</td><td class="calc" id="os_pbdit_5">0.00</td></tr>
+        <tr><td class="sub-label">Interest on Term Loan</td><td><input class="cell-input" id="os_intTL_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_intTL_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_intTL_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_intTL_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_intTL_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Interest on Working Capital</td><td><input class="cell-input" id="os_intWC_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_intWC_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_intWC_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_intWC_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_intWC_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="row-label total-row">E. PBT (PBDIT - Dep - Interest)</td><td class="calc" id="os_pbt_1">0.00</td><td class="calc" id="os_pbt_2">0.00</td><td class="calc" id="os_pbt_3">0.00</td><td class="calc" id="os_pbt_4">0.00</td><td class="calc" id="os_pbt_5">0.00</td></tr>
+        <tr><td class="sub-label">Income Tax / Deferred Tax</td><td><input class="cell-input" id="os_tax_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_tax_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_tax_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_tax_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_tax_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="row-label grand-total">F. PAT (Profit After Tax)</td><td class="calc" id="os_pat_1" style="background:#1a1a2e;color:#86efac;font-weight:700">0.00</td><td class="calc" id="os_pat_2" style="background:#1a1a2e;color:#86efac;font-weight:700">0.00</td><td class="calc" id="os_pat_3" style="background:#1a1a2e;color:#86efac;font-weight:700">0.00</td><td class="calc" id="os_pat_4" style="background:#1a1a2e;color:#86efac;font-weight:700">0.00</td><td class="calc" id="os_pat_5" style="background:#1a1a2e;color:#86efac;font-weight:700">0.00</td></tr>
+        <tr><td class="sub-label">Dividend Paid</td><td><input class="cell-input" id="os_div_1" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_div_2" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_div_3" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_div_4" oninput="calcOS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="os_div_5" oninput="calcOS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="row-label total-row">G. Retained Profit (PAT - Div)</td><td class="calc" id="os_ret_1">0.00</td><td class="calc" id="os_ret_2">0.00</td><td class="calc" id="os_ret_3">0.00</td><td class="calc" id="os_ret_4">0.00</td><td class="calc" id="os_ret_5">0.00</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="switchTab(0)">← Company Info</button>
+      <button class="btn btn-primary" onclick="switchTab(2)">Next: Balance Sheet →</button>
+    </div>
+  </div>
+
+  <!-- ===== TAB 2: BALANCE SHEET (Part B) ===== -->
+  <div class="tab-panel" id="panel2">
+    <div class="section-head"><span class="sh-icon">⚖️</span> Part B — Balance Sheet (₹ in Lakhs)</div>
+    <div class="info-box">Enter closing balance for each year. Calculated totals are auto-filled.</div>
+
+    <div class="cma-table-wrap">
+    <table class="cma" id="bsTable">
+      <thead>
+        <tr>
+          <th class="left" style="width:240px">Particulars</th>
+          <th class="gold yr-header" id="bs_yr_h1">2022<br>(Actual)</th>
+          <th class="gold yr-header" id="bs_yr_h2">2023<br>(Actual)</th>
+          <th class="gold yr-header" id="bs_yr_h3">2024<br>(Actual)</th>
+          <th style="background:#1e3a5f" class="yr-header" id="bs_yr_h4">2025<br>(Projected)</th>
+          <th style="background:#1e3a5f" class="yr-header" id="bs_yr_h5">2026<br>(Projected)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="section-title" colspan="6">LIABILITIES</td></tr>
+        <tr><td class="row-label">Share Capital / Capital</td><td><input class="cell-input" id="bs_cap_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cap_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cap_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cap_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cap_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Reserves & Surplus</td><td><input class="cell-input" id="bs_res_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_res_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_res_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_res_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_res_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="row-label total-row">I. Total Net Worth (TNW)</td><td class="calc" id="bs_tnw_1">0.00</td><td class="calc" id="bs_tnw_2">0.00</td><td class="calc" id="bs_tnw_3">0.00</td><td class="calc" id="bs_tnw_4">0.00</td><td class="calc" id="bs_tnw_5">0.00</td></tr>
+        <tr><td class="sub-label">Term Loans (Banks)</td><td><input class="cell-input" id="bs_tl_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_tl_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_tl_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_tl_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_tl_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Unsecured Loans / Directors Loans</td><td><input class="cell-input" id="bs_usl_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_usl_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_usl_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_usl_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_usl_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="row-label total-row">II. Total Long-Term Liabilities</td><td class="calc" id="bs_ltl_1">0.00</td><td class="calc" id="bs_ltl_2">0.00</td><td class="calc" id="bs_ltl_3">0.00</td><td class="calc" id="bs_ltl_4">0.00</td><td class="calc" id="bs_ltl_5">0.00</td></tr>
+        <tr><td class="sub-label">Bank Borrowings (CC/OD/WC)</td><td><input class="cell-input" id="bs_cc_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cc_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cc_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cc_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cc_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Creditors for Goods</td><td><input class="cell-input" id="bs_cred_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cred_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cred_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cred_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cred_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Other Current Liabilities</td><td><input class="cell-input" id="bs_ocl_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_ocl_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_ocl_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_ocl_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_ocl_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="row-label total-row">III. Total Current Liabilities (TCL)</td><td class="calc" id="bs_tcl_1">0.00</td><td class="calc" id="bs_tcl_2">0.00</td><td class="calc" id="bs_tcl_3">0.00</td><td class="calc" id="bs_tcl_4">0.00</td><td class="calc" id="bs_tcl_5">0.00</td></tr>
+        <tr><td class="row-label grand-total">TOTAL LIABILITIES (I+II+III)</td><td class="calc" id="bs_tl_tot_1" style="background:#071220;color:#fff;font-weight:700">0.00</td><td class="calc" id="bs_tl_tot_2" style="background:#071220;color:#fff;font-weight:700">0.00</td><td class="calc" id="bs_tl_tot_3" style="background:#071220;color:#fff;font-weight:700">0.00</td><td class="calc" id="bs_tl_tot_4" style="background:#071220;color:#fff;font-weight:700">0.00</td><td class="calc" id="bs_tl_tot_5" style="background:#071220;color:#fff;font-weight:700">0.00</td></tr>
+
+        <tr><td class="section-title" colspan="6">ASSETS</td></tr>
+        <tr><td class="sub-label">Gross Fixed Assets</td><td><input class="cell-input" id="bs_gfa_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_gfa_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_gfa_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_gfa_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_gfa_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Less: Accumulated Depreciation</td><td><input class="cell-input" id="bs_accDep_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_accDep_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_accDep_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_accDep_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_accDep_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="row-label total-row">IV. Net Fixed Assets (NFA)</td><td class="calc" id="bs_nfa_1">0.00</td><td class="calc" id="bs_nfa_2">0.00</td><td class="calc" id="bs_nfa_3">0.00</td><td class="calc" id="bs_nfa_4">0.00</td><td class="calc" id="bs_nfa_5">0.00</td></tr>
+        <tr><td class="sub-label">Capital WIP / Investments</td><td><input class="cell-input" id="bs_cwip_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cwip_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cwip_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cwip_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cwip_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Stock — Raw Materials</td><td><input class="cell-input" id="bs_rm_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_rm_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_rm_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_rm_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_rm_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Stock — WIP</td><td><input class="cell-input" id="bs_wip_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_wip_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_wip_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_wip_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_wip_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Stock — Finished Goods</td><td><input class="cell-input" id="bs_fg_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_fg_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_fg_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_fg_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_fg_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Sundry Debtors</td><td><input class="cell-input" id="bs_deb_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_deb_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_deb_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_deb_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_deb_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Cash & Bank Balances</td><td><input class="cell-input" id="bs_cash_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cash_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cash_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cash_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_cash_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="sub-label">Loans & Advances / Other CA</td><td><input class="cell-input" id="bs_oca_1" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_oca_2" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_oca_3" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_oca_4" oninput="calcBS()" type="number" placeholder="0.00"></td><td><input class="cell-input" id="bs_oca_5" oninput="calcBS()" type="number" placeholder="0.00"></td></tr>
+        <tr><td class="row-label total-row">V. Total Current Assets (TCA)</td><td class="calc" id="bs_tca_1">0.00</td><td class="calc" id="bs_tca_2">0.00</td><td class="calc" id="bs_tca_3">0.00</td><td class="calc" id="bs_tca_4">0.00</td><td class="calc" id="bs_tca_5">0.00</td></tr>
+        <tr><td class="row-label grand-total">TOTAL ASSETS (IV+V+CWIP)</td><td class="calc" id="bs_ta_tot_1" style="background:#071220;color:#fff;font-weight:700">0.00</td><td class="calc" id="bs_ta_tot_2" style="background:#071220;color:#fff;font-weight:700">0.00</td><td class="calc" id="bs_ta_tot_3" style="background:#071220;color:#fff;font-weight:700">0.00</td><td class="calc" id="bs_ta_tot_4" style="background:#071220;color:#fff;font-weight:700">0.00</td><td class="calc" id="bs_ta_tot_5" style="background:#071220;color:#fff;font-weight:700">0.00</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="switchTab(1)">← Operating Statement</button>
+      <button class="btn btn-primary" onclick="switchTab(3)">Next: Working Capital →</button>
+    </div>
+  </div>
+
+  <!-- ===== TAB 3: WORKING CAPITAL (Part C) ===== -->
+  <div class="tab-panel" id="panel3">
+    <div class="section-head"><span class="sh-icon">💰</span> Part C — Working Capital Assessment (Year <span id="wc_yr_label">Latest</span>)</div>
+    <div class="info-box">Tandon Committee Method II — Bank finance = 75% of WC Gap. Enter holding period in days; amounts are auto-calculated from Operating Statement data.</div>
+
+    <div class="form-grid">
+      <div class="form-group"><label>Assessment Year</label>
+        <select id="wc_yr_sel" onchange="calcWC()"><option value="4">Projected Year 1</option><option value="5">Projected Year 2</option><option value="3">Actual Year 3</option></select>
+      </div>
+      <div class="form-group"><label>Working Days in Year</label><input type="number" id="wc_days" value="300" oninput="calcWC()"></div>
+      <div class="form-group"><label>Selling Price Basis</label><select id="wc_basis"><option>Net Sales</option><option>Cost of Production</option></select></div>
+    </div>
+
+    <div class="cma-table-wrap">
+    <table class="cma">
+      <thead>
+        <tr><th class="left" style="width:220px">Item</th><th>Holding Period<br>(Days)</th><th>Amount<br>(₹ Lakhs)</th><th>Basis of Calculation</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="section-title" colspan="4">CURRENT ASSETS (CA)</td></tr>
+        <tr><td class="row-label">Raw Material Stock</td><td><input class="cell-input" id="wc_rmDays" type="number" value="30" oninput="calcWC()" style="text-align:center"></td><td class="calc" id="wc_rmAmt">0.00</td><td style="font-size:.74rem;color:#64748b">RM Consumed / Working Days × Holding Days</td></tr>
+        <tr><td class="row-label">WIP Stock</td><td><input class="cell-input" id="wc_wipDays" type="number" value="15" oninput="calcWC()" style="text-align:center"></td><td class="calc" id="wc_wipAmt">0.00</td><td style="font-size:.74rem;color:#64748b">Cost of Production / Working Days × Holding Days</td></tr>
+        <tr><td class="row-label">Finished Goods Stock</td><td><input class="cell-input" id="wc_fgDays" type="number" value="21" oninput="calcWC()" style="text-align:center"></td><td class="calc" id="wc_fgAmt">0.00</td><td style="font-size:.74rem;color:#64748b">Cost of Production / Working Days × Holding Days</td></tr>
+        <tr><td class="row-label">Sundry Debtors</td><td><input class="cell-input" id="wc_debDays" type="number" value="45" oninput="calcWC()" style="text-align:center"></td><td class="calc" id="wc_debAmt">0.00</td><td style="font-size:.74rem;color:#64748b">Net Sales / Working Days × Holding Days</td></tr>
+        <tr><td class="row-label">Advance to Suppliers</td><td><input class="cell-input" id="wc_advDays" type="number" value="0" oninput="calcWC()" style="text-align:center"></td><td class="calc" id="wc_advAmt">0.00</td><td style="font-size:.74rem;color:#64748b">RM / Working Days × Days</td></tr>
+        <tr><td class="row-label">Other Current Assets</td><td>–</td><td><input class="cell-input" id="wc_oca" type="number" value="0" oninput="calcWC()" style="text-align:right"></td><td style="font-size:.74rem;color:#64748b">As per balance sheet</td></tr>
+        <tr><td class="row-label total-row" colspan="2">A. Total Current Assets (TCA)</td><td class="calc" id="wc_tca">0.00</td><td></td></tr>
+
+        <tr><td class="section-title" colspan="4">CURRENT LIABILITIES (CL) — LESS BANK BORROWINGS</td></tr>
+        <tr><td class="row-label">Creditors for RM</td><td><input class="cell-input" id="wc_credDays" type="number" value="30" oninput="calcWC()" style="text-align:center"></td><td class="calc" id="wc_credAmt">0.00</td><td style="font-size:.74rem;color:#64748b">RM Consumed / Working Days × Credit Days</td></tr>
+        <tr><td class="row-label">Advance from Customers</td><td>–</td><td><input class="cell-input" id="wc_cust_adv" type="number" value="0" oninput="calcWC()" style="text-align:right"></td><td style="font-size:.74rem;color:#64748b">As applicable</td></tr>
+        <tr><td class="row-label">Other Current Liabilities</td><td>–</td><td><input class="cell-input" id="wc_ocl" type="number" value="0" oninput="calcWC()" style="text-align:right"></td><td style="font-size:.74rem;color:#64748b">Statutory dues, expenses payable etc.</td></tr>
+        <tr><td class="row-label total-row" colspan="2">B. Total Current Liabilities (TCL)</td><td class="calc" id="wc_tcl">0.00</td><td></td></tr>
+
+        <tr><td class="row-label grand-total" colspan="2" style="background:#071220">C. Working Capital Gap (A – B)</td><td class="calc" id="wc_gap" style="background:#071220;color:#fff;font-weight:700">0.00</td><td></td></tr>
+        <tr><td class="row-label" colspan="2">D. Margin from Borrower (25% of WCA)</td><td class="calc" id="wc_margin">0.00</td><td style="font-size:.74rem;color:#64748b">Minimum 25% of WC Gap as per Tandon Norms</td></tr>
+        <tr><td class="row-label" colspan="2">E. Max. Bank Finance (75% of WCA)</td><td class="calc" id="wc_bankFin">0.00</td><td style="font-size:.74rem;color:#64748b">Method II: 75% of WC Gap</td></tr>
+        <tr><td class="row-label" colspan="2">F. Actual Limits Applied For</td><td><input class="cell-input" id="wc_applied" type="number" value="0" oninput="calcWC()" style="text-align:right"></td><td style="font-size:.74rem;color:#64748b">As per credit sanction request</td></tr>
+        <tr><td class="row-label total-row" colspan="2">G. Recommended WC Limits (Lower of E & F)</td><td class="calc" id="wc_recommended" style="font-weight:700">0.00</td><td></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="wc-summary">
+      <h3>Working Capital Summary</h3>
+      <div class="wc-rows">
+        <div class="wc-row"><div class="wl">Total Current Assets</div><div class="wv" id="wc_sumTCA">₹ 0.00 L</div></div>
+        <div class="wc-row"><div class="wl">Total Current Liabilities</div><div class="wv" id="wc_sumTCL">₹ 0.00 L</div></div>
+        <div class="wc-row"><div class="wl">WC Gap</div><div class="wv" id="wc_sumGap">₹ 0.00 L</div></div>
+        <div class="wc-row"><div class="wl">Borrower Margin</div><div class="wv" id="wc_sumMargin">₹ 0.00 L</div></div>
+        <div class="wc-row"><div class="wl">Max Bank Finance</div><div class="wv" id="wc_sumBank">₹ 0.00 L</div></div>
+        <div class="wc-row"><div class="wl">Recommended Limits</div><div class="wv" id="wc_sumRec" style="color:#fbbf24">₹ 0.00 L</div></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="switchTab(2)">← Balance Sheet</button>
+      <button class="btn btn-primary" onclick="switchTab(4)">Next: Fund Flow →</button>
+    </div>
+  </div>
+
+  <!-- ===== TAB 4: FUND FLOW (Part D) ===== -->
+  <div class="tab-panel" id="panel4">
+    <div class="section-head"><span class="sh-icon">🔄</span> Part D — Fund Flow Statement (₹ in Lakhs)</div>
+    <div class="warn-box">Fund flow shows changes between two years. Select the year pair and verify sources equal uses.</div>
+
+    <div class="form-grid">
+      <div class="form-group"><label>From Year</label><select id="ff_yr1"><option value="1">Year 1 (Actual)</option><option value="2">Year 2 (Actual)</option><option value="3" selected>Year 3 (Actual)</option><option value="4">Year 4 (Projected)</option></select></div>
+      <div class="form-group"><label>To Year</label><select id="ff_yr2"><option value="2">Year 2 (Actual)</option><option value="3">Year 3 (Actual)</option><option value="4" selected>Year 4 (Projected)</option><option value="5">Year 5 (Projected)</option></select></div>
+      <div class="form-group"><button class="btn btn-primary btn-sm" onclick="calcFF()" style="margin-top:20px">Calculate Fund Flow</button></div>
+    </div>
+
+    <div class="ff-grid">
+      <div>
+        <div class="section-head" style="font-size:1rem">Sources of Funds</div>
+        <table class="cma">
+          <thead><tr><th class="left">Source</th><th>Amount (₹ L)</th></tr></thead>
+          <tbody>
+            <tr><td class="row-label">PAT (Net Profit)</td><td class="calc" id="ff_src_pat">0.00</td></tr>
+            <tr><td class="row-label">Add: Depreciation</td><td class="calc" id="ff_src_dep">0.00</td></tr>
+            <tr><td class="sub-label">Increase in Capital / Equity</td><td><input class="cell-input" id="ff_src_cap" type="number" value="0" oninput="calcFF()" style="text-align:right"></td></tr>
+            <tr><td class="sub-label">Increase in Term Loans</td><td class="calc" id="ff_src_tl">0.00</td></tr>
+            <tr><td class="sub-label">Increase in Unsecured Loans</td><td class="calc" id="ff_src_usl">0.00</td></tr>
+            <tr><td class="sub-label">Increase in Current Liabilities</td><td class="calc" id="ff_src_cl">0.00</td></tr>
+            <tr><td class="sub-label">Decrease in Current Assets</td><td class="calc" id="ff_src_ca_dec">0.00</td></tr>
+            <tr><td class="row-label grand-total">Total Sources (A)</td><td class="calc" id="ff_total_src" style="background:#071220;color:#fff;font-weight:700">0.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <div class="section-head" style="font-size:1rem">Uses of Funds</div>
+        <table class="cma">
+          <thead><tr><th class="left">Use</th><th>Amount (₹ L)</th></tr></thead>
+          <tbody>
+            <tr><td class="sub-label">Increase in Fixed Assets (Capital Exp)</td><td class="calc" id="ff_use_fa">0.00</td></tr>
+            <tr><td class="sub-label">Repayment of Term Loan</td><td class="calc" id="ff_use_tl_rep">0.00</td></tr>
+            <tr><td class="sub-label">Decrease in Unsecured Loans</td><td class="calc" id="ff_use_usl">0.00</td></tr>
+            <tr><td class="sub-label">Increase in Current Assets</td><td class="calc" id="ff_use_ca_inc">0.00</td></tr>
+            <tr><td class="sub-label">Decrease in Current Liabilities</td><td class="calc" id="ff_use_cl_dec">0.00</td></tr>
+            <tr><td class="sub-label">Dividend Paid</td><td class="calc" id="ff_use_div">0.00</td></tr>
+            <tr><td class="row-label grand-total">Total Uses (B)</td><td class="calc" id="ff_total_use" style="background:#071220;color:#fff;font-weight:700">0.00</td></tr>
+            <tr><td class="row-label total-row">Net Surplus / Deficit (A – B)</td><td class="calc" id="ff_net">0.00</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="switchTab(3)">← Working Capital</button>
+      <button class="btn btn-primary" onclick="switchTab(5)">Next: Key Ratios →</button>
+    </div>
+  </div>
+
+  <!-- ===== TAB 5: KEY RATIOS (Part E) ===== -->
+  <div class="tab-panel" id="panel5">
+    <div class="section-head"><span class="sh-icon">📐</span> Part E — Key Financial Ratios</div>
+    <div class="info-box">Ratios are auto-calculated from Operating Statement and Balance Sheet data. Benchmark values are per RBI/IBA guidelines.</div>
+
+    <div class="ratio-grid" id="ratioGrid">
+      <div class="ratio-card"><div class="r-label">Current Ratio</div><div class="r-value" id="r_cr">—</div><div class="r-bench">Benchmark: ≥ 1.33</div></div>
+      <div class="ratio-card"><div class="r-label">TOL / TNW</div><div class="r-value" id="r_tol">—</div><div class="r-bench">Benchmark: ≤ 4.00</div></div>
+      <div class="ratio-card"><div class="r-label">Debt / Equity</div><div class="r-value" id="r_de">—</div><div class="r-bench">Benchmark: ≤ 3.00</div></div>
+      <div class="ratio-card"><div class="r-label">DSCR</div><div class="r-value" id="r_dscr">—</div><div class="r-bench">Benchmark: ≥ 1.50</div></div>
+      <div class="ratio-card"><div class="r-label">Net Profit Margin</div><div class="r-value" id="r_npm">—</div><div class="r-bench">Higher is better</div></div>
+      <div class="ratio-card"><div class="r-label">RONW</div><div class="r-value" id="r_ronw">—</div><div class="r-bench">Return on Net Worth</div></div>
+      <div class="ratio-card"><div class="r-label">Interest Coverage</div><div class="r-value" id="r_icr">—</div><div class="r-bench">Benchmark: ≥ 2.00</div></div>
+      <div class="ratio-card"><div class="r-label">Fixed Asset Coverage</div><div class="r-value" id="r_facr">—</div><div class="r-bench">Security Coverage</div></div>
+    </div>
+
+    <div class="section-head" style="margin-top:24px;font-size:1rem">Detailed Ratio Table (All 5 Years)</div>
+    <div class="cma-table-wrap">
+    <table class="cma" id="ratioTable">
+      <thead>
+        <tr>
+          <th class="left">Ratio</th>
+          <th class="gold" id="r_yr_h1">2022</th>
+          <th class="gold" id="r_yr_h2">2023</th>
+          <th class="gold" id="r_yr_h3">2024</th>
+          <th style="background:#1e3a5f" id="r_yr_h4">2025P</th>
+          <th style="background:#1e3a5f" id="r_yr_h5">2026P</th>
+          <th style="background:#4A9A3C">Benchmark</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="row-label">Net Sales (₹ L)</td><td class="calc" id="rt_sales_1">—</td><td class="calc" id="rt_sales_2">—</td><td class="calc" id="rt_sales_3">—</td><td class="calc" id="rt_sales_4">—</td><td class="calc" id="rt_sales_5">—</td><td style="background:#e8f5e9;color:#065f46">Reference</td></tr>
+        <tr><td class="row-label">PBDIT (₹ L)</td><td class="calc" id="rt_pbdit_1">—</td><td class="calc" id="rt_pbdit_2">—</td><td class="calc" id="rt_pbdit_3">—</td><td class="calc" id="rt_pbdit_4">—</td><td class="calc" id="rt_pbdit_5">—</td><td style="background:#e8f5e9;color:#065f46">Reference</td></tr>
+        <tr><td class="row-label">PAT (₹ L)</td><td class="calc" id="rt_pat_1">—</td><td class="calc" id="rt_pat_2">—</td><td class="calc" id="rt_pat_3">—</td><td class="calc" id="rt_pat_4">—</td><td class="calc" id="rt_pat_5">—</td><td style="background:#e8f5e9;color:#065f46">Reference</td></tr>
+        <tr><td class="row-label">TNW (₹ L)</td><td class="calc" id="rt_tnw_1">—</td><td class="calc" id="rt_tnw_2">—</td><td class="calc" id="rt_tnw_3">—</td><td class="calc" id="rt_tnw_4">—</td><td class="calc" id="rt_tnw_5">—</td><td style="background:#e8f5e9;color:#065f46">Reference</td></tr>
+        <tr><td class="row-label">Current Ratio (TCA/TCL)</td><td class="calc" id="rt_cr_1">—</td><td class="calc" id="rt_cr_2">—</td><td class="calc" id="rt_cr_3">—</td><td class="calc" id="rt_cr_4">—</td><td class="calc" id="rt_cr_5">—</td><td style="background:#e8f5e9;color:#065f46">≥ 1.33</td></tr>
+        <tr><td class="row-label">TOL/TNW</td><td class="calc" id="rt_tol_1">—</td><td class="calc" id="rt_tol_2">—</td><td class="calc" id="rt_tol_3">—</td><td class="calc" id="rt_tol_4">—</td><td class="calc" id="rt_tol_5">—</td><td style="background:#e8f5e9;color:#065f46">≤ 4.00</td></tr>
+        <tr><td class="row-label">D/E Ratio (TL/TNW)</td><td class="calc" id="rt_de_1">—</td><td class="calc" id="rt_de_2">—</td><td class="calc" id="rt_de_3">—</td><td class="calc" id="rt_de_4">—</td><td class="calc" id="rt_de_5">—</td><td style="background:#e8f5e9;color:#065f46">≤ 3.00</td></tr>
+        <tr><td class="row-label">Net Profit Margin (%)</td><td class="calc" id="rt_npm_1">—</td><td class="calc" id="rt_npm_2">—</td><td class="calc" id="rt_npm_3">—</td><td class="calc" id="rt_npm_4">—</td><td class="calc" id="rt_npm_5">—</td><td style="background:#e8f5e9;color:#065f46">Industry specific</td></tr>
+        <tr><td class="row-label">RONW (%)</td><td class="calc" id="rt_ronw_1">—</td><td class="calc" id="rt_ronw_2">—</td><td class="calc" id="rt_ronw_3">—</td><td class="calc" id="rt_ronw_4">—</td><td class="calc" id="rt_ronw_5">—</td><td style="background:#e8f5e9;color:#065f46">≥ 10%</td></tr>
+        <tr><td class="row-label">DSCR</td><td class="calc" id="rt_dscr_1">—</td><td class="calc" id="rt_dscr_2">—</td><td class="calc" id="rt_dscr_3">—</td><td class="calc" id="rt_dscr_4">—</td><td class="calc" id="rt_dscr_5">—</td><td style="background:#e8f5e9;color:#065f46">≥ 1.50</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="switchTab(4)">← Fund Flow</button>
+      <button class="btn btn-primary" onclick="switchTab(6)">Next: Submit →</button>
+    </div>
+  </div>
+
+  <!-- ===== TAB 6: SUBMIT ===== -->
+  <div class="tab-panel" id="panel6">
+    <div class="section-head"><span class="sh-icon">✅</span> Review & Submit CMA Data</div>
+    <div class="info-box">Review all entries, then save to database and generate output for bank submission.</div>
+
+    <div class="form-grid">
+      <div class="form-group"><label>Prepared By (CA / Consultant)</label><input type="text" id="sub_prepBy" value="Shiva Consultancy Group, Ahmedabad"></div>
+      <div class="form-group"><label>Preparation Date</label><input type="date" id="sub_date"></div>
+      <div class="form-group"><label>Audited / Management Certified</label><select id="sub_cert"><option>Audited (CA Certified)</option><option>Provisional / Management Accounts</option><option>Projected (Management Estimates)</option><option>Mixed — Audited + Projected</option></select></div>
+      <div class="form-group"><label>CA Firm / Signatory</label><input type="text" id="sub_ca" placeholder="M/s XYZ & Associates, Chartered Accountants"></div>
+      <div class="form-group full-w"><label>Remarks / Notes for Banker</label><textarea id="sub_remarks" rows="3" placeholder="Additional notes, qualifications, or explanations for the banker..."></textarea></div>
+    </div>
+
+    <div style="background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:20px;margin:16px 0">
+      <div style="font-weight:700;color:var(--navy2);margin-bottom:12px;font-family:'Cormorant Garamond',serif;font-size:1.05rem">CMA Completeness Check</div>
+      <div id="completenessCheck" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;font-size:.8rem"></div>
+    </div>
+
+    <div class="btn-row">
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-outline" id="saveBtn" onclick="saveCMAData()">💾 Save to Database</button>
+        <button class="btn btn-outline btn-sm" onclick="exportJSON()">📁 Export JSON</button>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-gold" onclick="window.print()">🖨️ Print / PDF</button>
+        <button class="btn btn-wa" id="waBtn" onclick="sendWhatsApp()">📲 Send via WhatsApp</button>
+        <button class="btn btn-success" onclick="submitCMA()">✅ Submit to SCG</button>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:8px">
+      <button class="btn btn-outline" onclick="switchTab(5)">← Key Ratios</button>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ============================================================
+// REFERENCE & INIT
+// ============================================================
+let cmaRef = '';
+function generateRef(){
+  const d=new Date();const p=String(d.getFullYear())+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+  cmaRef='SCG-CMA-'+p+'-'+Math.floor(1000+Math.random()*9000);
+  document.getElementById('cmaRef').textContent=cmaRef;
+  document.getElementById('printRef').textContent='Reference: '+cmaRef;
+}
+generateRef();
+document.getElementById('sub_date').value=new Date().toISOString().split('T')[0];
+
+// ============================================================
+// TAB NAVIGATION
+// ============================================================
+function switchTab(i){
+  document.querySelectorAll('.tab-panel').forEach((p,idx)=>{p.classList.toggle('active',idx===i)});
+  document.querySelectorAll('.tab-btn').forEach((b,idx)=>{
+    b.classList.remove('active');
+    if(idx<i) b.classList.add('done'); else b.classList.remove('done');
+    if(idx===i) b.classList.add('active');
+  });
+  document.getElementById('progressFill').style.width=((i+1)/7*100)+'%';
+  if(i===5) calcRatios();
+  if(i===6) buildCompletenessCheck();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ============================================================
+// YEAR HEADERS
+// ============================================================
+function updateYearHeaders(){
+  const base=parseInt(document.getElementById('yr1').value)||2022;
+  for(let i=1;i<=5;i++){
+    const yr=base+i-1;
+    const isProj=i>3;
+    const label=yr+(isProj?'<br>(Projected)':'<br>(Actual)');
+    ['yr_h','bs_yr_h','r_yr_h'].forEach(p=>{
+      const el=document.getElementById(p+i);if(el) el.innerHTML=label;
+    });
+    const rEl=document.getElementById('r_yr_h'+i);if(rEl) rEl.textContent=yr+(isProj?'P':'');
+  }
+}
+updateYearHeaders();
+
+// ============================================================
+// HELPER: get numeric value safely
+// ============================================================
+const n=(id)=>{const el=document.getElementById(id);return el?parseFloat(el.value)||0:0;};
+const fmt=(v)=>v.toFixed(2);
+const setCalc=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=fmt(v);};
+
+// ============================================================
+// OPERATING STATEMENT CALCULATIONS
+// ============================================================
+function calcOS(){
+  for(let i=1;i<=5;i++){
+    const sales=n('os_sales_'+i)+n('os_other_'+i);
+    const cop=n('os_rm_'+i)+n('os_power_'+i)+n('os_labour_'+i)+n('os_repair_'+i)+n('os_dep_'+i);
+    const gp=sales-cop;
+    const pbdit=gp-n('os_sell_'+i)-n('os_admin_'+i)+n('os_dep_'+i); // PBDIT = GP + Dep - other opex
+    const interest=n('os_intTL_'+i)+n('os_intWC_'+i);
+    const pbt=pbdit-n('os_dep_'+i)-interest;
+    const pat=pbt-n('os_tax_'+i);
+    const ret=pat-n('os_div_'+i);
+    setCalc('os_cop_'+i,cop);
+    setCalc('os_gp_'+i,gp);
+    setCalc('os_pbdit_'+i,pbdit);
+    setCalc('os_pbt_'+i,pbt);
+    setCalc('os_pat_'+i,pat);
+    setCalc('os_ret_'+i,ret);
+  }
+}
+
+// ============================================================
+// BALANCE SHEET CALCULATIONS
+// ============================================================
+function calcBS(){
+  for(let i=1;i<=5;i++){
+    const tnw=n('bs_cap_'+i)+n('bs_res_'+i);
+    const ltl=n('bs_tl_'+i)+n('bs_usl_'+i);
+    const tcl=n('bs_cc_'+i)+n('bs_cred_'+i)+n('bs_ocl_'+i);
+    const totalLiab=tnw+ltl+tcl;
+    const nfa=n('bs_gfa_'+i)-n('bs_accDep_'+i);
+    const tca=n('bs_rm_'+i)+n('bs_wip_'+i)+n('bs_fg_'+i)+n('bs_deb_'+i)+n('bs_cash_'+i)+n('bs_oca_'+i);
+    const totalAssets=nfa+n('bs_cwip_'+i)+tca;
+    setCalc('bs_tnw_'+i,tnw);
+    setCalc('bs_ltl_'+i,ltl);
+    setCalc('bs_tcl_'+i,tcl);
+    setCalc('bs_tl_tot_'+i,totalLiab);
+    setCalc('bs_nfa_'+i,nfa);
+    setCalc('bs_tca_'+i,tca);
+    setCalc('bs_ta_tot_'+i,totalAssets);
+  }
+}
+
+// ============================================================
+// WORKING CAPITAL CALCULATIONS
+// ============================================================
+function calcWC(){
+  const yrIdx=document.getElementById('wc_yr_sel').value;
+  const days=n('wc_days')||300;
+  const sales=n('os_sales_'+yrIdx);
+  const cop_rm=n('os_rm_'+yrIdx);
+  const cop_total=n('os_rm_'+yrIdx)+n('os_power_'+yrIdx)+n('os_labour_'+yrIdx)+n('os_repair_'+yrIdx)+n('os_dep_'+yrIdx);
+
+  const rmAmt=(cop_rm/days)*n('wc_rmDays');
+  const wipAmt=(cop_total/days)*n('wc_wipDays');
+  const fgAmt=(cop_total/days)*n('wc_fgDays');
+  const debAmt=(sales/days)*n('wc_debDays');
+  const advAmt=(cop_rm/days)*n('wc_advDays');
+  const oca=n('wc_oca');
+  const tca=rmAmt+wipAmt+fgAmt+debAmt+advAmt+oca;
+
+  const credAmt=(cop_rm/days)*n('wc_credDays');
+  const custAdv=n('wc_cust_adv');
+  const ocl=n('wc_ocl');
+  const tcl=credAmt+custAdv+ocl;
+
+  const gap=tca-tcl;
+  const margin=gap*0.25;
+  const bankFin=gap*0.75;
+  const applied=n('wc_applied');
+  const recommended=Math.min(bankFin,applied>0?applied:bankFin);
+
+  setCalc('wc_rmAmt',rmAmt);setCalc('wc_wipAmt',wipAmt);setCalc('wc_fgAmt',fgAmt);
+  setCalc('wc_debAmt',debAmt);setCalc('wc_advAmt',advAmt);setCalc('wc_tca',tca);
+  setCalc('wc_credAmt',credAmt);setCalc('wc_tcl',tcl);
+  setCalc('wc_gap',gap);setCalc('wc_margin',margin);setCalc('wc_bankFin',bankFin);
+  setCalc('wc_recommended',recommended);
+
+  ['TCA','TCL','Gap','Margin','Bank','Rec'].forEach(k=>{
+    const vals={TCA:tca,TCL:tcl,Gap:gap,Margin:margin,Bank:bankFin,Rec:recommended};
+    const el=document.getElementById('wc_sum'+k);
+    if(el) el.textContent='₹ '+fmt(vals[k])+' L';
+  });
+}
+
+// ============================================================
+// FUND FLOW CALCULATIONS
+// ============================================================
+function calcFF(){
+  const y1=document.getElementById('ff_yr1').value;
+  const y2=document.getElementById('ff_yr2').value;
+
+  // PAT and Dep from OS
+  const pat2=parseFloat(document.getElementById('os_pat_'+y2)?.textContent)||0;
+  const dep2=n('os_dep_'+y2);
+  const div2=n('os_div_'+y2);
+
+  // BS changes
+  const tl1=n('bs_tl_'+y1);const tl2=n('bs_tl_'+y2);
+  const usl1=n('bs_usl_'+y1);const usl2=n('bs_usl_'+y2);
+  const tcl1=parseFloat(document.getElementById('bs_tcl_'+y1)?.textContent)||0;
+  const tcl2=parseFloat(document.getElementById('bs_tcl_'+y2)?.textContent)||0;
+  const tca1=parseFloat(document.getElementById('bs_tca_'+y1)?.textContent)||0;
+  const tca2=parseFloat(document.getElementById('bs_tca_'+y2)?.textContent)||0;
+  const nfa1=parseFloat(document.getElementById('bs_nfa_'+y1)?.textContent)||0;
+  const nfa2=parseFloat(document.getElementById('bs_nfa_'+y2)?.textContent)||0;
+  const cap1=n('bs_cap_'+y1);const cap2=n('bs_cap_'+y2);
+
+  const srcCap=Math.max(0,cap2-cap1)+n('ff_src_cap');
+  const srcTL=Math.max(0,tl2-tl1);
+  const srcUSL=Math.max(0,usl2-usl1);
+  const srcCL=Math.max(0,tcl2-tcl1);
+  const srcCADec=Math.max(0,tca1-tca2);
+  const totalSrc=pat2+dep2+srcCap+srcTL+srcUSL+srcCL+srcCADec;
+
+  const useFA=Math.max(0,nfa2-nfa1+dep2); // capex approx
+  const useTLRep=Math.max(0,tl1-tl2);
+  const useUSL=Math.max(0,usl1-usl2);
+  const useCAInc=Math.max(0,tca2-tca1);
+  const useCLDec=Math.max(0,tcl1-tcl2);
+  const totalUse=useFA+useTLRep+useUSL+useCAInc+useCLDec+div2;
+
+  setCalc('ff_src_pat',pat2);setCalc('ff_src_dep',dep2);
+  setCalc('ff_src_tl',srcTL);setCalc('ff_src_usl',srcUSL);
+  setCalc('ff_src_cl',srcCL);setCalc('ff_src_ca_dec',srcCADec);
+  setCalc('ff_total_src',totalSrc);
+  setCalc('ff_use_fa',useFA);setCalc('ff_use_tl_rep',useTLRep);
+  setCalc('ff_use_usl',useUSL);setCalc('ff_use_ca_inc',useCAInc);
+  setCalc('ff_use_cl_dec',useCLDec);setCalc('ff_use_div',div2);
+  setCalc('ff_total_use',totalUse);
+  setCalc('ff_net',totalSrc-totalUse);
+}
+
+// ============================================================
+// RATIO CALCULATIONS
+// ============================================================
+function calcRatios(){
+  // Populate reference data rows
+  for(let i=1;i<=5;i++){
+    const sales=n('os_sales_'+i);
+    const pbdit=parseFloat(document.getElementById('os_pbdit_'+i)?.textContent)||0;
+    const pat=parseFloat(document.getElementById('os_pat_'+i)?.textContent)||0;
+    const tnw=parseFloat(document.getElementById('bs_tnw_'+i)?.textContent)||0;
+    const tcl=parseFloat(document.getElementById('bs_tcl_'+i)?.textContent)||0;
+    const tca=parseFloat(document.getElementById('bs_tca_'+i)?.textContent)||0;
+    const tl=n('bs_tl_'+i);
+    const intTL=n('os_intTL_'+i);
+    const intWC=n('os_intWC_'+i);
+    const dep=n('os_dep_'+i);
+    const totalLiab=parseFloat(document.getElementById('bs_tl_tot_'+i)?.textContent)||0;
+
+    const cr=tcl>0?(tca/tcl):0;
+    const tol=tnw>0?((totalLiab-tnw)/tnw):0;
+    const de=tnw>0?(tl/tnw):0;
+    const npm=sales>0?(pat/sales*100):0;
+    const ronw=tnw>0?(pat/tnw*100):0;
+    const dscr=(intTL+dep)>0?((pat+dep+intTL)/(intTL+dep)):0;
+
+    setCalc('rt_sales_'+i,sales);setCalc('rt_pbdit_'+i,pbdit);
+    setCalc('rt_pat_'+i,pat);setCalc('rt_tnw_'+i,tnw);
+    setCalc('rt_cr_'+i,cr);setCalc('rt_tol_'+i,tol);
+    setCalc('rt_de_'+i,de);setCalc('rt_npm_'+i,npm);
+    setCalc('rt_ronw_'+i,ronw);setCalc('rt_dscr_'+i,dscr);
+  }
+  // Update latest year cards (year 4 = first projected)
+  const yi=4;
+  const tcl4=parseFloat(document.getElementById('bs_tcl_'+yi)?.textContent)||0;
+  const tca4=parseFloat(document.getElementById('bs_tca_'+yi)?.textContent)||0;
+  const tnw4=parseFloat(document.getElementById('bs_tnw_'+yi)?.textContent)||0;
+  const tl4=n('bs_tl_'+yi);
+  const intTL4=n('os_intTL_'+yi);
+  const dep4=n('os_dep_'+yi);
+  const pat4=parseFloat(document.getElementById('os_pat_'+yi)?.textContent)||0;
+  const sales4=n('os_sales_'+yi);
+  const totalLiab4=parseFloat(document.getElementById('bs_tl_tot_'+yi)?.textContent)||0;
+  const nfa4=parseFloat(document.getElementById('bs_nfa_'+yi)?.textContent)||0;
+
+  const cr4=tcl4>0?(tca4/tcl4):0;
+  const tol4=tnw4>0?((totalLiab4-tnw4)/tnw4):0;
+  const de4=tnw4>0?(tl4/tnw4):0;
+  const dscr4=(intTL4+dep4)>0?((pat4+dep4+intTL4)/(intTL4+dep4)):0;
+  const npm4=sales4>0?(pat4/sales4*100):0;
+  const ronw4=tnw4>0?(pat4/tnw4*100):0;
+  const icr4=(intTL4+n('os_intWC_'+yi))>0?((parseFloat(document.getElementById('os_pbdit_'+yi)?.textContent)||0)/(intTL4+n('os_intWC_'+yi))):0;
+  const facr4=tl4>0?(nfa4/tl4):0;
+
+  const setCard=(id,v,bench,dir)=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.textContent=fmt(v)+(id.includes('npm')||id.includes('ronw')?'%':'x');
+    const card=el.closest('.ratio-card');if(!card)return;
+    card.classList.remove('good','warn','bad');
+    if(dir==='high'){card.classList.add(v>=bench?'good':v>=bench*0.8?'warn':'bad');}
+    else{card.classList.add(v<=bench?'good':v<=bench*1.2?'warn':'bad');}
+  };
+  setCard('r_cr',cr4,1.33,'high');setCard('r_tol',tol4,4,'low');
+  setCard('r_de',de4,3,'low');setCard('r_dscr',dscr4,1.5,'high');
+  document.getElementById('r_npm').textContent=fmt(npm4)+'%';
+  document.getElementById('r_ronw').textContent=fmt(ronw4)+'%';
+  setCard('r_icr',icr4,2,'high');setCard('r_facr',facr4,1,'high');
+}
+
+// ============================================================
+// COMPLETENESS CHECK
+// ============================================================
+function buildCompletenessCheck(){
+  const checks=[
+    {label:'Company Name',ok:!!document.getElementById('co_name').value},
+    {label:'Net Sales (Yr1)',ok:n('os_sales_1')>0},
+    {label:'Net Sales (Yr2)',ok:n('os_sales_2')>0},
+    {label:'Net Sales (Yr3)',ok:n('os_sales_3')>0},
+    {label:'Projected Sales (Yr4)',ok:n('os_sales_4')>0},
+    {label:'Projected Sales (Yr5)',ok:n('os_sales_5')>0},
+    {label:'Balance Sheet — Capital',ok:n('bs_cap_1')>0||n('bs_cap_3')>0},
+    {label:'Balance Sheet — Fixed Assets',ok:n('bs_gfa_1')>0||n('bs_gfa_3')>0},
+    {label:'WC Limits Applied For',ok:n('wc_applied')>0},
+    {label:'Prepared By',ok:!!document.getElementById('sub_prepBy').value},
+  ];
+  const div=document.getElementById('completenessCheck');
+  div.innerHTML=checks.map(c=>`<div style="display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:5px;background:${c.ok?'#d1fae5':'#fee2e2'};color:${c.ok?'#065f46':'#991b1b'}"><span>${c.ok?'✅':'❌'}</span><span>${c.label}</span></div>`).join('');
+}
+
+// ============================================================
+// SAVE & SUBMIT
+// ============================================================
+function collectData(){
+  const data={
+    ref:cmaRef,
+    created:new Date().toISOString(),
+    type:'cma_data',
+    company:{
+      name:document.getElementById('co_name').value,
+      constitution:document.getElementById('co_const').value,
+      pan:document.getElementById('co_pan').value,
+      gstin:document.getElementById('co_gstin').value,
+      industry:document.getElementById('co_industry').value,
+      bank:document.getElementById('co_bank').value,
+      purpose:document.getElementById('co_purpose').value,
+      existingLimits:n('co_existing_limits'),
+      appliedLimits:n('co_applied_limits'),
+      address:document.getElementById('co_address').value
+    },
+    os:{},bs:{},wc:{},submission:{
+      prepBy:document.getElementById('sub_prepBy').value,
+      date:document.getElementById('sub_date').value,
+      cert:document.getElementById('sub_cert').value,
+      ca:document.getElementById('sub_ca').value,
+      remarks:document.getElementById('sub_remarks').value
+    }
+  };
+  const osFlds=['sales','other','rm','power','labour','repair','dep','sell','admin','intTL','intWC','tax','div'];
+  osFlds.forEach(f=>{for(let i=1;i<=5;i++) data.os[f+'_'+i]=n('os_'+f+'_'+i);});
+  const bsFlds=['cap','res','tl','usl','cc','cred','ocl','gfa','accDep','cwip','rm','wip','fg','deb','cash','oca'];
+  bsFlds.forEach(f=>{for(let i=1;i<=5;i++) data.bs[f+'_'+i]=n('bs_'+f+'_'+i);});
+  data.wc={rmDays:n('wc_rmDays'),wipDays:n('wc_wipDays'),fgDays:n('wc_fgDays'),debDays:n('wc_debDays'),advDays:n('wc_advDays'),credDays:n('wc_credDays'),applied:n('wc_applied'),days:n('wc_days')};
+  return data;
+}
+
+async function saveToIDB(data){
+  return new Promise((res,rej)=>{
+    const req=indexedDB.open('SCG_Portal_DB',1);
+    req.onupgradeneeded=e=>{const db=e.target.result;['enquiries','loan_applications','service_requests','dpr_reports','bank_proposals','cma_data'].forEach(s=>{if(!db.objectStoreNames.contains(s))db.createObjectStore(s,{keyPath:'ref'});});};
+    req.onsuccess=e=>{const db=e.target.result;const tx=db.transaction('cma_data','readwrite');tx.objectStore('cma_data').put(data);tx.oncomplete=()=>res(true);tx.onerror=()=>rej();};
+    req.onerror=()=>rej();
+  });
+}
+
+function showAlert(type,msg){
+  const el=document.getElementById('mainAlert');
+  el.className='alert '+type;el.innerHTML=(type==='success'?'✅ ':'❌ ')+msg;el.style.display='flex';
+  setTimeout(()=>el.style.display='none',5000);
+}
+
+async function saveCMAData(){
+  const data=collectData();
+  localStorage.setItem('scg_cma_draft',JSON.stringify(data));
+  try{await saveToIDB(data);showAlert('success','CMA Data saved to database. Ref: '+cmaRef);}
+  catch(e){showAlert('success','Saved to local storage. Ref: '+cmaRef);}
+}
+
+async function submitCMA(){
+  await saveCMAData();
+  showAlert('success','CMA Data submitted successfully! Ref: '+cmaRef+'. Our team will contact you shortly.');
+}
+
+function exportJSON(){
+  const data=collectData();
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='CMA_Data_'+cmaRef+'.json';a.click();
+}
+
+function sendWhatsApp(){
+  const name=document.getElementById('co_name').value||'Client';
+  const purpose=document.getElementById('co_purpose').value;
+  const applied=n('co_applied_limits');
+  const bank=document.getElementById('co_bank').value;
+  const wc_rec=document.getElementById('wc_recommended')?.textContent||'—';
+  const msg=`*CMA Data Submission — SCG Portal*\n\n*Reference:* ${cmaRef}\n*Company:* ${name}\n*Purpose:* ${purpose}\n*Bank:* ${bank}\n*Limits Applied For:* ₹${applied} Lakhs\n*Recommended WC:* ₹${wc_rec} Lakhs\n\nKindly review and confirm receipt.\n\n_Submitted via Shiva Consultancy Group Portal_`;
+  window.open('https://wa.me/919979021275?text='+encodeURIComponent(msg),'_blank');
+}
+
+// Auto-save draft every 60 sec
+setInterval(()=>{try{localStorage.setItem('scg_cma_draft',JSON.stringify(collectData()));}catch(e){}},60000);
+
+// Load draft on page load
+(function loadDraft(){
+  try{
+    const d=JSON.parse(localStorage.getItem('scg_cma_draft'));
+    if(!d)return;
+    const setVal=(id,v)=>{const el=document.getElementById(id);if(el&&v!==undefined)el.value=v;};
+    if(d.company){
+      setVal('co_name',d.company.name);setVal('co_const',d.company.constitution);
+      setVal('co_pan',d.company.pan);setVal('co_gstin',d.company.gstin);
+      setVal('co_industry',d.company.industry);setVal('co_bank',d.company.bank);
+      setVal('co_purpose',d.company.purpose);setVal('co_existing_limits',d.company.existingLimits);
+      setVal('co_applied_limits',d.company.appliedLimits);setVal('co_address',d.company.address);
+    }
+    if(d.os){const osFlds=['sales','other','rm','power','labour','repair','dep','sell','admin','intTL','intWC','tax','div'];osFlds.forEach(f=>{for(let i=1;i<=5;i++)setVal('os_'+f+'_'+i,d.os[f+'_'+i]);});}
+    if(d.bs){const bsFlds=['cap','res','tl','usl','cc','cred','ocl','gfa','accDep','cwip','rm','wip','fg','deb','cash','oca'];bsFlds.forEach(f=>{for(let i=1;i<=5;i++)setVal('bs_'+f+'_'+i,d.bs[f+'_'+i]);});}
+    if(d.wc){setVal('wc_rmDays',d.wc.rmDays);setVal('wc_wipDays',d.wc.wipDays);setVal('wc_fgDays',d.wc.fgDays);setVal('wc_debDays',d.wc.debDays);setVal('wc_advDays',d.wc.advDays);setVal('wc_credDays',d.wc.credDays);setVal('wc_applied',d.wc.applied);setVal('wc_days',d.wc.days);}
+    if(d.submission){setVal('sub_prepBy',d.submission.prepBy);setVal('sub_ca',d.submission.ca);setVal('sub_cert',d.submission.cert);setVal('sub_remarks',d.submission.remarks);}
+    calcOS();calcBS();calcWC();
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
