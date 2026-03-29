@@ -141,6 +141,9 @@ textarea{resize:vertical;min-height:90px;}
   #mandatePreview{border:none;padding:0;}
 }
 </style>
+<script src="scg-core.js"></script>
+<script src="scg-ai.js"></script>
+<script src="scg-pdf.js"></script>
 </head>
 <body>
 
@@ -484,7 +487,8 @@ textarea{resize:vertical;min-height:90px;}
       <div class="card-body">
         <div class="btn-row" style="margin-top:0;margin-bottom:1rem;">
           <button class="btn btn-outline" onclick="buildMandate()">🔄 Regenerate Preview</button>
-          <button class="btn btn-gold" onclick="window.print()">🖨 Print / Save PDF</button>
+          <button class="btn btn-gold" onclick="SCGPdf.download('service_requisition',collectData())">📄 Download PDF</button>
+          <button class="btn btn-outline" onclick="window.print()">🖨 Quick Print</button>
           <button class="btn btn-wa" onclick="sendWhatsApp()">📲 WhatsApp</button>
           <button class="btn btn-success" onclick="exportJSON()">⬇ Export JSON</button>
         </div>
@@ -635,44 +639,25 @@ function buildKycDocs(){
 // ============================================================
 // CLIENT LOOKUP
 // ============================================================
-function lookupClient(){
+async function lookupClient(){
   const ref = document.getElementById('cltRefInput').value.trim().toUpperCase();
   if(!ref){ showAlert('error','Please enter a Client Reference Number.'); return; }
   document.getElementById('clientFound').style.display = 'none';
   document.getElementById('clientNotFound').style.display = 'none';
 
-  let found = null;
-  try{
-    const draft = JSON.parse(localStorage.getItem('scg_cm_draft') || 'null');
-    if(draft && draft.ref && draft.ref.toUpperCase() === ref){ found = draft; }
-    if(!found){
-      const arch = JSON.parse(localStorage.getItem('scg_cm_archive') || '[]');
-      found = arch.find(a => a.ref && a.ref.toUpperCase() === ref) || null;
-    }
-  }catch(e){}
-
-  if(found){
-    clientData = found;
+  const norm = await SCGCore.lookupClient(ref);
+  if(norm){
+    clientData = norm;
     const fd = document.getElementById('clientFound');
-    fd.innerHTML = '<h4>✅ Client Found — ' + (found.ref || '') + '</h4>' +
-      '<p><strong>' + (found.mainCompanyName || found.cltName || '') + '</strong> &nbsp;|&nbsp; ' +
-      (found.constitution || found.cltConstitution || '') + ' &nbsp;|&nbsp; ' +
-      (found.city || found.cltCity || '') + '</p>' +
-      '<p style="margin-top:.3rem;">' + (found.contactName || found.cltContact || '') + ' &nbsp;&bull;&nbsp; ' + (found.mobile || found.cltMobile || '') + '</p>';
+    fd.innerHTML = '<h4>✅ Client Found — ' + norm.ref + '</h4>' +
+      '<p><strong>' + norm.clientName + '</strong> &nbsp;|&nbsp; ' + norm.constitution + ' &nbsp;|&nbsp; ' + norm.city + '</p>' +
+      '<p style="margin-top:.3rem;">' + norm.contactName + ' &nbsp;&bull;&nbsp; ' + norm.mobile + '</p>';
     fd.style.display = 'block';
-
-    // Auto-fill fields
-    const set = (id, val) => { const el = document.getElementById(id); if(el && val) el.value = val; };
-    set('cltName', found.mainCompanyName || found.cltName);
-    set('cltConstitution', found.constitution || found.cltConstitution);
-    set('cltIndustry', found.industry || found.cltIndustry);
-    set('cltCity', found.city || found.cltCity);
-    set('cltContact', found.contactName || found.cltContact);
-    set('cltMobile', found.mobile || found.cltMobile);
-    set('cltEmail', found.email || found.cltEmail);
-    set('kycPan', found.pan || found.kycPan);
-    set('kycGst', found.gstin || found.kycGst);
-    set('kycCin', found.cin || found.kycCin);
+    SCGCore.fillFields(norm, {
+      clientName:'cltName', constitution:'cltConstitution', industry:'cltIndustry',
+      city:'cltCity', contactName:'cltContact', mobile:'cltMobile',
+      email:'cltEmail', pan:'kycPan', gst:'kycGst', cin:'kycCin'
+    });
     document.getElementById('clientNotFound').style.display = 'none';
     showAlert('success', 'Client data loaded from Master records.');
   } else {
@@ -1027,12 +1012,15 @@ function buildMandate(){
 async function finalSubmit(){
   const data = collectData();
   try{
-    await saveToIDB(data);
-    const arch = JSON.parse(localStorage.getItem('scg_sr_archive') || '[]');
-    const idx = arch.findIndex(a => a.ref === data.ref);
-    if(idx >= 0) arch[idx] = data; else arch.unshift(data);
-    localStorage.setItem('scg_sr_archive', JSON.stringify(arch.slice(0,200)));
+    await SCGCore.syncSave('service_requests', data, 'scg_sr_archive');
     localStorage.removeItem('scg_sr_draft');
+    // Write back any modified client fields to client master
+    if(data.clientMasterRef){
+      await SCGCore.writeBackClient(data.clientMasterRef, {
+        clientName: data.cltName, pan: data.kycPan, gst: data.kycGst,
+        mobile: data.cltMobile, contactName: data.cltContact
+      });
+    }
     showAlert('success', 'Mandate submitted successfully! Reference: ' + srRef);
   }catch(e){
     showAlert('error', 'Submission error. Draft saved locally.');

@@ -108,6 +108,9 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--scg-blue
 
 @media print{nav,.step-bar,.btn-row,#alertBox,.page-header,.calc-note{display:none!important;}body{background:#fff;}.main{margin:0;padding:0;max-width:100%;}.card{box-shadow:none;border:none;}html,body{font-size:10px;}}
 </style>
+<script src="scg-core.js"></script>
+<script src="scg-ai.js"></script>
+<script src="scg-pdf.js"></script>
 </head>
 <body>
 <nav>
@@ -255,7 +258,10 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--scg-blue
       <div class="card-body">
         <div class="btn-row" style="margin-top:0;margin-bottom:1rem;">
           <button class="btn btn-outline" onclick="buildCMAPreview()">🔄 Regenerate</button>
-          <button class="btn btn-gold" onclick="window.print()">🖨 Print / PDF</button>
+          <button class="btn btn-gold" onclick="SCGPdf.download('cma',collectData())">📄 Download PDF</button>
+          <button class="btn btn-outline" onclick="window.print()">🖨 Quick Print</button>
+          <button onclick="generateCMANarrative()" style="background:var(--navy2);color:#fff;border:none;padding:.4rem .9rem;border-radius:7px;font-size:.77rem;font-weight:700;cursor:pointer;">🤖 AI Narrative</button>
+          <button onclick="SCGAi.showSettings()" style="background:transparent;border:1px solid var(--scg-blue);color:var(--scg-blue);padding:.35rem .7rem;border-radius:6px;font-size:.74rem;cursor:pointer;">⚙ AI Key</button>
           <button class="btn btn-wa" onclick="sendWhatsApp()">📲 WhatsApp</button>
           <button class="btn btn-success" onclick="exportJSON()">⬇ Export JSON</button>
         </div>
@@ -602,25 +608,17 @@ function buildRatioCards(data){
 // ============================================================
 // CLIENT LOOKUP
 // ============================================================
-function lookupClient(){
+async function lookupClient(){
   const ref=document.getElementById('cltRefInput').value.trim().toUpperCase();
   if(!ref){showAlert('error','Enter a client reference number.');return;}
-  let found=null;
-  try{
-    const draft=JSON.parse(localStorage.getItem('scg_cm_draft')||'null');
-    if(draft&&draft.ref&&draft.ref.toUpperCase()===ref)found=draft;
-    if(!found){const arch=JSON.parse(localStorage.getItem('scg_cm_archive')||'[]');found=arch.find(a=>a.ref&&a.ref.toUpperCase()===ref)||null;}
-  }catch(e){}
+  const norm=await SCGCore.lookupClient(ref);
   const panel=document.getElementById('clientPanel');
-  if(found){
-    panel.innerHTML='<h4>✅ Client Found — '+found.ref+'</h4><p><strong>'+(found.mainCompanyName||found.cltName||'')+'</strong></p>';
+  if(norm){
+    panel.innerHTML='<h4>✅ Client Found — '+norm.ref+'</h4><p><strong>'+norm.clientName+'</strong> | '+norm.constitution+' | '+norm.industry+'</p>';
+    panel.style.background=''; panel.style.borderColor='';
     panel.style.display='block';
-    const s=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.value=val;};
-    s('appName',found.mainCompanyName||found.cltName);
-    s('appConst',found.constitution||found.cltConstitution);
-    s('appIndustry',found.industry||found.cltIndustry);
-    s('appPan',found.pan||found.kycPan);
-    showAlert('success','Client data loaded.');
+    SCGCore.fillFields(norm,{clientName:'appName',constitution:'appConst',industry:'appIndustry',pan:'appPan'});
+    showAlert('success','Client data loaded and fields auto-filled.');
   } else {
     panel.innerHTML='<h4 style="color:var(--danger);">❌ No client found for "'+ref+'"</h4><p style="font-size:.82rem;margin:.3rem 0;">Reference not in local database.</p><a href="client-master.html" style="display:inline-block;margin-top:.4rem;background:#c0392b;color:#fff;padding:.35rem .8rem;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none;">+ Create New Client Master →</a>';
     panel.style.display='block';panel.style.background='#fff3f3';panel.style.borderColor='var(--danger)';
@@ -775,17 +773,54 @@ function buildCMAPreview(){
 }
 
 // ============================================================
+// AI NARRATIVE
+// ============================================================
+let cmaAiContent = {};
+async function generateCMANarrative(){
+  if(!SCGAi.hasKey()){ SCGAi.showSettings(); return; }
+  const data = collectData();
+  showAlert('success','Generating CMA narrative via AI…');
+  try{
+    const text = await SCGAi.generate('cma','narrative', data, (msg)=>console.log(msg));
+    cmaAiContent.narrative = text;
+    // inject into collectData so PDF and save include it
+    const _origCollect = window.collectData;
+    window.collectData = function(){ const d = _origCollect(); d.aiContent = cmaAiContent; return d; };
+    // display in preview area
+    let box = document.getElementById('cmaNarrativeOutput');
+    if(!box){
+      box = document.createElement('div');
+      box.id = 'cmaNarrativeOutput';
+      box.style.cssText = 'background:#f0f4ff;border:1px solid var(--scg-blue);border-radius:8px;padding:1rem 1.2rem;margin-top:1rem;white-space:pre-wrap;font-size:.84rem;line-height:1.7;';
+      const prev = document.getElementById('cmaPreview');
+      if(prev) prev.parentNode.insertBefore(box, prev.nextSibling);
+    }
+    box.textContent = text;
+    showAlert('success','CMA narrative generated successfully.');
+  }catch(e){
+    if(e.message==='NO_KEY'){ SCGAi.showSettings(); return; }
+    showAlert('error','AI Error: ' + e.message);
+  }
+}
+
+// ============================================================
 // SUBMIT
 // ============================================================
 async function finalSubmit(){
   const data=collectData();
   try{
-    await saveToIDB(data);
-    const arch=JSON.parse(localStorage.getItem('scg_cma_archive')||'[]');
-    const idx=arch.findIndex(a=>a.ref===data.ref);
-    if(idx>=0)arch[idx]=data;else arch.unshift(data);
-    localStorage.setItem('scg_cma_archive',JSON.stringify(arch.slice(0,100)));
+    await SCGCore.syncSave('cma_data', data, 'scg_cma_archive');
     localStorage.removeItem('scg_cma_draft');
+    if(data.clientMasterRef){
+      await SCGCore.writeBackClient(data.clientMasterRef, {
+        clientName: data.appName,
+        pan: data.appPan,
+        gst: data.appGstin,
+        mobile: data.appMobile,
+        email: data.appEmail,
+        contactName: data.appContact
+      });
+    }
     showAlert('success','CMA Data submitted! Ref: '+cmaRef);
   }catch(e){showAlert('error','Submission error. Draft saved.');}
 }

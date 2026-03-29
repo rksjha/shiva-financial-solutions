@@ -203,6 +203,9 @@ nav{background:var(--navy);padding:0 28px;display:flex;align-items:center;justif
   .step-btn .s-text{display:none}
 }
 </style>
+<script src="scg-core.js"></script>
+<script src="scg-ai.js"></script>
+<script src="scg-pdf.js"></script>
 </head>
 <body>
 
@@ -653,7 +656,7 @@ nav{background:var(--navy);padding:0 28px;display:flex;align-items:center;justif
       <button class="btn btn-outline" onclick="exportJSON()">📁 Export JSON</button>
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-gold" onclick="generatePDF()">🖨️ Generate & Print PDF</button>
+      <button class="btn btn-gold" onclick="SCGPdf.download('client_master',collectAllData())">📄 Download PDF</button>
       <button class="btn btn-wa" onclick="sendWhatsApp()">📲 Share via WhatsApp</button>
       <button class="btn btn-success btn-lg" onclick="submitMaster()" style="padding:10px 28px;font-size:.9rem">✅ Submit & Save Client Master</button>
     </div>
@@ -1135,18 +1138,20 @@ setInterval(autoSaveDraft, 90000);
 async function submitMaster(){
   const data = collectAllData();
   localStorage.setItem('scg_cm_draft', JSON.stringify(data));
-  // Archive list of all client refs
+  // Archive summary entry for cross-app lookup
   try{
     const arch = JSON.parse(localStorage.getItem('scg_cm_archive')||'[]');
-    const exists = arch.find(a=>a.ref===data.ref);
-    if(!exists) arch.unshift({ref:data.ref, name:data.company.name||'Unknown', date:data.created, contact:data.primaryContact.name||''});
+    const idx = arch.findIndex(a=>a.ref===data.ref);
+    if(idx>=0) arch[idx]=data; else arch.unshift(data);
     localStorage.setItem('scg_cm_archive', JSON.stringify(arch.slice(0,200)));
   }catch(e){}
   try{
-    await saveToIDB(data);
-    showAlert('success','✅ Client Master saved successfully! Reference: ' + clientRef);
+    // Use SCGCore for proper IDB save with version upgrade support
+    await SCGCore.save('client_masters', data);
+    showAlert('success','✅ Client Master saved! Reference: ' + clientRef);
   }catch(e){
-    showAlert('success','✅ Client Master saved to local storage. Reference: ' + clientRef);
+    try{ await saveToIDB(data); } catch(e2){}
+    showAlert('success','✅ Client Master saved locally. Reference: ' + clientRef);
   }
 }
 

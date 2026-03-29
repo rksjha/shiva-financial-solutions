@@ -129,6 +129,9 @@ textarea{resize:vertical;min-height:80px;}
   .card{box-shadow:none;border:none;}
 }
 </style>
+<script src="scg-core.js"></script>
+<script src="scg-ai.js"></script>
+<script src="scg-pdf.js"></script>
 </head>
 <body>
 
@@ -617,7 +620,8 @@ textarea{resize:vertical;min-height:80px;}
       <div class="card-body">
         <div class="btn-row" style="margin-top:0;margin-bottom:1rem;">
           <button class="btn btn-outline" onclick="buildPreview()">🔄 Regenerate</button>
-          <button class="btn btn-gold" onclick="window.print()">🖨 Print / PDF</button>
+          <button class="btn btn-gold" onclick="SCGPdf.download('loan_application',collectData())">📄 Download PDF</button>
+          <button class="btn btn-outline" onclick="window.print()">🖨 Quick Print</button>
           <button class="btn btn-wa" onclick="sendWhatsApp()">📲 WhatsApp</button>
           <button class="btn btn-success" onclick="exportJSON()">⬇ Export JSON</button>
         </div>
@@ -725,39 +729,40 @@ function calcDERatio(){
 // ============================================================
 // CLIENT LOOKUP
 // ============================================================
-function lookupClient(){
+async function lookupClient(){
   const ref = document.getElementById('cltRefInput').value.trim().toUpperCase();
   if(!ref){ showAlert('error','Enter a client reference number.'); return; }
-  let found = null;
-  try{
-    const draft = JSON.parse(localStorage.getItem('scg_cm_draft')||'null');
-    if(draft && draft.ref && draft.ref.toUpperCase()===ref) found=draft;
-    if(!found){
-      const arch = JSON.parse(localStorage.getItem('scg_cm_archive')||'[]');
-      found = arch.find(a=>a.ref && a.ref.toUpperCase()===ref)||null;
-    }
-  }catch(e){}
-  if(found){
-    clientData=found;
-    const fd=document.getElementById('clientFound');
-    fd.innerHTML='<h4>✅ Client Found — '+found.ref+'</h4><p><strong>'+(found.mainCompanyName||found.cltName||'')+'</strong> | '+(found.constitution||'')+'</p><p>'+(found.contactName||found.cltContact||'')+' | '+(found.mobile||found.cltMobile||'')+'</p>';
-    fd.style.display='block';
-    const s=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.value=val;};
-    s('appName',found.mainCompanyName||found.cltName);
-    s('appConstitution',found.constitution||found.cltConstitution);
-    s('appIndustry',found.industry||found.cltIndustry);
-    s('appCity',found.city||found.cltCity);
-    s('appContact',found.contactName||found.cltContact);
-    s('appMobile',found.mobile||found.cltMobile);
-    s('appEmail',found.email||found.cltEmail);
-    s('appPan',found.pan||found.kycPan);
-    s('appGstin',found.gstin||found.kycGst);
-    s('appCin',found.cin||found.kycCin);
-    document.getElementById('clientNotFound').style.display='none';
-    showAlert('success','Client data loaded from Master records.');
+  const norm = await SCGCore.lookupClient(ref);
+  if(norm){
+    clientData = norm;
+    const fd = document.getElementById('clientFound');
+    fd.innerHTML = '<h4>✅ Client Found — ' + norm.ref + '</h4><p><strong>' + norm.clientName + '</strong> | ' + norm.constitution + '</p><p>' + norm.contactName + ' | ' + norm.mobile + '</p>';
+    fd.style.display = 'block';
+    SCGCore.fillFields(norm, {
+      clientName:'appName', constitution:'appConstitution', industry:'appIndustry',
+      city:'appCity', contactName:'appContact', mobile:'appMobile', email:'appEmail',
+      pan:'appPan', gst:'appGstin', cin:'appCin', udyam:'appUdyam',
+      address:'appAddress', state:'appState', pincode:'appPin'
+    });
+    document.getElementById('clientNotFound').style.display = 'none';
+    showAlert('success', 'Client data loaded — all fields auto-filled from Client Master.');
   } else {
-    document.getElementById('clientFound').style.display='none';
-    document.getElementById('clientNotFound').style.display='block';
+    document.getElementById('clientFound').style.display = 'none';
+    document.getElementById('clientNotFound').style.display = 'block';
+  }
+}
+
+async function lookupSR(){
+  const ref = document.getElementById('srRefInput').value.trim().toUpperCase();
+  if(!ref) return;
+  const norm = await SCGCore.lookupSR(ref);
+  if(norm){
+    const el = document.getElementById('srFound');
+    if(el){ el.innerHTML = '<h4>✅ SR Found — ' + norm.ref + '</h4><p>' + (norm.services||[]).slice(0,3).join(', ') + (norm.services.length>3?'…':'') + '</p>'; el.style.display = 'block'; }
+    document.getElementById('srNotFound') && (document.getElementById('srNotFound').style.display = 'none');
+    showAlert('success', 'Service Requisition loaded.');
+  } else {
+    document.getElementById('srNotFound') && (document.getElementById('srNotFound').style.display = 'block');
   }
 }
 
@@ -1105,12 +1110,14 @@ function buildPreview(){
 async function finalSubmit(){
   const data=collectData();
   try{
-    await saveToIDB(data);
-    const arch=JSON.parse(localStorage.getItem('scg_la_archive')||'[]');
-    const idx=arch.findIndex(a=>a.ref===data.ref);
-    if(idx>=0) arch[idx]=data; else arch.unshift(data);
-    localStorage.setItem('scg_la_archive',JSON.stringify(arch.slice(0,200)));
+    await SCGCore.syncSave('loan_applications', data, 'scg_la_archive');
     localStorage.removeItem('scg_la_draft');
+    if(data.clientMasterRef){
+      await SCGCore.writeBackClient(data.clientMasterRef,{
+        clientName:data.appName, pan:data.appPan, gst:data.appGstin,
+        mobile:data.appMobile, email:data.appEmail, contactName:data.appContact
+      });
+    }
     showAlert('success','Loan Application submitted! Reference: '+laRef);
   }catch(e){
     showAlert('error','Submission error. Draft saved locally.');

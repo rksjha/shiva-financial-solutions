@@ -87,6 +87,9 @@ textarea{resize:vertical;min-height:80px;}
 .info-box .val{font-size:.95rem;font-weight:700;color:var(--text);margin-top:.15rem;}
 @media print{nav,.step-bar,.btn-row,#alertBox,.page-header{display:none!important;}body{background:#fff;}.main{margin:0;padding:0;max-width:100%;}.card{box-shadow:none;border:none;}}
 </style>
+<script src="scg-core.js"></script>
+<script src="scg-ai.js"></script>
+<script src="scg-pdf.js"></script>
 </head>
 <body>
 <nav>
@@ -348,10 +351,33 @@ textarea{resize:vertical;min-height:80px;}
       <div class="card-body">
         <div class="btn-row" style="margin-top:0;margin-bottom:1rem;">
           <button class="btn btn-outline" onclick="buildProposal()">🔄 Regenerate</button>
-          <button class="btn btn-gold" onclick="window.print()">🖨 Print / PDF</button>
+          <button class="btn btn-gold" onclick="SCGPdf.download('bank_proposal',collectData())">📄 Download PDF</button>
+          <button class="btn btn-outline" onclick="window.print()">🖨 Quick Print</button>
           <button class="btn btn-wa" onclick="sendWhatsApp()">📲 WhatsApp</button>
           <button class="btn btn-success" onclick="exportJSON()">⬇ Export JSON</button>
         </div>
+        <!-- AI Generation Panel -->
+        <div style="background:#f0f4ff;border:1.5px solid var(--scg-blue);border-radius:10px;padding:1.2rem;margin-bottom:1.2rem;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;margin-bottom:.8rem;">
+            <div style="display:flex;align-items:center;gap:.6rem;">
+              <span style="font-size:1.2rem;">🤖</span>
+              <div><strong style="color:var(--navy);font-size:.9rem;">AI Content Generation</strong>
+              <p style="font-size:.72rem;color:var(--muted);margin:0;">Generate professional sections using Claude AI</p></div>
+            </div>
+            <button onclick="SCGAi.showSettings()" style="background:transparent;border:1px solid var(--scg-blue);color:var(--scg-blue);padding:.3rem .7rem;border-radius:5px;font-size:.74rem;cursor:pointer;">⚙ API Key</button>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.7rem;">
+            <button onclick="generateBPSection('cover_note')" class="ai-sec-btn">Cover Note</button>
+            <button onclick="generateBPSection('borrower_profile')" class="ai-sec-btn">Borrower Profile</button>
+            <button onclick="generateBPSection('credit_assessment')" class="ai-sec-btn">Credit Assessment</button>
+            <button onclick="generateBPSection('financial_highlights')" class="ai-sec-btn">Financial Analysis</button>
+            <button onclick="generateBPSection('recommendation')" class="ai-sec-btn">Recommendation</button>
+            <button onclick="generateAllBPSections()" style="background:var(--navy);color:#fff;border:none;padding:.3rem .9rem;border-radius:5px;font-size:.75rem;font-weight:700;cursor:pointer;">⚡ Generate All</button>
+          </div>
+          <div id="bpAiProgress" style="display:none;font-size:.78rem;color:var(--scg-blue);padding:.4rem 0;"></div>
+          <div id="bpAiSections" style="margin-top:.5rem;"></div>
+        </div>
+        <style>.ai-sec-btn{background:#fff;border:1px solid var(--scg-blue);color:var(--scg-blue);padding:.3rem .75rem;border-radius:5px;font-size:.74rem;cursor:pointer;font-weight:500;}</style>
         <div id="proposalPreview"></div>
         <div class="btn-row">
           <button class="btn btn-back" onclick="goStep(4)">← Back</button>
@@ -384,57 +410,44 @@ function generateRef(){
   b.textContent=bpRef; b.style.display='inline-block';
 }
 
-function lookupRef(type){
+async function lookupRef(type){
   const inputMap={client:'cltRefInput',dpr:'dprRefInput',cma:'cmaRefInput'};
   const panelMap={client:'clientPanel',dpr:'dprPanel',cma:'cmaPanel'};
-  const archiveMap={client:'scg_cm_archive',dpr:'scg_dpr_archive',cma:'scg_cma_archive'};
-  const draftMap={client:'scg_cm_draft',dpr:'scg_dpr_draft',cma:'scg_cma_draft'};
   const ref=document.getElementById(inputMap[type]).value.trim().toUpperCase();
   if(!ref){showAlert('error','Enter a reference number.');return;}
-  let found=null;
-  try{
-    const draft=JSON.parse(localStorage.getItem(draftMap[type])||'null');
-    if(draft&&draft.ref&&draft.ref.toUpperCase()===ref) found=draft;
-    if(!found){
-      const arch=JSON.parse(localStorage.getItem(archiveMap[type])||'[]');
-      found=arch.find(a=>a.ref&&a.ref.toUpperCase()===ref)||null;
-    }
-  }catch(e){}
   const panel=document.getElementById(panelMap[type]);
-  if(found){
+
+  let norm=null;
+  if(type==='client') norm=await SCGCore.lookupClient(ref);
+  else if(type==='dpr') norm=await SCGCore.lookupDPR(ref);
+  else if(type==='cma') norm=await SCGCore.lookupCMA(ref);
+
+  if(norm){
     if(type==='client'){
-      linkedClient=found;
-      panel.innerHTML='<h4>✅ Client Found — '+found.ref+'</h4><p><strong>'+(found.mainCompanyName||found.cltName||found.borName||'')+'</strong> | '+(found.constitution||found.cltConstitution||'')+'</p><p>'+(found.contactName||found.cltContact||found.borContact||'')+' | '+(found.mobile||found.cltMobile||found.borMobile||'')+'</p>';
-      const s=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.value=val;};
-      s('borName',found.mainCompanyName||found.cltName||found.borName);
-      s('borConst',found.constitution||found.cltConstitution||found.borConst);
-      s('borIndustry',found.industry||found.cltIndustry||found.borIndustry);
-      s('borCity',found.city||found.cltCity||found.borCity);
-      s('borContact',found.contactName||found.cltContact||found.borContact);
-      s('borMobile',found.mobile||found.cltMobile||found.borMobile);
-      s('borPan',found.pan||found.kycPan||found.appPan||found.borPan);
-      s('borGst',found.gstin||found.kycGst||found.appGstin||found.borGst);
-      s('borCin',found.cin||found.kycCin||found.appCin||found.borCin);
+      linkedClient=norm;
+      panel.innerHTML='<h4>✅ Client Found — '+norm.ref+'</h4><p><strong>'+norm.clientName+'</strong> | '+norm.constitution+'</p><p>'+norm.contactName+' | '+norm.mobile+'</p>';
+      SCGCore.fillFields(norm,{
+        clientName:'borName', constitution:'borConst', industry:'borIndustry',
+        city:'borCity', contactName:'borContact', mobile:'borMobile',
+        pan:'borPan', gst:'borGst', cin:'borCin', email:'borEmail',
+        desc:'bizDesc'
+      });
     } else if(type==='dpr'){
-      linkedDPR=found;
-      panel.innerHTML='<h4>✅ DPR Found — '+found.ref+'</h4><p><strong>'+(found.projectName||found.projName||'Project')+'</strong></p><p>Cost: ₹'+(found.projectCost||found.projCost||'N/A')+' Lakhs</p>';
-      const s=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.value=val;};
-      s('projCost',found.projectCost||found.projCost);
-      s('totalCredit',found.loanAmount||found.creditRequired);
+      linkedDPR=norm;
+      panel.innerHTML='<h4>✅ DPR Found — '+norm.ref+'</h4><p><strong>'+norm.projectName+'</strong></p><p>Cost: ₹'+norm.projectCost+' Lakhs | Loan: ₹'+norm.loanAmount+' Lakhs</p>';
+      SCGCore.fillFields(norm,{projectCost:'projCost',loanAmount:'totalCredit',deRatio:'deRatio',dscr:'dscrMin'});
     } else if(type==='cma'){
-      linkedCMA=found;
-      panel.innerHTML='<h4>✅ CMA Found — '+found.ref+'</h4><p>Financial projections loaded for '+(found.appName||found.cltName||'client')+'</p>';
-      // Populate financial table from CMA if available
-      if(found.finData){
-        ['ns','gp','eb','pat','nw','tb'].forEach((k,ri)=>{
-          if(found.finData[k]){
-            found.finData[k].forEach((v,ci)=>{const el=document.getElementById('f_'+k+'_'+ci);if(el)el.value=v||'';});
-          }
-        });
-      }
+      linkedCMA=norm;
+      panel.innerHTML='<h4>✅ CMA Found — '+norm.ref+'</h4><p>Financial data loaded for '+norm.clientName+'</p>';
+      // Populate financial table columns from CMA P&L data
+      ['ns','gp','eb','pat','nw','tb'].forEach(k=>{
+        const arr=(norm.pl&&norm.pl[k])||[];
+        arr.forEach((v,ci)=>{const el=document.getElementById('f_'+k+'_'+ci);if(el&&v)el.value=v;});
+      });
     }
+    panel.style.background=''; panel.style.borderColor='';
     panel.style.display='block';
-    showAlert('success',type.toUpperCase()+' data loaded successfully.');
+    showAlert('success',type.toUpperCase()+' data loaded and fields auto-filled.');
   } else {
     const createLinks={
       client:'<a href="client-master.html" style="display:inline-block;margin-top:.5rem;background:#c0392b;color:#fff;padding:.35rem .8rem;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none;">+ Create New Client Master →</a>',
@@ -442,8 +455,7 @@ function lookupRef(type){
       cma:'<a href="cma-data.html" style="display:inline-block;margin-top:.5rem;background:#c0392b;color:#fff;padding:.35rem .8rem;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none;">+ Create New CMA Data →</a>'
     };
     panel.innerHTML='<h4 style="color:var(--danger);">❌ No record found for "'+ref+'"</h4><p style="font-size:.82rem;margin:.3rem 0;">Reference not in local database. Create a new one:</p>'+(createLinks[type]||'');
-    panel.style.display='block';
-    panel.style.background='#fff3f3'; panel.style.borderColor='var(--danger)';
+    panel.style.display='block'; panel.style.background='#fff3f3'; panel.style.borderColor='var(--danger)';
   }
 }
 
@@ -655,11 +667,7 @@ function buildProposal(){
 async function finalSubmit(){
   const data=collectData();
   try{
-    await saveToIDB(data);
-    const arch=JSON.parse(localStorage.getItem('scg_bp_archive')||'[]');
-    const idx=arch.findIndex(a=>a.ref===data.ref);
-    if(idx>=0)arch[idx]=data;else arch.unshift(data);
-    localStorage.setItem('scg_bp_archive',JSON.stringify(arch.slice(0,200)));
+    await SCGCore.syncSave('bank_proposals', data, 'scg_bp_archive');
     localStorage.removeItem('scg_bp_draft');
     showAlert('success','Bank Proposal submitted! Ref: '+bpRef);
   }catch(e){showAlert('error','Submission error. Draft saved.');}
@@ -687,6 +695,54 @@ function showAlert(type,msg){
   const el=document.getElementById('alertBox');
   el.className='alert '+type;el.textContent=msg;el.style.display='block';
   setTimeout(()=>el.style.display='none',4000);
+}
+
+// ── AI Generation ──
+let bpAiContent = {};
+
+async function generateBPSection(section){
+  if(!SCGAi.hasKey()){ SCGAi.showSettings(); return; }
+  const prog = document.getElementById('bpAiProgress');
+  prog.style.display = 'block';
+  try {
+    const data = collectData();
+    const text = await SCGAi.generate('bank_proposal', section, data, (msg) => { prog.textContent = '🤖 ' + msg; });
+    bpAiContent[section] = text;
+    renderBPAiSection(section, text);
+    showAlert('success', section.replace(/_/g,' ') + ' generated.');
+  } catch(e) {
+    if(e.message==='NO_KEY'){ SCGAi.showSettings(); return; }
+    showAlert('error', 'AI Error: ' + e.message);
+  } finally { prog.style.display = 'none'; }
+}
+
+async function generateAllBPSections(){
+  const sections = ['cover_note','borrower_profile','credit_assessment','financial_highlights','recommendation'];
+  for(const s of sections){ try{ await generateBPSection(s); await new Promise(r=>setTimeout(r,500)); }catch(e){} }
+}
+
+function renderBPAiSection(section, text){
+  const container = document.getElementById('bpAiSections');
+  const id = 'bp_ai_' + section;
+  let el = document.getElementById(id);
+  if(!el){
+    el = document.createElement('div');
+    el.id = id;
+    el.style.cssText = 'margin-bottom:1rem;border:1px solid #d0d9e8;border-radius:8px;overflow:hidden;';
+    container.appendChild(el);
+  }
+  const title = section.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+  el.innerHTML = `<div style="background:var(--navy2);color:#fff;padding:.5rem .9rem;font-size:.78rem;font-weight:700;display:flex;justify-content:space-between;align-items:center;">
+    <span>${title}</span>
+    <button onclick="document.getElementById('${id}_body').style.display=document.getElementById('${id}_body').style.display==='none'?'block':'none'" style="background:transparent;border:none;color:#C9A84C;cursor:pointer;font-size:.8rem;">▾</button>
+  </div>
+  <div id="${id}_body" style="padding:.8rem;font-size:.83rem;line-height:1.7;white-space:pre-wrap;color:#1a2535;">${text}</div>`;
+  // Store in collectData override
+  if(typeof collectData === 'function') {
+    const orig = window._origCollectData || collectData;
+    window._origCollectData = orig;
+    window.collectData = function(){ const d = orig(); d.aiContent = bpAiContent; return d; };
+  }
 }
 </script>
 </body>

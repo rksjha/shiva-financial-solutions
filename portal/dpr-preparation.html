@@ -102,6 +102,9 @@ textarea{resize:vertical;min-height:90px;}
 .proj-tag{display:inline-block;background:var(--scg-blue);color:#fff;font-size:.7rem;font-weight:700;padding:.2rem .55rem;border-radius:4px;margin-left:.4rem;letter-spacing:.04em;}
 @media print{nav,.step-bar,.btn-row,#alertBox,.page-header,.ai-panel{display:none!important;}body{background:#fff;}.main{margin:0;padding:0;max-width:100%;}.card{box-shadow:none;border:none;}}
 </style>
+<script src="scg-core.js"></script>
+<script src="scg-ai.js"></script>
+<script src="scg-pdf.js"></script>
 </head>
 <body>
 <nav>
@@ -410,7 +413,9 @@ textarea{resize:vertical;min-height:90px;}
       <div class="card-body">
         <div class="btn-row" style="margin-top:0;margin-bottom:1rem;">
           <button class="btn btn-outline" onclick="buildDPR()">🔄 Regenerate</button>
-          <button class="btn btn-gold" onclick="window.print()">🖨 Print / PDF</button>
+          <button class="btn btn-gold" onclick="SCGPdf.download('dpr',collectData())">📄 Download PDF</button>
+          <button class="btn btn-outline" onclick="window.print()">🖨 Quick Print</button>
+          <button onclick="SCGAi.showSettings()" style="background:transparent;border:1px solid var(--scg-blue);color:var(--scg-blue);padding:.35rem .75rem;border-radius:6px;font-size:.76rem;cursor:pointer;">🤖 AI Key</button>
           <button class="btn btn-wa" onclick="sendWhatsApp()">📲 WhatsApp</button>
           <button class="btn btn-success" onclick="exportJSON()">⬇ Export JSON</button>
         </div>
@@ -468,24 +473,20 @@ function buildAISectionGrid(){
 }
 function toggleAiSec(cb,i){document.getElementById('aiChip_'+i).classList.toggle('selected',cb.checked);}
 
-function lookupClient(){
+async function lookupClient(){
   const ref=document.getElementById('cltRefInput').value.trim().toUpperCase();
   if(!ref){showAlert('error','Enter a client reference number.');return;}
-  let found=null;
-  try{
-    const draft=JSON.parse(localStorage.getItem('scg_cm_draft')||'null');
-    if(draft&&draft.ref&&draft.ref.toUpperCase()===ref)found=draft;
-    if(!found){const arch=JSON.parse(localStorage.getItem('scg_cm_archive')||'[]');found=arch.find(a=>a.ref&&a.ref.toUpperCase()===ref)||null;}
-  }catch(e){}
+  const norm=await SCGCore.lookupClient(ref);
   const panel=document.getElementById('clientPanel');
-  if(found){
-    panel.innerHTML='<h4>✅ Client Found — '+found.ref+'</h4><p><strong>'+(found.mainCompanyName||found.cltName||'')+'</strong></p>';
+  if(norm){
+    panel.innerHTML='<h4>✅ Client Found — '+norm.ref+'</h4><p><strong>'+norm.clientName+'</strong> | '+norm.constitution+'</p><p>'+norm.contactName+' | '+norm.mobile+'</p>';
+    panel.style.background=''; panel.style.borderColor='';
     panel.style.display='block';
-    const s=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.value=val;};
-    s('promoterName',found.mainCompanyName||found.cltName);
-    s('promoterConst',found.constitution||found.cltConstitution);
-    s('promFullName',found.contactName||found.cltContact);
-    showAlert('success','Client data loaded.');
+    SCGCore.fillFields(norm,{
+      clientName:'promoterName', constitution:'promoterConst', contactName:'promFullName',
+      mobile:'promMobile', industry:'projIndustry', pan:'promPan', desc:'projSummary'
+    });
+    showAlert('success','Client data loaded and fields auto-filled.');
   } else {
     panel.innerHTML='<h4 style="color:var(--danger);">❌ No client found for "'+ref+'"</h4><p style="font-size:.82rem;margin:.3rem 0;">Reference not in local database.</p><a href="client-master.html" style="display:inline-block;margin-top:.4rem;background:#c0392b;color:#fff;padding:.35rem .8rem;border-radius:6px;font-size:.82rem;font-weight:700;text-decoration:none;">+ Create New Client Master →</a>';
     panel.style.display='block';panel.style.background='#fff3f3';panel.style.borderColor='var(--danger)';
@@ -533,36 +534,53 @@ function saveAndNext(stepIdx){
   else setTimeout(()=>goStep(stepIdx+1),600);
 }
 
-// AI SIMULATION
-function startAIGeneration(){
+// AI GENERATION — uses Claude API if key set, else template fallback
+async function startAIGeneration(){
   const selected=aiSections.filter((_,i)=>{const el=document.getElementById('aiSec_'+i);return el&&el.checked;});
   if(!selected.length){showAlert('error','Please select at least one section.');return;}
+  if(!SCGAi.hasKey()){
+    // Offer settings or use template
+    const useTemplate=confirm('Claude API key not set.\n\nClick OK to use professional templates (offline)\nClick Cancel to set API key for AI-generated content');
+    if(!useTemplate){SCGAi.showSettings();return;}
+  }
   const prog=document.getElementById('aiProgress');
   const fill=document.getElementById('aiProgressFill');
   const log=document.getElementById('aiLog');
   const status=document.getElementById('aiStatusText');
   prog.style.display='block';log.innerHTML='';fill.style.width='0%';
-  let i=0;
   const d=collectData();
-  function processNext(){
-    if(i>=selected.length){
-      status.textContent='✅ All sections generated!';fill.style.width='100%';
-      showAlert('success','AI content generated for '+selected.length+' section(s). Continue to build DPR.');
-      return;
-    }
+
+  for(let i=0;i<selected.length;i++){
     const sec=selected[i];
     const pct=Math.round((i/selected.length)*100);
     fill.style.width=pct+'%';
-    status.textContent='Generating: '+sec.replace(/&amp;/g,'&')+'...';
-    const span=document.createElement('span');span.textContent='⏳ '+sec.replace(/&amp;/g,'&')+'...';
+    status.textContent='Generating: '+sec+'...';
+    const span=document.createElement('span');span.textContent='⏳ '+sec+'...';
     log.appendChild(span);log.scrollTop=log.scrollHeight;
-    setTimeout(()=>{
+    try{
+      // Map display name to section key
+      const secKey=sec.toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,'');
+      const dprKeyMap={'executive_summary':'executive_summary','promoter_profile':'promoter_profile',
+        'project_description':'project_description','market_analysis':'market_analysis',
+        'financial_analysis':'financial_analysis','risk_mitigation':'risk_mitigation',
+        'implementation_schedule':'implementation_schedule'};
+      // Find matching key
+      const matchKey=Object.keys(dprKeyMap).find(k=>secKey.includes(k.split('_')[0]))||secKey;
+      if(SCGAi.hasKey()){
+        aiGeneratedContent[sec]=await SCGAi.generate('dpr',matchKey,d);
+      } else {
+        aiGeneratedContent[sec]=generateSectionContent(sec,d);
+      }
+      span.textContent='✓ '+sec;span.className='done';
+    }catch(e){
       aiGeneratedContent[sec]=generateSectionContent(sec,d);
-      span.textContent='✓ '+sec.replace(/&amp;/g,'&');span.className='done';
-      i++;processNext();
-    },500+Math.random()*400);
+      span.textContent='✓ '+sec+' (template)';span.className='done';
+    }
+    await new Promise(r=>setTimeout(r,200));
   }
-  processNext();
+  fill.style.width='100%';
+  status.textContent='✅ All sections generated!';
+  showAlert('success','Content generated for '+selected.length+' section(s). Continue to build DPR.');
 }
 
 function generateSectionContent(sec,d){
@@ -715,12 +733,11 @@ function buildDPR(){
 async function finalSubmit(){
   const data=collectData();
   try{
-    await saveToIDB(data);
-    const arch=JSON.parse(localStorage.getItem('scg_dpr_archive')||'[]');
-    const idx=arch.findIndex(a=>a.ref===data.ref);
-    if(idx>=0)arch[idx]=data;else arch.unshift(data);
-    localStorage.setItem('scg_dpr_archive',JSON.stringify(arch.slice(0,100)));
+    await SCGCore.syncSave('dpr_reports', data, 'scg_dpr_archive');
     localStorage.removeItem('scg_dpr_draft');
+    if(data.clientMasterRef){
+      await SCGCore.writeBackClient(data.clientMasterRef,{clientName:data.promoterName});
+    }
     showAlert('success','DPR submitted! Ref: '+dprRef);
   }catch(e){showAlert('error','Submission error. Draft saved.');}
 }
