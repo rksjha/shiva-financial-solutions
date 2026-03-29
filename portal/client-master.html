@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Master | SCG Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#071220;--navy2:#0C1C35;--navy3:#122444;--scg-blue:#3B5EA6;
+  --scg-green:#4A9A3C;--gold:#C9A84C;--gold2:#E8C96A;--gold-dim:rgba(201,168,76,.1);
+  --text:#1a1a2e;--light:#f2f4f8;--border:#d0d9f0;--card:#fff;
+  --accent:#e8f0fe;--red:#dc2626;--orange:#ea580c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--light);color:var(--text);font-size:14px;min-height:100vh}
+
+/* ─── NAV ─── */
+nav{background:var(--navy);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:62px;position:sticky;top:0;z-index:200;box-shadow:0 2px 16px rgba(0,0,0,.5)}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo{height:36px;filter:brightness(0) invert(1)}
+.nav-title{color:#fff;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;line-height:1.2}
+.nav-title span{display:block;font-size:.65rem;color:var(--gold2);font-family:'DM Sans',sans-serif;font-weight:400;letter-spacing:.07em;text-transform:uppercase}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-links a{color:#94a3b8;font-size:.74rem;text-decoration:none;padding:5px 10px;border-radius:5px;transition:.2s}
+.nav-links a:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-links a.active{background:var(--gold);color:var(--navy);font-weight:700}
+
+/* ─── HERO STRIP ─── */
+.hero-strip{background:linear-gradient(135deg,var(--navy2) 0%,var(--navy3) 50%,#1a3a6b 100%);padding:20px 28px 18px;border-bottom:2px solid rgba(201,168,76,.3)}
+.hero-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.hero-left{display:flex;align-items:center;gap:16px}
+.hero-icon{width:52px;height:52px;background:linear-gradient(135deg,rgba(201,168,76,.25),rgba(201,168,76,.1));border:2px solid var(--gold);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+.hero-text h1{font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-weight:700;color:#fff;margin-bottom:2px}
+.hero-text p{font-size:.78rem;color:#7ca4e0;max-width:600px;line-height:1.5}
+.hero-ref{text-align:right}
+.ref-label{font-size:.65rem;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.ref-num{background:rgba(201,168,76,.15);border:1.5px solid var(--gold);color:var(--gold2);font-size:.9rem;padding:6px 16px;border-radius:24px;font-weight:700;letter-spacing:.05em;font-family:'DM Sans',sans-serif;display:inline-block}
+.ref-date{font-size:.68rem;color:#64748b;margin-top:4px;text-align:right}
+
+/* ─── STEP NAVIGATOR ─── */
+.step-nav-wrap{background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:62px;z-index:150;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.step-nav{max-width:1400px;margin:0 auto;padding:0 20px;display:flex;overflow-x:auto;scrollbar-width:none}
+.step-nav::-webkit-scrollbar{display:none}
+.step-btn{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:12px 14px;border:none;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.74rem;font-weight:500;color:#64748b;border-bottom:3px solid transparent;transition:.25s;white-space:nowrap}
+.step-btn .s-num{width:22px;height:22px;border-radius:50%;background:#e2e8f0;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#64748b;flex-shrink:0;transition:.25s}
+.step-btn:hover{color:var(--scg-blue)}
+.step-btn:hover .s-num{background:var(--accent);color:var(--scg-blue)}
+.step-btn.active{color:var(--scg-blue);border-bottom-color:var(--scg-blue);font-weight:600}
+.step-btn.active .s-num{background:var(--scg-blue);color:#fff}
+.step-btn.done{color:var(--scg-green)}
+.step-btn.done .s-num{background:var(--scg-green);color:#fff}
+.step-btn.done .s-num::after{content:'✓'}
+.step-btn.done .s-text{text-decoration:line-through;opacity:.7}
+
+/* ─── PROGRESS BAR ─── */
+.progress-wrap{background:var(--border);height:3px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--scg-blue),var(--gold));transition:.4s;border-radius:0 2px 2px 0}
+
+/* ─── MAIN LAYOUT ─── */
+.main{max-width:1400px;margin:0 auto;padding:24px 20px 60px}
+
+/* ─── PANELS ─── */
+.panel{display:none}
+.panel.active{display:block}
+
+/* ─── SECTION CARD ─── */
+.sec-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:20px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.sec-head{background:linear-gradient(135deg,var(--navy2),var(--navy3));padding:14px 20px;display:flex;align-items:center;gap:10px}
+.sec-head .sh-icon{font-size:1.1rem}
+.sec-head h3{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:700;color:#fff;flex:1}
+.sec-head .sh-badge{font-size:.65rem;background:rgba(201,168,76,.2);border:1px solid var(--gold);color:var(--gold2);padding:3px 8px;border-radius:12px;letter-spacing:.05em}
+.sec-body{padding:20px}
+.sec-sub{font-size:.7rem;color:var(--scg-blue);font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin:16px 0 10px;border-bottom:1px dashed var(--border);padding-bottom:4px}
+.sec-sub:first-child{margin-top:0}
+
+/* ─── FORM GRID ─── */
+.fg{display:grid;gap:12px;margin-bottom:4px}
+.fg-4{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.fg-3{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.fg-2{grid-template-columns:1fr 1fr}
+.fg-1{grid-template-columns:1fr}
+.full{grid-column:1/-1}
+
+/* ─── FORM FIELDS ─── */
+.ff{display:flex;flex-direction:column;gap:4px}
+.ff label{font-size:.7rem;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:4px}
+.ff label .req{color:var(--red);font-size:.75rem}
+.ff label .tip{font-size:.65rem;color:#94a3b8;font-weight:400;text-transform:none;letter-spacing:0;margin-left:4px}
+.ff input,.ff select,.ff textarea{border:1.5px solid var(--border);border-radius:7px;padding:8px 11px;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--text);background:#fff;transition:.2s;width:100%}
+.ff input:focus,.ff select:focus,.ff textarea:focus{outline:none;border-color:var(--scg-blue);box-shadow:0 0 0 3px rgba(59,94,166,.1)}
+.ff input.err,.ff select.err{border-color:var(--red);box-shadow:0 0 0 3px rgba(220,38,38,.08)}
+.ff .err-msg{font-size:.68rem;color:var(--red);display:none}
+.ff input.err~.err-msg,.ff select.err~.err-msg{display:block}
+.ff textarea{resize:vertical;min-height:72px}
+.ff input[type=date]{color:#475569}
+.ff select option{color:var(--text)}
+.ff .field-hint{font-size:.68rem;color:#94a3b8;margin-top:2px}
+
+/* ─── DYNAMIC ROWS (firms, contacts, addresses) ─── */
+.dyn-table{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:10px}
+.dyn-table th{background:var(--navy2);color:#fff;padding:8px 10px;text-align:left;font-weight:600;font-size:.72rem;white-space:nowrap}
+.dyn-table td{border-bottom:1px solid var(--border);padding:6px 6px;vertical-align:middle}
+.dyn-table tr:hover td{background:#f8fafc}
+.dyn-table input,.dyn-table select{border:1px solid var(--border);border-radius:5px;padding:5px 7px;font-family:'DM Sans',sans-serif;font-size:.78rem;width:100%;background:#fff}
+.dyn-table input:focus,.dyn-table select:focus{outline:none;border-color:var(--scg-blue)}
+.btn-add-row{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border:1.5px dashed var(--scg-blue);color:var(--scg-blue);background:transparent;border-radius:6px;cursor:pointer;font-size:.75rem;font-weight:600;transition:.2s;margin-top:6px}
+.btn-add-row:hover{background:var(--accent)}
+.btn-del-row{background:none;border:none;cursor:pointer;color:#ef4444;font-size:.85rem;padding:2px 5px;border-radius:4px;transition:.2s}
+.btn-del-row:hover{background:#fee2e2}
+.dyn-wrap{overflow-x:auto}
+
+/* ─── CHECKBOX SERVICES GRID ─── */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.svc-item{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:7px;cursor:pointer;transition:.2s;background:#fff}
+.svc-item:hover{border-color:var(--scg-blue);background:var(--accent)}
+.svc-item input[type=checkbox]{margin-top:2px;accent-color:var(--scg-blue);width:14px;height:14px;flex-shrink:0}
+.svc-item label{font-size:.78rem;color:var(--text);cursor:pointer;line-height:1.4}
+.svc-item label .svc-sub{font-size:.68rem;color:#94a3b8;display:block}
+.svc-item.checked{border-color:var(--scg-blue);background:var(--accent)}
+
+/* ─── KYC ITEMS ─── */
+.kyc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.kyc-item{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.kyc-item .ki-label{font-size:.68rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:6px}
+.kyc-item .ki-label .ki-icon{font-size:.9rem}
+.kyc-item input{border:1px solid var(--border);border-radius:5px;padding:6px 9px;font-size:.82rem;width:100%;background:#fff;font-family:'DM Sans',sans-serif}
+.kyc-item input:focus{outline:none;border-color:var(--scg-blue)}
+.kyc-item .ki-status{display:flex;align-items:center;gap:6px;font-size:.68rem}
+.kyc-item .ki-status select{border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:.7rem;flex:1}
+.kyc-item .ki-status label{color:#64748b;white-space:nowrap}
+
+/* ─── ALERT ─── */
+.alert{padding:10px 16px;border-radius:8px;margin-bottom:14px;font-size:.82rem;display:none;align-items:center;gap:10px}
+.alert.success{background:#d1fae5;border:1px solid #6ee7b7;color:#065f46}
+.alert.error{background:#fee2e2;border:1px solid #fca5a5;color:#991b1b}
+.alert.info{background:var(--accent);border:1px solid #93c5fd;color:#1e40af}
+
+/* ─── SAVE STRIP ─── */
+.save-strip{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #6ee7b7;border-radius:8px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.save-strip .ss-text{font-size:.78rem;color:#065f46;font-weight:500}
+.save-strip .ss-time{font-size:.68rem;color:#64748b}
+
+/* ─── BUTTONS ─── */
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+.btn{padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.83rem;font-weight:600;transition:.2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.btn-primary{background:var(--scg-blue);color:#fff}
+.btn-primary:hover{background:#2d4a8a;transform:translateY(-1px);box-shadow:0 4px 14px rgba(59,94,166,.3)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);font-weight:700}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(201,168,76,.4)}
+.btn-success{background:var(--scg-green);color:#fff}
+.btn-success:hover{background:#357a2c}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:#475569}
+.btn-outline:hover{border-color:var(--scg-blue);color:var(--scg-blue);background:var(--accent)}
+.btn-danger{background:#fee2e2;color:var(--red);border:1px solid #fca5a5}
+.btn-danger:hover{background:var(--red);color:#fff}
+.btn-wa{background:#25D366;color:#fff}
+.btn-wa:hover{background:#1ebe5d}
+.btn-sm{padding:6px 13px;font-size:.74rem}
+
+/* ─── PDF PREVIEW (print) ─── */
+.pdf-preview{display:none}
+@media print{
+  nav,.step-nav-wrap,.progress-wrap,.save-strip,.btn-row,.btn,.alert,
+  .panel:not(.active),.step-nav,.hero-strip .hero-ref{display:none!important}
+  body{background:#fff;font-size:10pt;color:#000}
+  .panel.active{display:block!important}
+  .pdf-preview{display:block!important}
+  .sec-card{box-shadow:none;border:1px solid #ccc;page-break-inside:avoid;margin-bottom:12px}
+  .sec-head{background:#071220!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .dyn-table th{background:#071220!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .print-only{display:block!important}
+}
+.print-only{display:none}
+.pdf-header{text-align:center;padding:16px 0 20px;border-bottom:3px double #C9A84C;margin-bottom:20px}
+.pdf-header img{height:48px;margin-bottom:8px}
+.pdf-header h2{font-family:'Cormorant Garamond',serif;font-size:18pt;font-weight:700;color:#071220}
+.pdf-header p{font-size:9pt;color:#475569;margin-top:4px}
+.pdf-ref-box{background:#071220;color:#fff;text-align:center;padding:10px;margin-bottom:16px;border-radius:6px}
+.pdf-ref-box span{font-size:14pt;font-weight:700;color:#C9A84C;letter-spacing:.1em}
+
+/* ─── STEP 10: FINAL REVIEW ─── */
+.review-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.review-card{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:14px}
+.review-card h4{font-size:.82rem;font-weight:700;color:var(--navy2);margin-bottom:10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border);padding-bottom:6px}
+.review-card .rv-row{display:flex;gap:8px;margin-bottom:5px;font-size:.78rem}
+.review-card .rv-label{color:#64748b;min-width:120px;flex-shrink:0}
+.review-card .rv-value{color:var(--text);font-weight:500;word-break:break-word}
+.complete-check{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin:16px 0}
+.cc-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:6px;font-size:.78rem}
+.cc-item.ok{background:#d1fae5;color:#065f46}
+.cc-item.no{background:#fee2e2;color:#991b1b}
+.cc-item.warn{background:#fef3c7;color:#92400e}
+.submit-declaration{background:var(--accent);border:1px solid #93c5fd;border-radius:8px;padding:14px;margin:16px 0;font-size:.78rem;color:#1e40af;line-height:1.7}
+.submit-declaration strong{color:var(--navy2)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:640px){
+  .fg-4,.fg-3,.fg-2{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .hero-inner{flex-direction:column;align-items:flex-start}
+  .hero-ref{text-align:left}
+  .step-btn .s-text{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-brand">
+    <img src="../1 Logo Shiva Consultancy Group (Rakesh Jha) (1).jpg" alt="SCG" class="nav-logo">
+    <div class="nav-title">Shiva Consultancy Group<span>Financial Advisory Portal</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Hub</a>
+    <a href="client-master.html" class="active">Client Master</a>
+    <a href="service-requisition.html">Service Req</a>
+    <a href="service-agreement.html">Agreement</a>
+    <a href="loan-application.html">Loan App</a>
+    <a href="dpr-preparation.html">DPR</a>
+    <a href="cma-data.html">CMA</a>
+    <a href="bank-proposal.html">Bank Proposal</a>
+  </div>
+</nav>
+
+<!-- HERO STRIP -->
+<div class="hero-strip">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-icon">👤</div>
+      <div class="hero-text">
+        <h1>Client Master Record</h1>
+        <p>Complete permanent client profile — KYC, contacts, addresses, licenses, and services scope. Reference number is assigned on creation and used across all SCG applications.</p>
+      </div>
+    </div>
+    <div class="hero-ref">
+      <div class="ref-label">Client Reference Number</div>
+      <div class="ref-num" id="clientRef">Generating...</div>
+      <div class="ref-date" id="refDate"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP NAV -->
+<div class="step-nav-wrap">
+  <div class="step-nav" id="stepNav">
+    <button class="step-btn active" onclick="goStep(0)" id="sb0"><span class="s-num">1</span><span class="s-text">Origin & Source</span></button>
+    <button class="step-btn" onclick="goStep(1)" id="sb1"><span class="s-num">2</span><span class="s-text">Main Company</span></button>
+    <button class="step-btn" onclick="goStep(2)" id="sb2"><span class="s-num">3</span><span class="s-text">Group Firms</span></button>
+    <button class="step-btn" onclick="goStep(3)" id="sb3"><span class="s-num">4</span><span class="s-text">Key Contacts</span></button>
+    <button class="step-btn" onclick="goStep(4)" id="sb4"><span class="s-num">5</span><span class="s-text">Addresses</span></button>
+    <button class="step-btn" onclick="goStep(5)" id="sb5"><span class="s-num">6</span><span class="s-text">KYC & Licenses</span></button>
+    <button class="step-btn" onclick="goStep(6)" id="sb6"><span class="s-num">7</span><span class="s-text">Financial Profile</span></button>
+    <button class="step-btn" onclick="goStep(7)" id="sb7"><span class="s-num">8</span><span class="s-text">Services Scope</span></button>
+    <button class="step-btn" onclick="goStep(8)" id="sb8"><span class="s-num">9</span><span class="s-text">Internal Notes</span></button>
+    <button class="step-btn" onclick="goStep(9)" id="sb9"><span class="s-num">10</span><span class="s-text">Review & Submit</span></button>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" id="progFill" style="width:10%"></div></div>
+</div>
+
+<div class="main">
+<div id="mainAlert" class="alert"></div>
+
+<!-- ════════════════════════════════════════════
+     STEP 1 — Origin & Source
+════════════════════════════════════════════ -->
+<div class="panel active" id="p0">
+  <div class="sec-card">
+    <div class="sec-head"><span class="sh-icon">📋</span><h3>Origin & Source Details</h3><span class="sh-badge">Step 1 of 10</span></div>
+    <div class="sec-body">
+      <div class="sec-sub">Date & Source of Contact</div>
+      <div class="fg fg-4">
+        <div class="ff"><label>Date of First Contact <span class="req">*</span></label><input type="date" id="s1_dateContact" required></div>
+        <div class="ff"><label>Mode of Contact</label>
+          <select id="s1_modeContact">
+            <option value="">— Select —</option>
+            <option>Walk-in</option><option>Phone Call</option><option>WhatsApp</option>
+            <option>Email</option><option>Referral</option><option>DSA</option>
+            <option>Social Media</option><option>Website Enquiry</option><option>Exhibition / Event</option><option>Other</option>
+          </select>
+        </div>
+        <div class="ff"><label>Lead Source</label>
+          <select id="s1_leadSource">
+            <option value="">— Select —</option>
+            <option>Direct Client</option><option>Referral — Individual</option><option>DSA / Agent</option>
+            <option>CA / CS / Advocate</option><option>Bank Official</option><option>Existing Client</option>
+            <option>Online Campaign</option><option>Walk-in</option>
+          </select>
+        </div>
+        <div class="ff"><label>Priority Level</label>
+          <select id="s1_priority">
+            <option value="">— Select —</option>
+            <option>🔴 High — Immediate</option><option>🟡 Medium — Within 7 days</option><option>🟢 Low — Routine</option>
+          </select>
+        </div>
+      </div>
+      <div class="sec-sub">Referrer / DSA / Agent Details</div>
+      <div class="fg fg-4">
+        <div class="ff"><label>Referrer / DSA Name</label><input type="text" id="s1_dsa_name" placeholder="Full Name"></div>
+        <div class="ff"><label>Referrer Code / ID</label><input type="text" id="s1_dsa_code" placeholder="DSA-XXXX"></div>
+        <div class="ff"><label>Referrer Mobile</label><input type="tel" id="s1_dsa_mobile" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="ff"><label>Referrer Email</label><input type="email" id="s1_dsa_email" placeholder="email@domain.com"></div>
+        <div class="ff"><label>Referrer Firm / Company</label><input type="text" id="s1_dsa_firm" placeholder="Firm or Agency Name"></div>
+        <div class="ff"><label>Commission % / Arrangement</label><input type="text" id="s1_dsa_comm" placeholder="e.g. 10% of fee"></div>
+      </div>
+      <div class="sec-sub">Assigned SCG Official</div>
+      <div class="fg fg-4">
+        <div class="ff"><label>Relationship Manager <span class="req">*</span></label><input type="text" id="s1_rm_name" placeholder="Name of SCG Official" required></div>
+        <div class="ff"><label>RM Employee Code</label><input type="text" id="s1_rm_code" placeholder="EMP-XXXX"></div>
+        <div class="ff"><label>RM Mobile</label><input type="tel" id="s1_rm_mobile" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="ff"><label>RM Email</label><input type="email" id="s1_rm_email" placeholder="rm@scg.com"></div>
+        <div class="ff full"><label>Initial Enquiry / Requirement Summary <span class="tip">(brief, in your words)</span></label><textarea id="s1_enquiry" rows="3" placeholder="What did the client enquire about? What is their immediate need? What is the estimated loan / service requirement?"></textarea></div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <div></div>
+    <button class="btn btn-primary" onclick="saveAndNext(0)">Save & Next: Main Company →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     STEP 2 — Main Company
+════════════════════════════════════════════ -->
+<div class="panel" id="p1">
+  <div class="sec-card">
+    <div class="sec-head"><span class="sh-icon">🏢</span><h3>Main Company Details</h3><span class="sh-badge">Step 2 of 10</span></div>
+    <div class="sec-body">
+      <div class="sec-sub">Company Identity</div>
+      <div class="fg fg-3">
+        <div class="ff full"><label>Company / Firm Name <span class="req">*</span></label><input type="text" id="s2_co_name" placeholder="M/s ABC Industries Private Limited" required></div>
+        <div class="ff"><label>Constitution / Type <span class="req">*</span></label>
+          <select id="s2_constitution" required>
+            <option value="">— Select —</option>
+            <option>Private Limited Company</option><option>Public Limited Company</option>
+            <option>One Person Company (OPC)</option><option>Proprietorship Firm</option>
+            <option>Partnership Firm</option><option>Limited Liability Partnership (LLP)</option>
+            <option>Trust</option><option>Society / NGO</option><option>Co-operative Society</option>
+            <option>HUF (Hindu Undivided Family)</option><option>Government Enterprise</option><option>Other</option>
+          </select>
+        </div>
+        <div class="ff"><label>Date of Incorporation / Registration</label><input type="date" id="s2_dob"></div>
+        <div class="ff"><label>Industry / Sector</label><input type="text" id="s2_industry" placeholder="e.g. Manufacturing – Textiles"></div>
+        <div class="ff"><label>Nature of Business</label><input type="text" id="s2_nature" placeholder="e.g. Manufacture of cotton yarn"></div>
+        <div class="ff"><label>NIC Code</label><input type="text" id="s2_nic" placeholder="e.g. 13111"></div>
+      </div>
+      <div class="sec-sub">Registration Numbers</div>
+      <div class="fg fg-4">
+        <div class="ff"><label>PAN (Company / Firm)</label><input type="text" id="s2_pan" maxlength="10" placeholder="AABCC1234D" style="text-transform:uppercase"></div>
+        <div class="ff"><label>GSTIN</label><input type="text" id="s2_gst" maxlength="15" placeholder="24AABCC1234D1Z5" style="text-transform:uppercase"></div>
+        <div class="ff"><label>CIN (Companies only)</label><input type="text" id="s2_cin" placeholder="U12345GJ2018PTC100000" style="text-transform:uppercase"></div>
+        <div class="ff"><label>UDYAM / MSME Reg No.</label><input type="text" id="s2_udyam" placeholder="UDYAM-GJ-XX-XXXXXXX" style="text-transform:uppercase"></div>
+        <div class="ff"><label>IEC (Import Export Code)</label><input type="text" id="s2_iec" placeholder="AABCC1234" style="text-transform:uppercase"></div>
+        <div class="ff"><label>ROC File No.</label><input type="text" id="s2_roc" placeholder="As per RoC records"></div>
+        <div class="ff"><label>LLPIN (LLP only)</label><input type="text" id="s2_llpin" placeholder="AABCC1234" style="text-transform:uppercase"></div>
+        <div class="ff"><label>TAN</label><input type="text" id="s2_tan" placeholder="ABAD12345A" style="text-transform:uppercase"></div>
+      </div>
+      <div class="sec-sub">Company Contact</div>
+      <div class="fg fg-4">
+        <div class="ff"><label>Official Phone</label><input type="tel" id="s2_phone" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="ff"><label>Official Email</label><input type="email" id="s2_email" placeholder="info@company.com"></div>
+        <div class="ff"><label>Website</label><input type="url" id="s2_website" placeholder="https://www.company.com"></div>
+        <div class="ff"><label>WhatsApp Business</label><input type="tel" id="s2_wa" placeholder="+91 XXXXX XXXXX"></div>
+      </div>
+      <div class="sec-sub">Business Description</div>
+      <div class="fg fg-1">
+        <div class="ff"><label>Brief Description of Business <span class="tip">(Products / Services / Operations)</span></label><textarea id="s2_desc" rows="3" placeholder="Brief description of what the company does, its products/services, major customers, markets served..."></textarea></div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-outline" onclick="goStep(0)">← Back</button>
+    <button class="btn btn-primary" onclick="saveAndNext(1)">Save & Next: Group Firms →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     STEP 3 — Group Firms
+════════════════════════════════════════════ -->
+<div class="panel" id="p2">
+  <div class="sec-card">
+    <div class="sec-head"><span class="sh-icon">🏭</span><h3>Group Companies / Associated Firms</h3><span class="sh-badge">Step 3 of 10</span></div>
+    <div class="sec-body">
+      <div class="alert info" id="grpInfo" style="display:flex">ℹ️ Add all sister concerns, associate companies, group entities, proprietorship firms, partnership firms of the promoters / directors. This helps in complete credit assessment.</div>
+      <div class="dyn-wrap">
+        <table class="dyn-table" id="grpTable">
+          <thead>
+            <tr>
+              <th>#</th><th style="min-width:180px">Firm / Company Name</th>
+              <th style="min-width:130px">Constitution</th>
+              <th style="min-width:110px">PAN</th>
+              <th style="min-width:130px">GSTIN</th>
+              <th style="min-width:110px">CIN / Reg No.</th>
+              <th style="min-width:130px">Nature of Business</th>
+              <th style="min-width:110px">Relationship</th>
+              <th style="min-width:100px">Turnover (₹L)</th>
+              <th>Act?</th>
+            </tr>
+          </thead>
+          <tbody id="grpBody"></tbody>
+        </table>
+      </div>
+      <button class="btn-add-row" onclick="addGrpRow()">+ Add Firm / Company</button>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-outline" onclick="goStep(1)">← Back</button>
+    <button class="btn btn-primary" onclick="saveAndNext(2)">Save & Next: Key Contacts →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     STEP 4 — Key Contacts
+════════════════════════════════════════════ -->
+<div class="panel" id="p3">
+  <!-- Primary Promoter / Owner -->
+  <div class="sec-card">
+    <div class="sec-head"><span class="sh-icon">👤</span><h3>Primary Contact Person — Promoter / Owner</h3><span class="sh-badge">Step 4 of 10</span></div>
+    <div class="sec-body">
+      <div class="fg fg-4">
+        <div class="ff"><label>Full Name <span class="req">*</span></label><input type="text" id="s4_p1_name" placeholder="As per PAN Card" required></div>
+        <div class="ff"><label>Salutation</label><select id="s4_p1_sal"><option>Mr.</option><option>Ms.</option><option>Mrs.</option><option>Dr.</option><option>CA</option><option>CS</option><option>Adv.</option></select></div>
+        <div class="ff"><label>Designation / Role</label><input type="text" id="s4_p1_desig" placeholder="e.g. Managing Director"></div>
+        <div class="ff"><label>Date of Birth</label><input type="date" id="s4_p1_dob"></div>
+        <div class="ff"><label>Mobile <span class="req">*</span></label><input type="tel" id="s4_p1_mobile" placeholder="+91 XXXXX XXXXX" required></div>
+        <div class="ff"><label>WhatsApp</label><input type="tel" id="s4_p1_wa" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="ff"><label>Email <span class="req">*</span></label><input type="email" id="s4_p1_email" placeholder="promoter@company.com" required></div>
+        <div class="ff"><label>Alternate Email</label><input type="email" id="s4_p1_email2" placeholder="personal@gmail.com"></div>
+        <div class="ff"><label>PAN (Individual)</label><input type="text" id="s4_p1_pan" maxlength="10" placeholder="ABCDE1234F" style="text-transform:uppercase"></div>
+        <div class="ff"><label>Aadhaar (last 4 digits)</label><input type="text" id="s4_p1_aadhar" maxlength="4" placeholder="XXXX"></div>
+        <div class="ff"><label>DIN (Director ID)</label><input type="text" id="s4_p1_din" placeholder="00000000"></div>
+        <div class="ff"><label>Net Worth (₹ Lakhs)</label><input type="number" id="s4_p1_nw" placeholder="0.00"></div>
+        <div class="ff"><label>Shareholding %</label><input type="number" id="s4_p1_sh" placeholder="0.00" min="0" max="100"></div>
+        <div class="ff"><label>Qualification</label><input type="text" id="s4_p1_qual" placeholder="e.g. B.Tech, MBA"></div>
+        <div class="ff"><label>Experience (Years)</label><input type="number" id="s4_p1_exp" placeholder="0"></div>
+        <div class="ff"><label>LinkedIn / Social</label><input type="url" id="s4_p1_linkedin" placeholder="https://linkedin.com/in/..."></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other Key Contacts (dynamic) -->
+  <div class="sec-card" style="margin-top:16px">
+    <div class="sec-head"><span class="sh-icon">👥</span><h3>Other Important Contacts</h3></div>
+    <div class="sec-body">
+      <div class="dyn-wrap">
+        <table class="dyn-table" id="conTable">
+          <thead>
+            <tr><th>#</th><th style="min-width:150px">Full Name</th><th style="min-width:120px">Designation</th><th style="min-width:110px">Mobile</th><th style="min-width:110px">WhatsApp</th><th style="min-width:160px">Email</th><th style="min-width:100px">Role / Relation</th><th>PAN</th><th>Act?</th></tr>
+          </thead>
+          <tbody id="conBody"></tbody>
+        </table>
+      </div>
+      <button class="btn-add-row" onclick="addConRow()">+ Add Contact Person</button>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-outline" onclick="goStep(2)">← Back</button>
+    <button class="btn btn-primary" onclick="saveAndNext(3)">Save & Next: Addresses →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     STEP 5 — Addresses
+════════════════════════════════════════════ -->
+<div class="panel" id="p4">
+  <div class="sec-card">
+    <div class="sec-head"><span class="sh-icon">📍</span><h3>Addresses</h3><span class="sh-badge">Step 5 of 10</span></div>
+    <div class="sec-body">
+      <div id="addrBlocks"></div>
+      <button class="btn-add-row" onclick="addAddrBlock()">+ Add Another Address</button>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-outline" onclick="goStep(3)">← Back</button>
+    <button class="btn btn-primary" onclick="saveAndNext(4)">Save & Next: KYC & Licenses →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     STEP 6 — KYC & Licenses
+════════════════════════════════════════════ -->
+<div class="panel" id="p5">
+  <div class="sec-card">
+    <div class="sec-head"><span class="sh-icon">📑</span><h3>KYC Documents — Company</h3><span class="sh-badge">Step 6 of 10</span></div>
+    <div class="sec-body">
+      <div class="kyc-grid" id="kycCompanyGrid"></div>
+    </div>
+  </div>
+  <div class="sec-card" style="margin-top:16px">
+    <div class="sec-head"><span class="sh-icon">🪪</span><h3>KYC Documents — Promoter / Directors</h3></div>
+    <div class="sec-body">
+      <div class="kyc-grid" id="kycPromoterGrid"></div>
+    </div>
+  </div>
+  <div class="sec-card" style="margin-top:16px">
+    <div class="sec-head"><span class="sh-icon">📜</span><h3>Licenses, Certifications & Approvals</h3></div>
+    <div class="sec-body">
+      <div class="dyn-wrap">
+        <table class="dyn-table" id="licTable">
+          <thead><tr><th>#</th><th style="min-width:160px">License / Certificate Name</th><th style="min-width:120px">License No.</th><th style="min-width:110px">Issuing Authority</th><th style="min-width:100px">Issue Date</th><th style="min-width:100px">Expiry Date</th><th style="min-width:80px">Status</th><th>Remarks</th><th>Act?</th></tr></thead>
+          <tbody id="licBody"></tbody>
+        </table>
+      </div>
+      <button class="btn-add-row" onclick="addLicRow()">+ Add License / Certificate</button>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-outline" onclick="goStep(4)">← Back</button>
+    <button class="btn btn-primary" onclick="saveAndNext(5)">Save & Next: Financial Profile →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     STEP 7 — Financial Profile
+════════════════════════════════════════════ -->
+<div class="panel" id="p6">
+  <div class="sec-card">
+    <div class="sec-head"><span class="sh-icon">💹</span><h3>Financial Profile & Banking</h3><span class="sh-badge">Step 7 of 10</span></div>
+    <div class="sec-body">
+      <div class="sec-sub">Existing Banking</div>
+      <div class="dyn-wrap">
+        <table class="dyn-table" id="bankTable">
+          <thead><tr><th>#</th><th style="min-width:160px">Bank Name</th><th style="min-width:140px">Branch</th><th style="min-width:130px">Account No.</th><th style="min-width:80px">Type</th><th style="min-width:100px">Sanctioned Limit (₹L)</th><th style="min-width:100px">Outstanding (₹L)</th><th style="min-width:80px">Account Status</th><th>Act?</th></tr></thead>
+          <tbody id="bankBody"></tbody>
+        </table>
+      </div>
+      <button class="btn-add-row" onclick="addBankRow()">+ Add Bank Account</button>
+      <div class="sec-sub" style="margin-top:20px">Financial Snapshot (Last 3 Years — ₹ in Lakhs)</div>
+      <div style="overflow-x:auto">
+        <table class="dyn-table" style="min-width:700px">
+          <thead><tr><th>Parameter</th><th>Year 1 (₹L)</th><th>Year 2 (₹L)</th><th>Year 3 (₹L)</th><th>Remarks</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:600;background:#f8fafc">Net Sales / Turnover</td><td><input class="cell-input" id="fin_sales_1" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_sales_2" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_sales_3" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_sales_rem" placeholder="trend / notes"></td></tr>
+            <tr><td style="font-weight:600;background:#f8fafc">Gross Profit</td><td><input class="cell-input" id="fin_gp_1" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_gp_2" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_gp_3" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_gp_rem" placeholder=""></td></tr>
+            <tr><td style="font-weight:600;background:#f8fafc">EBITDA</td><td><input class="cell-input" id="fin_ebitda_1" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_ebitda_2" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_ebitda_3" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_ebitda_rem" placeholder=""></td></tr>
+            <tr><td style="font-weight:600;background:#f8fafc">Net Profit (PAT)</td><td><input class="cell-input" id="fin_pat_1" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_pat_2" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_pat_3" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_pat_rem" placeholder=""></td></tr>
+            <tr><td style="font-weight:600;background:#f8fafc">Total Capital / Net Worth</td><td><input class="cell-input" id="fin_cap_1" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_cap_2" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_cap_3" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_cap_rem" placeholder=""></td></tr>
+            <tr><td style="font-weight:600;background:#f8fafc">Total Liabilities</td><td><input class="cell-input" id="fin_liab_1" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_liab_2" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_liab_3" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_liab_rem" placeholder=""></td></tr>
+            <tr><td style="font-weight:600;background:#f8fafc">Total Assets</td><td><input class="cell-input" id="fin_asset_1" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_asset_2" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_asset_3" type="number" placeholder="0.00"></td><td><input class="cell-input" id="fin_asset_rem" placeholder=""></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sec-sub" style="margin-top:20px">Credit Health</div>
+      <div class="fg fg-4">
+        <div class="ff"><label>CIBIL Score (Company)</label><input type="number" id="fin_cibil_co" placeholder="300–900" min="0" max="900"></div>
+        <div class="ff"><label>CIBIL Score (Promoter)</label><input type="number" id="fin_cibil_pr" placeholder="300–900" min="0" max="900"></div>
+        <div class="ff"><label>NPA / Overdue Status</label>
+          <select id="fin_npa">
+            <option value="">— Select —</option>
+            <option>Standard — No Overdue</option><option>Special Mention Account (SMA-0)</option>
+            <option>SMA-1 (31–60 days)</option><option>SMA-2 (61–90 days)</option>
+            <option>NPA — Sub-Standard</option><option>NPA — Doubtful</option><option>NPA — Loss Asset</option>
+            <option>Settled / OTS Done</option><option>NCLT / IBC Proceedings</option>
+          </select>
+        </div>
+        <div class="ff"><label>SARFAESI Notice Received?</label>
+          <select id="fin_sarfaesi"><option value="">— Select —</option><option>No</option><option>Yes — Section 13(2)</option><option>Yes — Section 13(4) Possession</option></select>
+        </div>
+        <div class="ff full"><label>Remarks on Credit Status</label><textarea id="fin_credit_rem" rows="2" placeholder="Any overdue, defaults, restructuring, settlement history..."></textarea></div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-outline" onclick="goStep(5)">← Back</button>
+    <button class="btn btn-primary" onclick="saveAndNext(6)">Save & Next: Services Scope →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     STEP 8 — Services Scope
+════════════════════════════════════════════ -->
+<div class="panel" id="p7">
+  <div class="sec-card">
+    <div class="sec-head"><span class="sh-icon">🎯</span><h3>Services Requested & Scope Defined</h3><span class="sh-badge">Step 8 of 10</span></div>
+    <div class="sec-body">
+      <div class="sec-sub">Primary Services Requested by Client</div>
+      <div class="alert info" style="display:flex;margin-bottom:12px">ℹ️ Select all services the client has asked for. Additional services can be added after meeting.</div>
+      <div id="svcGrid" class="svc-grid"></div>
+      <div class="sec-sub" style="margin-top:20px">Scope Defined by SCG (Post Meeting)</div>
+      <div class="fg fg-2">
+        <div class="ff"><label>Date of Client Meeting</label><input type="date" id="s8_meet_date"></div>
+        <div class="ff"><label>Meeting Type</label>
+          <select id="s8_meet_type"><option value="">— Select —</option><option>Office Meeting</option><option>Factory Visit</option><option>Video Call</option><option>Phone Discussion</option><option>Bank Premises</option></select>
+        </div>
+        <div class="ff full"><label>Scope of Services — as defined by SCG after meeting</label><textarea id="s8_scope" rows="4" placeholder="Detailed scope of advisory mandate as discussed and agreed in meeting. Include all sub-tasks, milestones, deliverables..."></textarea></div>
+        <div class="ff"><label>Estimated Fee (₹)</label><input type="number" id="s8_fee" placeholder="0.00"></div>
+        <div class="ff"><label>Expected Completion (months)</label><input type="number" id="s8_months" placeholder="3" min="1" max="60"></div>
+        <div class="ff full"><label>Additional Remarks / Special Instructions</label><textarea id="s8_remarks" rows="2" placeholder="Any special notes, conditions, commitments, follow-up actions..."></textarea></div>
+      </div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-outline" onclick="goStep(6)">← Back</button>
+    <button class="btn btn-primary" onclick="saveAndNext(7)">Save & Next: Internal Notes →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     STEP 9 — Internal Notes
+════════════════════════════════════════════ -->
+<div class="panel" id="p8">
+  <div class="sec-card">
+    <div class="sec-head"><span class="sh-icon">📝</span><h3>Internal Notes & Follow-up</h3><span class="sh-badge">Step 9 of 10</span></div>
+    <div class="sec-body">
+      <div class="alert info" style="display:flex;margin-bottom:14px">🔒 This section is for internal SCG use only. Not printed in client-facing documents.</div>
+      <div class="fg fg-2">
+        <div class="ff full"><label>Confidential Assessment by RM</label><textarea id="s9_assess" rows="3" placeholder="Internal assessment: promoter credibility, business viability, likelihood of conversion, concerns, strengths..."></textarea></div>
+        <div class="ff full"><label>Risk Flags / Concerns</label><textarea id="s9_risk" rows="2" placeholder="Any red flags, credit concerns, legal issues, regulatory issues, court cases, disputed assets..."></textarea></div>
+      </div>
+      <div class="sec-sub">Follow-up Schedule</div>
+      <div class="dyn-wrap">
+        <table class="dyn-table" id="fuTable">
+          <thead><tr><th>#</th><th style="min-width:100px">Follow-up Date</th><th style="min-width:80px">Time</th><th style="min-width:100px">Type</th><th style="min-width:200px">Purpose / Agenda</th><th style="min-width:80px">Assigned To</th><th style="min-width:80px">Status</th><th>Act?</th></tr></thead>
+          <tbody id="fuBody"></tbody>
+        </table>
+      </div>
+      <button class="btn-add-row" onclick="addFuRow()">+ Add Follow-up</button>
+      <div class="sec-sub" style="margin-top:18px">Document Checklist</div>
+      <div id="docChecklist" class="svc-grid" style="margin-top:8px"></div>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-outline" onclick="goStep(7)">← Back</button>
+    <button class="btn btn-primary" onclick="saveAndNext(8)">Save & Review →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     STEP 10 — Review & Submit
+════════════════════════════════════════════ -->
+<div class="panel" id="p9">
+  <div class="sec-card">
+    <div class="sec-head"><span class="sh-icon">✅</span><h3>Review & Final Submission</h3><span class="sh-badge">Step 10 of 10</span></div>
+    <div class="sec-body">
+      <div id="completenessDiv" class="complete-check"></div>
+      <div id="reviewDiv" class="review-grid" style="margin-top:16px"></div>
+      <div class="submit-declaration">
+        <strong>Declaration:</strong> I / We hereby confirm that all the information provided in this Client Master form is true, correct and complete to the best of my / our knowledge and belief. I / We authorise Shiva Consultancy Group (SCG) to use this information for providing advisory and consultancy services as requested. This record shall remain confidential and will be used only for the purpose of rendering professional services. Any modification will be recorded with timestamp and user details.
+      </div>
+      <div class="fg fg-3">
+        <div class="ff"><label>Authorised By (SCG Official)</label><input type="text" id="sub_auth" value="Shiva Consultancy Group, Ahmedabad"></div>
+        <div class="ff"><label>Submission Date</label><input type="date" id="sub_date"></div>
+        <div class="ff"><label>Version</label><input type="text" id="sub_ver" value="1.0 — Initial"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="btn-row" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-top:16px;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-outline" onclick="goStep(8)">← Back</button>
+      <button class="btn btn-outline" onclick="exportJSON()">📁 Export JSON</button>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-gold" onclick="generatePDF()">🖨️ Generate & Print PDF</button>
+      <button class="btn btn-wa" onclick="sendWhatsApp()">📲 Share via WhatsApp</button>
+      <button class="btn btn-success btn-lg" onclick="submitMaster()" style="padding:10px 28px;font-size:.9rem">✅ Submit & Save Client Master</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- ══════════════════════════════════════════
+     PRINT-ONLY PDF OUTPUT
+══════════════════════════════════════════ -->
+<div class="pdf-preview print-only" id="pdfOutput"></div>
+
+<style>
+.cell-input{border:1px solid var(--border);border-radius:4px;padding:4px 6px;width:100%;font-family:'DM Sans',sans-serif;font-size:.8rem;background:#fff}
+.cell-input:focus{outline:none;border-color:var(--scg-blue)}
+</style>
+
+<script>
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+let clientRef = '', currentStep = 0, savedSteps = new Set();
+
+function generateRef(){
+  const d = new Date();
+  const dt = String(d.getFullYear()) + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
+  clientRef = 'SCG-CLT-' + dt + '-' + Math.floor(1000 + Math.random()*9000);
+  document.getElementById('clientRef').textContent = clientRef;
+  document.getElementById('refDate').textContent = 'Created: ' + d.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+}
+generateRef();
+document.getElementById('sub_date').value = new Date().toISOString().split('T')[0];
+document.getElementById('s1_dateContact').value = new Date().toISOString().split('T')[0];
+
+// ══════════════════════════════════════════════
+// STEP NAVIGATION
+// ══════════════════════════════════════════════
+function goStep(i){
+  document.querySelectorAll('.panel').forEach((p,idx)=>p.classList.toggle('active', idx===i));
+  document.querySelectorAll('.step-btn').forEach((b,idx)=>{
+    b.classList.remove('active','done');
+    if(idx < i && savedSteps.has(idx)) b.classList.add('done');
+    if(idx === i) b.classList.add('active');
+  });
+  currentStep = i;
+  document.getElementById('progFill').style.width = ((i+1)/10*100) + '%';
+  window.scrollTo({top:0, behavior:'smooth'});
+  if(i === 9) buildReview();
+}
+
+function saveAndNext(stepIdx){
+  if(!validateStep(stepIdx)){ showAlert('error','Please fill required fields before proceeding.'); return; }
+  autoSaveDraft();
+  savedSteps.add(stepIdx);
+  showAlert('success', 'Step ' + (stepIdx+1) + ' saved successfully.');
+  setTimeout(()=>goStep(stepIdx+1), 600);
+}
+
+// ══════════════════════════════════════════════
+// VALIDATION
+// ══════════════════════════════════════════════
+const required = {
+  0: ['s1_dateContact','s1_rm_name'],
+  1: ['s2_co_name','s2_constitution'],
+  3: ['s4_p1_name','s4_p1_mobile','s4_p1_email']
+};
+function validateStep(i){
+  const fields = required[i] || [];
+  let ok = true;
+  fields.forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.classList.remove('err');
+    if(!el.value.trim()){ el.classList.add('err'); ok = false; }
+  });
+  return ok;
+}
+
+// ══════════════════════════════════════════════
+// DYNAMIC ROWS
+// ══════════════════════════════════════════════
+let grpCount=0, conCount=0, bankCount=0, licCount=0, fuCount=0;
+
+function addGrpRow(){
+  grpCount++;
+  const id = 'grp_'+grpCount;
+  const tr = document.createElement('tr');
+  tr.id = id;
+  tr.innerHTML = `<td style="text-align:center;color:#94a3b8">${grpCount}</td>
+    <td><input placeholder="Firm Name"></td>
+    <td><select><option>Pvt Ltd</option><option>Public Ltd</option><option>Proprietorship</option><option>Partnership</option><option>LLP</option><option>Trust</option></select></td>
+    <td><input placeholder="PANXXXXXXXX" style="text-transform:uppercase"></td>
+    <td><input placeholder="27PANXXXXX1Z5" style="text-transform:uppercase"></td>
+    <td><input placeholder="CIN / Reg No."></td>
+    <td><input placeholder="Nature of Business"></td>
+    <td><select><option>Sister Concern</option><option>Holding Company</option><option>Subsidiary</option><option>Associate</option><option>Promoter Firm</option><option>Other</option></select></td>
+    <td><input type="number" placeholder="0.00"></td>
+    <td><button class="btn-del-row" onclick="delRow('${id}')">✕</button></td>`;
+  document.getElementById('grpBody').appendChild(tr);
+}
+
+function addConRow(){
+  conCount++;
+  const id = 'con_'+conCount;
+  const tr = document.createElement('tr');
+  tr.id = id;
+  tr.innerHTML = `<td style="text-align:center;color:#94a3b8">${conCount}</td>
+    <td><input placeholder="Full Name"></td>
+    <td><input placeholder="Designation"></td>
+    <td><input type="tel" placeholder="+91 XXXXX"></td>
+    <td><input type="tel" placeholder="+91 XXXXX"></td>
+    <td><input type="email" placeholder="email@domain.com"></td>
+    <td><select><option>Director</option><option>CA / Auditor</option><option>CS</option><option>Advocate</option><option>Accountant</option><option>Operations Head</option><option>Family Member</option><option>Other</option></select></td>
+    <td><input placeholder="PAN" style="text-transform:uppercase" maxlength="10"></td>
+    <td><button class="btn-del-row" onclick="delRow('${id}')">✕</button></td>`;
+  document.getElementById('conBody').appendChild(tr);
+}
+
+function addBankRow(){
+  bankCount++;
+  const id = 'bank_'+bankCount;
+  const tr = document.createElement('tr');
+  tr.id = id;
+  tr.innerHTML = `<td style="text-align:center;color:#94a3b8">${bankCount}</td>
+    <td><input placeholder="e.g. State Bank of India"></td>
+    <td><input placeholder="Branch Name, City"></td>
+    <td><input placeholder="Account Number"></td>
+    <td><select><option>CC / OD</option><option>Term Loan</option><option>Current Account</option><option>WCDL</option><option>Letter of Credit</option><option>Bank Guarantee</option><option>Other</option></select></td>
+    <td><input type="number" placeholder="0.00"></td>
+    <td><input type="number" placeholder="0.00"></td>
+    <td><select><option>Standard</option><option>SMA-0</option><option>SMA-1</option><option>SMA-2</option><option>NPA</option><option>Settled</option></select></td>
+    <td><button class="btn-del-row" onclick="delRow('${id}')">✕</button></td>`;
+  document.getElementById('bankBody').appendChild(tr);
+}
+
+function addLicRow(){
+  licCount++;
+  const id = 'lic_'+licCount;
+  const tr = document.createElement('tr');
+  tr.id = id;
+  tr.innerHTML = `<td style="text-align:center;color:#94a3b8">${licCount}</td>
+    <td><input placeholder="e.g. Factory License, FSSAI"></td>
+    <td><input placeholder="License No."></td>
+    <td><input placeholder="e.g. GPCB, MoEF"></td>
+    <td><input type="date"></td>
+    <td><input type="date"></td>
+    <td><select><option>Active</option><option>Expired</option><option>Applied</option><option>Renewal Due</option></select></td>
+    <td><input placeholder="Notes"></td>
+    <td><button class="btn-del-row" onclick="delRow('${id}')">✕</button></td>`;
+  document.getElementById('licBody').appendChild(tr);
+}
+
+function addFuRow(){
+  fuCount++;
+  const id = 'fu_'+fuCount;
+  const tr = document.createElement('tr');
+  tr.id = id;
+  tr.innerHTML = `<td style="text-align:center;color:#94a3b8">${fuCount}</td>
+    <td><input type="date"></td>
+    <td><input type="time"></td>
+    <td><select><option>Phone Call</option><option>Meeting</option><option>Email</option><option>WhatsApp</option><option>Site Visit</option></select></td>
+    <td><input placeholder="Purpose / agenda of follow-up"></td>
+    <td><input placeholder="RM Name"></td>
+    <td><select><option>Scheduled</option><option>Completed</option><option>Rescheduled</option><option>Pending</option></select></td>
+    <td><button class="btn-del-row" onclick="delRow('${id}')">✕</button></td>`;
+  document.getElementById('fuBody').appendChild(tr);
+}
+
+function delRow(id){ const el = document.getElementById(id); if(el) el.remove(); }
+
+// ══════════════════════════════════════════════
+// ADDRESS BLOCKS (dynamic)
+// ══════════════════════════════════════════════
+let addrCount = 0;
+const addrTypes = ['Registered Office','Contact / Correspondence Office','Factory / Works','Corporate Office','Warehouse / Godown','Branch Office','Promoter Residence'];
+
+function addAddrBlock(type){
+  addrCount++;
+  const selType = type || addrTypes[Math.min(addrCount-1, addrTypes.length-1)];
+  const div = document.createElement('div');
+  div.className = 'sec-card';
+  div.id = 'addr_'+addrCount;
+  div.style.marginBottom = '14px';
+  div.innerHTML = `
+    <div class="sec-head" style="padding:10px 16px">
+      <span class="sh-icon">📍</span>
+      <h3 style="font-size:.95rem">${selType}</h3>
+      ${addrCount > 1 ? `<button onclick="document.getElementById('addr_${addrCount}').remove()" class="btn btn-danger btn-sm" style="margin-left:auto">✕ Remove</button>` : ''}
+    </div>
+    <div class="sec-body">
+      <div class="fg fg-4">
+        <div class="ff"><label>Address Type</label>
+          <select id="at_${addrCount}">
+            ${addrTypes.map(t=>`<option${t===selType?' selected':''}>${t}</option>`).join('')}
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="ff full" style="grid-column:span 3"><label>Address Line 1 — Building, Plot, Road</label><input type="text" id="a1_${addrCount}" placeholder="Plot No. / Building Name / Road"></div>
+        <div class="ff full"><label>Address Line 2 — Area / Locality</label><input type="text" id="a2_${addrCount}" placeholder="Area / Locality / Village / Industrial Estate"></div>
+        <div class="ff"><label>City / Town</label><input type="text" id="ac_${addrCount}" placeholder="City Name"></div>
+        <div class="ff"><label>District</label><input type="text" id="ad_${addrCount}" placeholder="District Name"></div>
+        <div class="ff"><label>State</label>
+          <select id="ast_${addrCount}">
+            ${['Gujarat','Maharashtra','Rajasthan','Madhya Pradesh','Uttar Pradesh','Delhi','Punjab','Haryana','Telangana','Karnataka','Tamil Nadu','West Bengal','Andhra Pradesh','Kerala','Odisha','Chhattisgarh','Jharkhand','Bihar','Assam','Other'].map(s=>`<option>${s}</option>`).join('')}
+          </select>
+        </div>
+        <div class="ff"><label>PIN Code</label><input type="text" id="apin_${addrCount}" maxlength="6" placeholder="XXXXXX"></div>
+        <div class="ff"><label>Phone at this Address</label><input type="tel" id="aph_${addrCount}" placeholder="+91 XXXXX XXXXX"></div>
+        <div class="ff"><label>GST Registration at this Address?</label>
+          <select id="agst_${addrCount}"><option>Yes</option><option>No</option></select>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('addrBlocks').appendChild(div);
+}
+addAddrBlock('Registered Office');
+addAddrBlock('Contact / Correspondence Office');
+
+// ══════════════════════════════════════════════
+// KYC GRIDS
+// ══════════════════════════════════════════════
+const kycCompanyItems = [
+  {icon:'🪪',label:'PAN Card (Company)',id:'kyc_co_pan',status:true},
+  {icon:'📋',label:'Certificate of Incorporation',id:'kyc_co_coi',status:true},
+  {icon:'📝',label:'MOA / AOA / Partnership Deed',id:'kyc_co_moa',status:true},
+  {icon:'🏭',label:'GSTIN Certificate',id:'kyc_co_gst',status:true},
+  {icon:'🏢',label:'UDYAM Registration',id:'kyc_co_udyam',status:true},
+  {icon:'🌍',label:'Import Export Code (IEC)',id:'kyc_co_iec',status:false},
+  {icon:'🔑',label:'TAN Certificate',id:'kyc_co_tan',status:false},
+  {icon:'📊',label:'Board Resolution',id:'kyc_co_br',status:true},
+  {icon:'📑',label:'Last 3 Years ITR',id:'kyc_co_itr',status:true},
+  {icon:'📈',label:'Last 3 Years Audited Balance Sheet',id:'kyc_co_bs',status:true},
+  {icon:'🏛️',label:'Last 6 Months Bank Statement',id:'kyc_co_bank',status:true},
+  {icon:'📜',label:'Ownership / Title Deed of Property',id:'kyc_co_prop',status:false},
+];
+const kycPromoterItems = [
+  {icon:'🪪',label:'PAN Card (Promoter)',id:'kyc_pr_pan',status:true},
+  {icon:'🆔',label:'Aadhaar Card',id:'kyc_pr_aadhar',status:true},
+  {icon:'📷',label:'Passport Size Photo',id:'kyc_pr_photo',status:true},
+  {icon:'🏠',label:'Residence Address Proof',id:'kyc_pr_addr',status:true},
+  {icon:'✈️',label:'Passport (if available)',id:'kyc_pr_passport',status:false},
+  {icon:'🗳️',label:'Voter ID / Driving License',id:'kyc_pr_vid',status:false},
+  {icon:'💰',label:'Personal ITR (3 Years)',id:'kyc_pr_itr',status:true},
+  {icon:'🏦',label:'Personal Bank Statement (6 Months)',id:'kyc_pr_bank',status:true},
+  {icon:'📋',label:'Net Worth Certificate',id:'kyc_pr_nw',status:false},
+];
+
+function buildKYCGrid(items, containerId){
+  const grid = document.getElementById(containerId);
+  grid.innerHTML = '';
+  items.forEach(item=>{
+    const div = document.createElement('div');
+    div.className = 'kyc-item';
+    div.innerHTML = `
+      <div class="ki-label"><span class="ki-icon">${item.icon}</span>${item.label}</div>
+      <input type="text" id="${item.id}" placeholder="Document No. / Reference">
+      <div class="ki-status">
+        <label>Status:</label>
+        <select id="${item.id}_st">
+          <option value="">Not Collected</option>
+          <option value="collected">✅ Collected</option>
+          <option value="pending">⏳ Pending from Client</option>
+          <option value="na">N/A</option>
+          <option value="original">Original Verified</option>
+        </select>
+      </div>`;
+    grid.appendChild(div);
+  });
+}
+buildKYCGrid(kycCompanyItems, 'kycCompanyGrid');
+buildKYCGrid(kycPromoterItems, 'kycPromoterGrid');
+
+// ══════════════════════════════════════════════
+// SERVICES GRID
+// ══════════════════════════════════════════════
+const services = [
+  {id:'s_wc',label:'Working Capital Finance',sub:'CC / OD / WCDL'},
+  {id:'s_tl',label:'Term Loan',sub:'Machinery / Plant / Capex'},
+  {id:'s_pl',label:'Project Finance',sub:'Greenfield / Brownfield'},
+  {id:'s_home',label:'Home / Property Loan',sub:'Residential / Commercial'},
+  {id:'s_equip',label:'Equipment Finance',sub:'Loan / Lease / HP'},
+  {id:'s_msme',label:'MSME / Business Loan',sub:'Unsecured / Secured'},
+  {id:'s_exp',label:'Export Credit',sub:'Pre / Post Shipment'},
+  {id:'s_nfb',label:'Non-Fund Based',sub:'LC / BG / SBLC'},
+  {id:'s_deb',label:'Debt Restructuring',sub:'Reschedule / Moratorium'},
+  {id:'s_ots',label:'One Time Settlement (OTS)',sub:'NPA Resolution'},
+  {id:'s_nclt',label:'NCLT / IBC',sub:'Resolution Plan'},
+  {id:'s_sar',label:'SARFAESI',sub:'Dispute / Objection'},
+  {id:'s_dpr',label:'DPR Preparation',sub:'Detailed Project Report'},
+  {id:'s_cma',label:'CMA Data',sub:'Credit Monitoring Arrangement'},
+  {id:'s_bp',label:'Bank Proposal / Note',sub:'Credit Appraisal'},
+  {id:'s_tev',label:'TEV Study',sub:'Techno-Economic Viability'},
+  {id:'s_ipo',label:'IPO Advisory',sub:'Primary Market Listing'},
+  {id:'s_pe',label:'Private Equity',sub:'Equity / Quasi-equity Raise'},
+  {id:'s_sub',label:'Subsidies & Grants',sub:'Govt Schemes'},
+  {id:'s_esg',label:'ESG Advisory',sub:'Environmental / Social / Governance'},
+  {id:'s_litig',label:'Legal / Litigation Support',sub:'Bank / NCLT Cases'},
+  {id:'s_audit',label:'Financial Due Diligence',sub:'Pre-acquisition / PE'},
+  {id:'s_val',label:'Business Valuation',sub:'Fair Value / FMV'},
+  {id:'s_forex',label:'Forex Advisory',sub:'Hedging / Risk Management'},
+  {id:'s_other',label:'Other Services',sub:'As Discussed'},
+];
+
+function buildSvcGrid(){
+  const grid = document.getElementById('svcGrid');
+  grid.innerHTML = '';
+  services.forEach(svc=>{
+    const div = document.createElement('div');
+    div.className = 'svc-item';
+    div.id = 'svcitem_'+svc.id;
+    div.innerHTML = `<input type="checkbox" id="${svc.id}" onchange="toggleSvc(this)">
+      <label for="${svc.id}">${svc.label}<span class="svc-sub">${svc.sub}</span></label>`;
+    grid.appendChild(div);
+  });
+}
+buildSvcGrid();
+
+function toggleSvc(cb){
+  const item = document.getElementById('svcitem_'+cb.id);
+  if(item) item.classList.toggle('checked', cb.checked);
+}
+
+// Document Checklist
+const docCheckItems = [
+  'MOA / AOA / Partnership Deed','Certificate of Incorporation','PAN Card — Company',
+  'PAN Card — Promoter(s)','Aadhaar Card — Promoter(s)','GSTIN Certificate','UDYAM Registration',
+  'Last 3 Years ITR + Balance Sheet','Last 6 Months Bank Statement','Property Title Documents',
+  'CIBIL Report','Net Worth Certificate','Photographs of Promoters','Board Resolution'
+];
+function buildDocChecklist(){
+  const div = document.getElementById('docChecklist');
+  div.innerHTML = '';
+  docCheckItems.forEach((item,i)=>{
+    const d = document.createElement('div');
+    d.className = 'svc-item';
+    d.innerHTML = `<input type="checkbox" id="doc_${i}"><label for="doc_${i}">${item}</label>`;
+    div.appendChild(d);
+  });
+}
+buildDocChecklist();
+
+// ══════════════════════════════════════════════
+// REVIEW & COMPLETENESS
+// ══════════════════════════════════════════════
+function buildReview(){
+  const checks = [
+    {label:'Date of First Contact', ok:!!document.getElementById('s1_dateContact').value},
+    {label:'Relationship Manager Assigned', ok:!!document.getElementById('s1_rm_name').value},
+    {label:'Company Name', ok:!!document.getElementById('s2_co_name').value},
+    {label:'Company Constitution', ok:!!document.getElementById('s2_constitution').value},
+    {label:'Company PAN', ok:!!document.getElementById('s2_pan').value},
+    {label:'Primary Contact Name', ok:!!document.getElementById('s4_p1_name').value},
+    {label:'Primary Contact Mobile', ok:!!document.getElementById('s4_p1_mobile').value},
+    {label:'Primary Contact Email', ok:!!document.getElementById('s4_p1_email').value},
+    {label:'Registered Address', ok:document.getElementById('a1_1')&&!!document.getElementById('a1_1').value},
+    {label:'Services Selected', ok:services.some(s=>document.getElementById(s.id)&&document.getElementById(s.id).checked)},
+    {label:'Financial Data Entered', ok:!!document.getElementById('fin_sales_1').value},
+    {label:'Steps 1–9 Saved', ok:savedSteps.size>=5, warn:savedSteps.size>=3},
+  ];
+  const div = document.getElementById('completenessDiv');
+  div.innerHTML = checks.map(c=>`
+    <div class="cc-item ${c.ok?'ok':c.warn?'warn':'no'}">
+      <span>${c.ok?'✅':c.warn?'⚠️':'❌'}</span>
+      <span>${c.label}</span>
+    </div>`).join('');
+
+  const review = document.getElementById('reviewDiv');
+  const g = id => { const el=document.getElementById(id); return el?el.value||'—':'—'; };
+  review.innerHTML = `
+    <div class="review-card"><h4>📋 Origin</h4>
+      <div class="rv-row"><span class="rv-label">Date of Contact</span><span class="rv-value">${g('s1_dateContact')}</span></div>
+      <div class="rv-row"><span class="rv-label">Relationship Manager</span><span class="rv-value">${g('s1_rm_name')}</span></div>
+      <div class="rv-row"><span class="rv-label">Lead Source</span><span class="rv-value">${g('s1_leadSource')}</span></div>
+      <div class="rv-row"><span class="rv-label">DSA / Referrer</span><span class="rv-value">${g('s1_dsa_name')||'Direct'}</span></div>
+    </div>
+    <div class="review-card"><h4>🏢 Company</h4>
+      <div class="rv-row"><span class="rv-label">Name</span><span class="rv-value">${g('s2_co_name')}</span></div>
+      <div class="rv-row"><span class="rv-label">Constitution</span><span class="rv-value">${g('s2_constitution')}</span></div>
+      <div class="rv-row"><span class="rv-label">PAN</span><span class="rv-value">${g('s2_pan')}</span></div>
+      <div class="rv-row"><span class="rv-label">GSTIN</span><span class="rv-value">${g('s2_gst')}</span></div>
+      <div class="rv-row"><span class="rv-label">Industry</span><span class="rv-value">${g('s2_industry')}</span></div>
+    </div>
+    <div class="review-card"><h4>👤 Primary Contact</h4>
+      <div class="rv-row"><span class="rv-label">Name</span><span class="rv-value">${g('s4_p1_name')}</span></div>
+      <div class="rv-row"><span class="rv-label">Designation</span><span class="rv-value">${g('s4_p1_desig')}</span></div>
+      <div class="rv-row"><span class="rv-label">Mobile</span><span class="rv-value">${g('s4_p1_mobile')}</span></div>
+      <div class="rv-row"><span class="rv-label">Email</span><span class="rv-value">${g('s4_p1_email')}</span></div>
+      <div class="rv-row"><span class="rv-label">PAN</span><span class="rv-value">${g('s4_p1_pan')}</span></div>
+    </div>
+    <div class="review-card"><h4>💹 Financials</h4>
+      <div class="rv-row"><span class="rv-label">Sales Yr3 (₹L)</span><span class="rv-value">${g('fin_sales_3')}</span></div>
+      <div class="rv-row"><span class="rv-label">EBITDA Yr3 (₹L)</span><span class="rv-value">${g('fin_ebitda_3')}</span></div>
+      <div class="rv-row"><span class="rv-label">CIBIL (Company)</span><span class="rv-value">${g('fin_cibil_co')}</span></div>
+      <div class="rv-row"><span class="rv-label">NPA Status</span><span class="rv-value">${g('fin_npa')}</span></div>
+    </div>
+    <div class="review-card"><h4>🎯 Services</h4>
+      ${services.filter(s=>document.getElementById(s.id)&&document.getElementById(s.id).checked).map(s=>`<div class="rv-row"><span>✅ ${s.label}</span></div>`).join('') || '<div class="rv-row"><span class="rv-value" style="color:#94a3b8">None selected</span></div>'}
+    </div>
+    <div class="review-card"><h4>📝 Scope & Fee</h4>
+      <div class="rv-row"><span class="rv-label">Estimated Fee</span><span class="rv-value">₹${g('s8_fee')}</span></div>
+      <div class="rv-row"><span class="rv-label">Timeline</span><span class="rv-value">${g('s8_months')} months</span></div>
+      <div class="rv-row"><span class="rv-label">Priority</span><span class="rv-value">${g('s1_priority')}</span></div>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════
+// DATABASE — IndexedDB + localStorage
+// ══════════════════════════════════════════════
+function collectAllData(){
+  const g = id => { const el=document.getElementById(id); return el?el.value||'':''; };
+  return {
+    ref: clientRef,
+    version: '1.0',
+    created: new Date().toISOString(),
+    type: 'client_master',
+    origin:{
+      dateContact:g('s1_dateContact'), modeContact:g('s1_modeContact'),
+      leadSource:g('s1_leadSource'), priority:g('s1_priority'),
+      dsa:{ name:g('s1_dsa_name'), code:g('s1_dsa_code'), mobile:g('s1_dsa_mobile'), email:g('s1_dsa_email'), firm:g('s1_dsa_firm'), comm:g('s1_dsa_comm') },
+      rm:{ name:g('s1_rm_name'), code:g('s1_rm_code'), mobile:g('s1_rm_mobile'), email:g('s1_rm_email') },
+      enquiry:g('s1_enquiry')
+    },
+    company:{
+      name:g('s2_co_name'), constitution:g('s2_constitution'), dob:g('s2_dob'),
+      industry:g('s2_industry'), nature:g('s2_nature'), nic:g('s2_nic'),
+      pan:g('s2_pan'), gst:g('s2_gst'), cin:g('s2_cin'), udyam:g('s2_udyam'),
+      iec:g('s2_iec'), roc:g('s2_roc'), llpin:g('s2_llpin'), tan:g('s2_tan'),
+      phone:g('s2_phone'), email:g('s2_email'), website:g('s2_website'), wa:g('s2_wa'),
+      desc:g('s2_desc')
+    },
+    primaryContact:{
+      name:g('s4_p1_name'), sal:g('s4_p1_sal'), desig:g('s4_p1_desig'), dob:g('s4_p1_dob'),
+      mobile:g('s4_p1_mobile'), wa:g('s4_p1_wa'), email:g('s4_p1_email'), email2:g('s4_p1_email2'),
+      pan:g('s4_p1_pan'), aadhar:g('s4_p1_aadhar'), din:g('s4_p1_din'),
+      nw:g('s4_p1_nw'), sh:g('s4_p1_sh'), qual:g('s4_p1_qual'), exp:g('s4_p1_exp')
+    },
+    financials:{
+      sales:[g('fin_sales_1'),g('fin_sales_2'),g('fin_sales_3')],
+      gp:[g('fin_gp_1'),g('fin_gp_2'),g('fin_gp_3')],
+      ebitda:[g('fin_ebitda_1'),g('fin_ebitda_2'),g('fin_ebitda_3')],
+      pat:[g('fin_pat_1'),g('fin_pat_2'),g('fin_pat_3')],
+      cibil_co:g('fin_cibil_co'), cibil_pr:g('fin_cibil_pr'),
+      npa:g('fin_npa'), sarfaesi:g('fin_sarfaesi'), credit_rem:g('fin_credit_rem')
+    },
+    services: services.filter(s=>document.getElementById(s.id)&&document.getElementById(s.id).checked).map(s=>s.label),
+    scope:{ meeting_date:g('s8_meet_date'), meet_type:g('s8_meet_type'), scope:g('s8_scope'), fee:g('s8_fee'), months:g('s8_months'), remarks:g('s8_remarks') },
+    submission:{ auth:g('sub_auth'), date:g('sub_date'), ver:g('sub_ver') }
+  };
+}
+
+async function saveToIDB(data){
+  return new Promise((res,rej)=>{
+    const req = indexedDB.open('SCG_Portal_DB',2);
+    req.onupgradeneeded = e=>{
+      const db=e.target.result;
+      ['enquiries','client_masters','loan_applications','service_requests','service_agreements','dpr_reports','bank_proposals','cma_data'].forEach(s=>{
+        if(!db.objectStoreNames.contains(s)) db.createObjectStore(s,{keyPath:'ref'});
+      });
+    };
+    req.onsuccess = e=>{
+      const db=e.target.result;
+      const tx=db.transaction('client_masters','readwrite');
+      tx.objectStore('client_masters').put(data);
+      tx.oncomplete=()=>res(true);
+      tx.onerror=()=>rej();
+    };
+    req.onerror=()=>rej();
+  });
+}
+
+function autoSaveDraft(){
+  try{ localStorage.setItem('scg_cm_draft', JSON.stringify(collectAllData())); } catch(e){}
+}
+
+// Auto-save every 90 seconds
+setInterval(autoSaveDraft, 90000);
+
+async function submitMaster(){
+  const data = collectAllData();
+  localStorage.setItem('scg_cm_draft', JSON.stringify(data));
+  // Archive list of all client refs
+  try{
+    const arch = JSON.parse(localStorage.getItem('scg_cm_archive')||'[]');
+    const exists = arch.find(a=>a.ref===data.ref);
+    if(!exists) arch.unshift({ref:data.ref, name:data.company.name||'Unknown', date:data.created, contact:data.primaryContact.name||''});
+    localStorage.setItem('scg_cm_archive', JSON.stringify(arch.slice(0,200)));
+  }catch(e){}
+  try{
+    await saveToIDB(data);
+    showAlert('success','✅ Client Master saved successfully! Reference: ' + clientRef);
+  }catch(e){
+    showAlert('success','✅ Client Master saved to local storage. Reference: ' + clientRef);
+  }
+}
+
+function exportJSON(){
+  const data = collectAllData();
+  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'ClientMaster_' + clientRef + '.json'; a.click();
+}
+
+// ══════════════════════════════════════════════
+// PDF GENERATION
+// ══════════════════════════════════════════════
+function generatePDF(){
+  const d = collectAllData();
+  const svcs = d.services.join(', ') || 'None selected';
+  const pdfDiv = document.getElementById('pdfOutput');
+  pdfDiv.innerHTML = `
+    <div class="pdf-header">
+      <img src="../1 Logo Shiva Consultancy Group (Rakesh Jha) (1).jpg" alt="SCG">
+      <h2>CLIENT MASTER RECORD</h2>
+      <p>Shiva Consultancy Group — Financial Advisory & Consultancy Services</p>
+      <p>Contact: +91 99790 21275 | Ahmedabad, Gujarat</p>
+    </div>
+    <div class="pdf-ref-box">CLIENT REFERENCE NUMBER: <span>${clientRef}</span></div>
+    <table style="width:100%;border-collapse:collapse;font-size:9pt;margin-bottom:14px">
+      <tr style="background:#071220;color:#fff">
+        <th style="padding:7px 10px;text-align:left;width:30%">Field</th>
+        <th style="padding:7px 10px;text-align:left">Details</th>
+      </tr>
+      <tr style="background:#f9fafb"><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">Date of First Contact</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${d.origin.dateContact}</td></tr>
+      <tr><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">Company Name</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${d.company.name}</td></tr>
+      <tr style="background:#f9fafb"><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">Constitution</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${d.company.constitution}</td></tr>
+      <tr><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">PAN</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${d.company.pan}</td></tr>
+      <tr style="background:#f9fafb"><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">GSTIN</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${d.company.gst}</td></tr>
+      <tr><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">Industry</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${d.company.industry}</td></tr>
+      <tr style="background:#f9fafb"><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">Primary Contact</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${d.primaryContact.sal} ${d.primaryContact.name} | ${d.primaryContact.mobile} | ${d.primaryContact.email}</td></tr>
+      <tr><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">Relationship Manager</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${d.origin.rm.name}</td></tr>
+      <tr style="background:#f9fafb"><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">Services Requested</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${svcs}</td></tr>
+      <tr><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">CIBIL Score (Co/Pr)</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${d.financials.cibil_co} / ${d.financials.cibil_pr}</td></tr>
+      <tr style="background:#f9fafb"><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">NPA Status</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${d.financials.npa}</td></tr>
+      <tr><td style="padding:6px 10px;font-weight:600;border-bottom:1px solid #e2e8f0">Scope of Services</td><td style="padding:6px 10px;border-bottom:1px solid #e2e8f0">${d.scope.scope}</td></tr>
+      <tr style="background:#f9fafb"><td style="padding:6px 10px;font-weight:600">Estimated Fee (₹)</td><td style="padding:6px 10px">₹${d.scope.fee} | Timeline: ${d.scope.months} months</td></tr>
+    </table>
+    <div style="background:#071220;color:#C9A84C;text-align:center;padding:10px;font-size:9pt;margin-top:16px;border-radius:4px">
+      This is a confidential document prepared by Shiva Consultancy Group | ${d.submission.date} | ${clientRef}
+    </div>`;
+  setTimeout(()=>window.print(), 300);
+}
+
+function sendWhatsApp(){
+  const d = collectAllData();
+  const msg = `*Client Master — SCG Portal*\n\n*Ref:* ${clientRef}\n*Company:* ${d.company.name}\n*Constitution:* ${d.company.constitution}\n*Contact:* ${d.primaryContact.name} | ${d.primaryContact.mobile}\n*Services:* ${d.services.slice(0,3).join(', ')}${d.services.length>3?'...':''}\n*CIBIL:* ${d.financials.cibil_co}\n*NPA:* ${d.financials.npa}\n\n_Shiva Consultancy Group Portal_`;
+  window.open('https://wa.me/919979021275?text='+encodeURIComponent(msg),'_blank');
+}
+
+// ══════════════════════════════════════════════
+// ALERTS
+// ══════════════════════════════════════════════
+function showAlert(type, msg){
+  const el = document.getElementById('mainAlert');
+  el.className = 'alert ' + type;
+  el.innerHTML = msg;
+  el.style.display = 'flex';
+  setTimeout(()=>el.style.display='none', 4000);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════════
+// LOAD DRAFT
+// ══════════════════════════════════════════════
+(function loadDraft(){
+  try{
+    const d = JSON.parse(localStorage.getItem('scg_cm_draft'));
+    if(!d) return;
+    const sv = (id,v)=>{ const el=document.getElementById(id); if(el&&v) el.value=v; };
+    if(d.ref) { clientRef=d.ref; document.getElementById('clientRef').textContent=d.ref; }
+    if(d.origin){ sv('s1_dateContact',d.origin.dateContact); sv('s1_modeContact',d.origin.modeContact); sv('s1_leadSource',d.origin.leadSource); sv('s1_priority',d.origin.priority); sv('s1_enquiry',d.origin.enquiry); if(d.origin.dsa){sv('s1_dsa_name',d.origin.dsa.name);sv('s1_dsa_code',d.origin.dsa.code);sv('s1_dsa_mobile',d.origin.dsa.mobile);sv('s1_dsa_email',d.origin.dsa.email);sv('s1_dsa_firm',d.origin.dsa.firm);} if(d.origin.rm){sv('s1_rm_name',d.origin.rm.name);sv('s1_rm_code',d.origin.rm.code);sv('s1_rm_mobile',d.origin.rm.mobile);sv('s1_rm_email',d.origin.rm.email);} }
+    if(d.company){ sv('s2_co_name',d.company.name);sv('s2_constitution',d.company.constitution);sv('s2_pan',d.company.pan);sv('s2_gst',d.company.gst);sv('s2_cin',d.company.cin);sv('s2_udyam',d.company.udyam);sv('s2_industry',d.company.industry);sv('s2_phone',d.company.phone);sv('s2_email',d.company.email);sv('s2_website',d.company.website);sv('s2_desc',d.company.desc); }
+    if(d.primaryContact){ sv('s4_p1_name',d.primaryContact.name);sv('s4_p1_sal',d.primaryContact.sal);sv('s4_p1_desig',d.primaryContact.desig);sv('s4_p1_mobile',d.primaryContact.mobile);sv('s4_p1_email',d.primaryContact.email);sv('s4_p1_pan',d.primaryContact.pan);sv('s4_p1_nw',d.primaryContact.nw);sv('s4_p1_sh',d.primaryContact.sh); }
+    if(d.services&&d.services.length){ d.services.forEach(svcLabel=>{ const svc=services.find(s=>s.label===svcLabel); if(svc){const cb=document.getElementById(svc.id);if(cb){cb.checked=true;toggleSvc(cb);}}}); }
+    if(d.scope){ sv('s8_meet_date',d.scope.meeting_date);sv('s8_scope',d.scope.scope);sv('s8_fee',d.scope.fee);sv('s8_months',d.scope.months);sv('s8_remarks',d.scope.remarks); }
+    if(d.financials){ ['sales','gp','ebitda','pat','cap','liab','asset'].forEach(f=>{ [1,2,3].forEach(i=>sv('fin_'+f+'_'+i,d.financials[f]&&d.financials[f][i-1])); }); sv('fin_cibil_co',d.financials.cibil_co);sv('fin_cibil_pr',d.financials.cibil_pr);sv('fin_npa',d.financials.npa); }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
