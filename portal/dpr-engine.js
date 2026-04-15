@@ -733,11 +733,259 @@
     return risks.sort((a, b) => b.severity - a.severity);
   }
 
-  /* ---------- 10. EXPORT ---------- */
+  /* ---------- 10. TIER CLASSIFIER ---------- */
+  /*
+    Tier rules (driven by total project cost):
+      T1 Micro: ≤ ₹1 Cr    → 15-20 pp, 5-yr horizon, condensed
+      T2 Small: ₹1-5 Cr    → 35-40 pp, 5-yr horizon, standard
+      T3 Mid:   ₹5-50 Cr   → 75-100 pp, 7-yr horizon, detailed + full CMA
+      T4 Large: > ₹50 Cr   → 100+ pp, 10-yr horizon, comprehensive + stress scenarios
+  */
+  function classifyTier(capex) {
+    const cr = (+capex || 0) / 1e7;
+    if (cr <= 1)  return { code: "T1", name: "Micro", label: "Tier 1 (Micro ≤ ₹1 Cr)", horizon: 5,  targetPages: "15–20",  density: 1, projectionYears: 5,  auditedYears: 2, projectedYears: 3 };
+    if (cr <= 5)  return { code: "T2", name: "Small", label: "Tier 2 (Small ₹1–5 Cr)", horizon: 5,  targetPages: "35–40",  density: 2, projectionYears: 5,  auditedYears: 3, projectedYears: 3 };
+    if (cr <= 50) return { code: "T3", name: "Mid",   label: "Tier 3 (Mid ₹5–50 Cr)",  horizon: 7,  targetPages: "75–100", density: 3, projectionYears: 7,  auditedYears: 3, projectedYears: 5 };
+    return            { code: "T4", name: "Large", label: "Tier 4 (Large > ₹50 Cr)", horizon: 10, targetPages: "100+",    density: 4, projectionYears: 10, auditedYears: 3, projectedYears: 7 };
+  }
+
+  /* ---------- 11. CMA BUILDER (SCG_F03 / cma-data.html format) ---------- */
+  /*
+    Builds a 4-form CMA matching the portal/cma-data.html standard:
+      Form I  — Profit & Loss Account
+      Form II — Balance Sheet
+      Form III — Working Capital Assessment (Tandon Method II)
+      Form IV — Key Financial Ratios
+    Plus a Cash Flow statement (SCG_F03 style).
+    Years: `auditedYears` historic + `projectedYears` projected — totals to tier horizon.
+    For greenfield projects where audited years are not available, historic columns
+    are zeroed and the projected columns carry all computed values.
+  */
+  function buildCMA(project, projections, tier) {
+    const ay = tier.auditedYears || 2;
+    const py = tier.projectedYears || 3;
+    const YEARS = ay + py;
+    const start = new Date().getFullYear() - ay + 1; // simple year labels
+    const yearLabels = [];
+    for (let i = 0; i < YEARS; i++) {
+      const y = start + i;
+      const fy = y + "-" + String((y + 1) % 100).padStart(2, "0");
+      yearLabels.push(i < ay ? fy + " (A)" : fy + " (P)");
+    }
+
+    // Helper: project-index for year i (0..YEARS-1)
+    // historic columns (i < ay): use tapered values of promoter existing revenue (if any)
+    // projected columns (i >= ay): use projections.rows[i - ay]
+    const existingRev = +project.promoterExistingRevenue || 0;
+    const existingGrowth = 0.08; // assume 8% growth in historic years
+
+    function hp(i) { // "historic point" for audited columns — returned in ₹ Lakh (consistent with projected)
+      // furthest-back column starts lowest; most recent historic = closest to projected
+      const back = ay - 1 - i;
+      const rupees = existingRev / Math.pow(1 + existingGrowth, back + 1);
+      return Math.round(rupees / 1e5); // ₹ Lakh
+    }
+
+    // Form I — P&L (in ₹ Lakh)
+    const toLk = (v) => Math.round((v || 0) / 1e5);
+    const pl = [];
+    const bs = [];
+    const wc = [];
+    const cf = [];
+
+    for (let i = 0; i < YEARS; i++) {
+      if (i < ay) {
+        // historic row from promoter existing business
+        const ns = hp(i);
+        const oi = Math.round(ns * 0.02);
+        const cogs = Math.round(ns * 0.68);
+        const opex = Math.round(ns * 0.12);
+        const dep = Math.round(ns * 0.04);
+        const interest = Math.round(ns * 0.03);
+        const pbt = ns + oi - cogs - opex - dep - interest;
+        const tax = Math.max(0, Math.round(pbt * 0.25));
+        const pat = pbt - tax;
+        pl.push({
+          year: yearLabels[i], audited: true,
+          netSales: ns, otherIncome: oi, totalIncome: ns + oi,
+          cogs, grossProfit: ns + oi - cogs, grossProfitPct: ns > 0 ? (((ns + oi - cogs) / (ns + oi)) * 100) : 0,
+          opEx: opex, salaries: Math.round(opex * 0.55), rent: Math.round(opex * 0.1), admin: Math.round(opex * 0.15), selling: Math.round(opex * 0.2),
+          ebitda: ns + oi - cogs - opex, ebitdaPct: ns > 0 ? (((ns + oi - cogs - opex) / (ns + oi)) * 100) : 0,
+          dep, ebit: ns + oi - cogs - opex - dep, interest, pbt, tax, pat, patPct: ns > 0 ? ((pat / (ns + oi)) * 100) : 0
+        });
+      } else {
+        const r = projections.rows[i - ay];
+        if (!r) {
+          pl.push({ year: yearLabels[i], audited: false, netSales: 0, otherIncome: 0, totalIncome: 0, cogs: 0, grossProfit: 0, grossProfitPct: 0, opEx: 0, salaries: 0, rent: 0, admin: 0, selling: 0, ebitda: 0, ebitdaPct: 0, dep: 0, ebit: 0, interest: 0, pbt: 0, tax: 0, pat: 0, patPct: 0 });
+          continue;
+        }
+        const ns = toLk(r.revenue);
+        const oi = Math.round(ns * 0.01);
+        const cogs = toLk(r.variableCost);
+        const opex = toLk(r.fixedCost);
+        pl.push({
+          year: yearLabels[i], audited: false,
+          netSales: ns, otherIncome: oi, totalIncome: ns + oi,
+          cogs, grossProfit: ns + oi - cogs, grossProfitPct: ns > 0 ? (((ns + oi - cogs) / (ns + oi)) * 100) : 0,
+          opEx: opex,
+          salaries: Math.round(opex * 0.55), rent: Math.round(opex * 0.1), admin: Math.round(opex * 0.15), selling: Math.round(opex * 0.2),
+          ebitda: toLk(r.ebitda), ebitdaPct: ns > 0 ? ((toLk(r.ebitda) / (ns + oi)) * 100) : 0,
+          dep: toLk(r.depreciation), ebit: toLk(r.ebitda - r.depreciation), interest: toLk(r.interest),
+          pbt: toLk(r.ebt), tax: toLk(r.tax), pat: toLk(r.pat), patPct: ns > 0 ? ((toLk(r.pat) / (ns + oi)) * 100) : 0
+        });
+      }
+    }
+
+    // Form II — Balance Sheet (₹ Lakh)
+    // Build from project finance structure; historic columns use proportional scale of promoter business.
+    const capexL = toLk(+project.capexTotal || 0);
+    const termLoanL = toLk(+project.termLoan || 0);
+    const promoterL = toLk(+project.promoterContrib || 0);
+    const wcL = toLk(+project.workingCapital || 0);
+
+    // Cumulative depreciation for each year i
+    let cumDep = 0;
+    for (let i = 0; i < YEARS; i++) {
+      cumDep += pl[i].dep;
+      const gfa = i < ay ? Math.round(pl[i].totalIncome * 0.55) : capexL; // existing GFA from sales multiple, new = capex
+      const nfa = Math.max(0, gfa - cumDep);
+      const cwip = 0;
+      const inv = i < ay ? Math.round(pl[i].totalIncome * 0.18) : Math.round(pl[i].totalIncome * 0.15);
+      const debt180 = i < ay ? Math.round(pl[i].totalIncome * 0.14) : Math.round(pl[i].totalIncome * 0.12);
+      const debt180p = Math.round(debt180 * 0.08);
+      const loansAdv = Math.round(pl[i].totalIncome * 0.03);
+      const oca = Math.round(pl[i].totalIncome * 0.01);
+
+      // Liabilities side (compute first so we can use cash as the balancing figure)
+      const sc = i < ay ? Math.round((gfa - cumDep) * 0.35) : promoterL;
+      const reserves = i === 0 ? Math.round(sc * 0.1) : Math.max(0, (bs[i - 1]?.reserves || 0) + pl[i].pat);
+      const tnw = sc + reserves;
+      // Outstanding bank term loan at end of year i:
+      //   historic → estimated as 40% of NFA
+      //   projected → initial TL less cumulative principal repayments through year (i-ay)
+      let tlBank;
+      if (i < ay) {
+        tlBank = Math.round(nfa * 0.4);
+      } else {
+        const idxInProj = i - ay;
+        let cumPrin = 0;
+        for (let k = 0; k <= idxInProj; k++) {
+          if (projections.rows[k]) cumPrin += projections.rows[k].principalRepay || 0;
+        }
+        tlBank = Math.max(0, termLoanL - toLk(cumPrin));
+      }
+      const tlFI = 0;
+      const tlOther = 0;
+      const tll = sc + reserves + tlBank;
+      const cc = Math.max(0, Math.round(wcL * (i < ay ? 0.6 : 0.75)));
+      const creditors = Math.round(pl[i].cogs * 0.1);
+      const ocl = Math.round(pl[i].totalIncome * 0.02);
+      const tcl = cc + creditors + ocl;
+      const tl = tll + tcl;
+
+      // Assets: NFA/CWIP/Inv/Debtors/L&A/OCA known; cash is the balancing figure
+      const nonCashAssets = nfa + cwip + inv + debt180 + debt180p + loansAdv + oca;
+      let cash = tl - nonCashAssets;
+      if (cash < 5) cash = 5; // floor
+      const tca = inv + debt180 + debt180p + cash + loansAdv + oca;
+      const ta = nfa + cwip + tca;
+
+      bs.push({
+        year: yearLabels[i], audited: i < ay,
+        gfa, cumDep, nfa, cwip,
+        inventory: inv, debtors180: debt180, debtorsOver180: debt180p, cash, loansAdv, otherCA: oca, totalCA: tca,
+        totalAssets: ta,
+        shareCapital: sc, reserves, totalNetWorth: tnw,
+        termLoanBank: tlBank, termLoanFI: tlFI, termLoanOther: tlOther, totalLongTerm: tll,
+        ccOD: cc, creditors, otherCL: ocl, totalCL: tcl,
+        totalLiabilities: tl,
+      });
+    }
+
+    // Form III — Working Capital (Tandon Method II) (₹ Lakh)
+    for (let i = 0; i < YEARS; i++) {
+      const invDays = +project.inventoryDays || 30;
+      const debDays = +project.debtorDays || 45;
+      const creDays = +project.creditorDays || 30;
+      const rmReq = Math.round((pl[i].cogs * invDays) / 365);
+      const debReq = Math.round((pl[i].totalIncome * debDays) / 365);
+      const totalCAReq = rmReq + debReq;
+      const creditAvail = Math.round((pl[i].cogs * creDays) / 365);
+      const nwcReq = Math.max(0, totalCAReq - creditAvail);
+      const margin25 = Math.round(nwcReq * 0.25);
+      const wcLimit = nwcReq - margin25;
+      wc.push({
+        year: yearLabels[i], audited: i < ay,
+        invDays, debDays, creDays,
+        rmReq, debReq, totalCAReq,
+        creditAvail, nwcReq, margin25, wcLimit,
+      });
+    }
+
+    // Form IV — Ratios
+    const ratios = [];
+    for (let i = 0; i < YEARS; i++) {
+      const b = bs[i], p = pl[i], w = wc[i];
+      const currentRatio = b.totalCL > 0 ? b.totalCA / b.totalCL : 0;
+      const quickRatio = b.totalCL > 0 ? (b.totalCA - b.inventory) / b.totalCL : 0;
+      const dE = b.totalNetWorth > 0 ? (b.termLoanBank + b.termLoanFI + b.termLoanOther) / b.totalNetWorth : 0;
+      const tolTnw = b.totalNetWorth > 0 ? (b.totalLiabilities - b.totalNetWorth) / b.totalNetWorth : 0;
+      // DSCR from projections where applicable
+      let dscr = null;
+      if (i >= ay) {
+        const pr = projections.rows[i - ay];
+        if (pr) dscr = pr.dscr;
+      }
+      const gpm = p.grossProfitPct;
+      const npm = p.patPct;
+      const ronw = b.totalNetWorth > 0 ? (p.pat / b.totalNetWorth) * 100 : 0;
+      const assetTO = b.totalAssets > 0 ? p.totalIncome / b.totalAssets : 0;
+      const invDays = p.cogs > 0 ? (b.inventory * 365) / p.cogs : 0;
+      const debDays = p.totalIncome > 0 ? (b.debtors180 * 365) / p.totalIncome : 0;
+      const creDays = p.cogs > 0 ? (b.creditors * 365) / p.cogs : 0;
+      const wcCycle = invDays + debDays - creDays;
+      ratios.push({
+        year: yearLabels[i], audited: i < ay,
+        currentRatio, quickRatio, dE, tolTnw, dscr,
+        gpm, npm, ronw, assetTO, invDays, debDays, creDays, wcCycle,
+      });
+    }
+
+    // Cash Flow (simple operating / investing / financing)
+    for (let i = 0; i < YEARS; i++) {
+      const p = pl[i], b = bs[i], bP = bs[i - 1];
+      const dInv = bP ? b.inventory - bP.inventory : b.inventory;
+      const dDeb = bP ? b.debtors180 - bP.debtors180 : b.debtors180;
+      const dCre = bP ? b.creditors - bP.creditors : b.creditors;
+      const opCash = p.pat + p.dep - dInv - dDeb + dCre;
+      const capex = i === ay ? capexL : 0;
+      const invCash = -capex;
+      let finCash = 0;
+      if (i === ay) finCash += termLoanL + promoterL;
+      if (i >= ay && projections.rows[i - ay]) finCash -= toLk(projections.rows[i - ay].principalRepay || 0);
+      const netChange = opCash + invCash + finCash;
+      const opening = i === 0 ? 5 : cf[i - 1].closing;
+      const closing = opening + netChange;
+      cf.push({
+        year: yearLabels[i], audited: i < ay,
+        netProfit: p.pat, addDep: p.dep, dInv: -dInv, dDeb: -dDeb, dCre,
+        opCash,
+        capex: -capex, invCash,
+        borrow: i === ay ? termLoanL : 0, repay: i >= ay && projections.rows[i - ay] ? -toLk(projections.rows[i - ay].principalRepay || 0) : 0, equity: i === ay ? promoterL : 0, dividend: 0,
+        finCash,
+        netChange, opening, closing,
+      });
+    }
+
+    return { yearLabels, pl, bs, wc, ratios, cf, auditedYears: ay, projectedYears: py };
+  }
+
+  /* ---------- 12. EXPORT ---------- */
   root.SCG_ENGINE = {
     INR, num, pct, round2,
     NPV, IRR, amortization, breakEvenUnits, breakEvenValue, paybackPeriod,
     buildProjections, sensitivity, bankabilityScore, priceQuote,
     INDUSTRY_BENCHMARKS, GOVT_SCHEMES, matchingSchemes, buildRiskMatrix,
+    classifyTier, buildCMA,
   };
 })(typeof window !== "undefined" ? window : this);

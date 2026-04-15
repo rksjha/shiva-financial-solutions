@@ -221,6 +221,36 @@ select option{background:var(--navy2);color:#fff}
 @keyframes slideIn{from{transform:translateX(120%)}to{transform:none}}
 
 .machinery-row{display:grid;grid-template-columns:2fr 1.2fr .7fr 1.2fr auto;gap:8px;margin-bottom:6px}
+/* Promoter / Sister concern cards */
+.entity-card{background:rgba(59,94,166,.07);border:1px solid var(--border2);border-radius:6px;padding:14px 16px;margin-bottom:12px;position:relative}
+.entity-card .entity-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.entity-card .entity-label{font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:1rem;font-weight:700}
+.entity-card .entity-del{background:rgba(217,83,79,.15);color:#ff8a85;border:1px solid rgba(217,83,79,.3);border-radius:4px;padding:4px 10px;cursor:pointer;font-size:.68rem;font-weight:700;letter-spacing:.06em}
+.entity-card .form-grid{gap:10px 14px}
+.entity-card input,.entity-card select,.entity-card textarea{padding:8px 11px;font-size:.82rem}
+.tier-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:30px;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.tier-pill.t1{background:rgba(59,94,166,.2);color:#87aae5;border:1px solid rgba(59,94,166,.4)}
+.tier-pill.t2{background:rgba(74,154,60,.2);color:#7ed56f;border:1px solid rgba(74,154,60,.4)}
+.tier-pill.t3{background:rgba(230,169,58,.2);color:#ffc66d;border:1px solid rgba(230,169,58,.4)}
+.tier-pill.t4{background:rgba(201,168,76,.25);color:var(--gold);border:1px solid var(--gold)}
+.tier-live{background:var(--gold-dim);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:.78rem;color:var(--text-mid);display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:space-between}
+.tier-live b{color:var(--gold)}
+/* Custom notes box (form-side) */
+.custom-notes-box{background:rgba(74,154,60,.05);border:1px dashed rgba(74,154,60,.35);border-radius:6px;padding:12px 14px;margin-top:14px}
+.custom-notes-box label{color:var(--scg-green);font-size:.66rem;margin-bottom:6px}
+.custom-notes-box textarea{min-height:70px;font-size:.82rem}
+/* CMA table compact + Observation block (report) */
+#reportViewer .scg-cma{font-size:.7rem}
+#reportViewer .scg-cma th{font-size:.64rem;padding:6px 5px;background:#eef2fa;color:#071220}
+#reportViewer .scg-cma td{padding:5px 6px}
+#reportViewer .scg-cma tr.sub td{color:#4a5568;padding-left:14px}
+#reportViewer .scg-cma td.subsec,#reportViewer .scg-cma tr td[colspan]{background:#f0f4fa;color:#071220;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:.64rem;padding:6px 8px}
+#reportViewer .scg-cma tr.total td{background:#fdf7e6;color:#071220;font-weight:700}
+#reportViewer .scg-custom{background:#fff7e0;border:1px dashed #C9A84C;border-left:3px solid #C9A84C;border-radius:4px;padding:10px 14px;margin:12px 0;font-size:.84rem;color:#4a3c18}
+#reportViewer .scg-custom-h{color:#a07b1a;font-weight:700;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px}
+#reportViewer .scg-prom{margin:10px 0;padding:10px 12px;background:#f6f8fd;border:1px solid #d0d9e8;border-left:3px solid #3B5EA6;border-radius:4px}
+#reportViewer .scg-prom h4{color:#071220;font-size:1rem;margin-bottom:8px}
+#reportViewer .scg-prom .scg-role{font-size:.7rem;color:#3B5EA6;font-weight:600;margin-left:8px;letter-spacing:.05em;text-transform:uppercase}
 .machinery-row input{font-size:.82rem;padding:8px 10px}
 .del-btn{background:rgba(217,83,79,.12);color:var(--danger);border:1px solid rgba(217,83,79,.3);border-radius:4px;padding:0 12px;cursor:pointer;font-weight:700}
 
@@ -389,12 +419,24 @@ footer a{color:var(--gold);text-decoration:none}
               <option value="healthcare">Healthcare</option>
             </select>
           </div>
-          <div><label>Promoter Experience (years)</label><input type="number" data-key="promoterExperience" value="5" min="0"></div>
-          <div><label>Promoter Net Worth (₹)</label><input type="number" data-key="promoterNetWorth" placeholder="5000000"></div>
-          <div class="form-full"><label>Educational Background</label><input type="text" data-key="promoterEducation" placeholder="B.Tech / MBA / CA / Diploma etc."></div>
+          <div><label>Promoter Experience Avg (yrs)</label><input type="number" data-key="promoterExperience" value="5" min="0"></div>
           <div><label>Existing Business Revenue (₹/year)</label><input type="number" data-key="promoterExistingRevenue" placeholder="0"></div>
           <div><label>CIBIL / Credit Score</label><input type="text" data-key="promoterCibil" placeholder="≥ 750"></div>
         </div>
+      </div>
+
+      <div class="card">
+        <h3 style="color:var(--gold)">Promoters <span style="font-size:.7rem;color:var(--text-muted);font-weight:400">— add up to 8 promoter-directors with full KYC</span></h3>
+        <p style="color:var(--text-mid);font-size:.78rem;margin-bottom:10px">Every promoter needs name, PAN, Aadhaar, education, experience, skill, net worth and last-3-years ITR income — so the DPR carries bank-acceptable KYC depth. PAN &amp; Aadhaar are masked in the final report.</p>
+        <div id="promoterHolder"></div>
+        <button class="btn btn-outline btn-sm" id="btn-add-promoter">+ Add Promoter</button>
+      </div>
+
+      <div class="card">
+        <h3 style="color:var(--gold)">Group / Sister Concerns <span style="font-size:.7rem;color:var(--text-muted);font-weight:400">— optional, up to 6</span></h3>
+        <p style="color:var(--text-mid);font-size:.78rem;margin-bottom:10px">Existing group entities (sister concerns) strengthen the credit proposal. Enter the basic KYC and latest financial snapshot for each.</p>
+        <div id="sisterHolder"></div>
+        <button class="btn btn-outline btn-sm" id="btn-add-sister">+ Add Sister Concern</button>
       </div>
       <div class="wizard-nav"><span></span><button class="btn btn-gold" data-next="2">Next Step →</button></div>
     </div>
@@ -411,6 +453,12 @@ footer a{color:var(--gold);text-decoration:none}
           <div class="form-full"><label>Product Specifications</label><textarea data-key="productSpecs" placeholder="Key specs, grades, standards (IS/BIS/ASTM)"></textarea></div>
           <div class="form-full"><label>End-use &amp; Applications</label><input type="text" data-key="productEnduse" placeholder="Industrial / Domestic / Export markets"></div>
           <div class="form-full"><label>Product Differentiation</label><textarea data-key="productDiff" placeholder="USP, quality consistency, service strengths"></textarea></div>
+        </div>
+        <div class="custom-notes-box">
+          <label>Custom Notes — Concept Section (will appear as highlighted box in DPR)</label>
+          <textarea data-key="customNote_concept" placeholder="Any project-specific language for the Concept & Purpose section — vision, unique angle, SDG tie-in you want highlighted..."></textarea>
+          <label style="margin-top:10px">Custom Notes — Product Section</label>
+          <textarea data-key="customNote_product" placeholder="Any custom specs, R&D plan, certifications you want called out in the product section..."></textarea>
         </div>
       </div>
       <div class="wizard-nav"><button class="btn btn-outline" data-prev="1">← Previous</button><button class="btn btn-gold" data-next="3">Next Step →</button></div>
@@ -434,6 +482,12 @@ footer a{color:var(--gold);text-decoration:none}
           <div><label>Direct Jobs</label><input type="number" data-key="directJobs" value="25"></div>
           <div><label>Indirect Jobs</label><input type="number" data-key="indirectJobs" value="50"></div>
         </div>
+        <div class="custom-notes-box">
+          <label>Custom Notes — Technical Section</label>
+          <textarea data-key="customNote_technical" placeholder="Anything project-specific for Technical Feasibility — location rationale, plant design detail, tech partner preference..."></textarea>
+          <label style="margin-top:10px">Custom Notes — Market Section</label>
+          <textarea data-key="customNote_market" placeholder="Project-specific market commentary — key buyers, regional angle, export strategy, competitive edge..."></textarea>
+        </div>
       </div>
       <div class="wizard-nav"><button class="btn btn-outline" data-prev="2">← Previous</button><button class="btn btn-gold" data-next="4">Next Step →</button></div>
     </div>
@@ -455,6 +509,11 @@ footer a{color:var(--gold);text-decoration:none}
         </div>
         <div class="help-box">Tip: click "Auto-Sum" to populate Total Project Cost from the components.</div>
         <button class="btn btn-outline btn-sm" id="btn-autosum">Auto-Sum Components →</button>
+        <div id="tierLive" class="tier-live" style="margin-top:14px"><span>Tier will be determined by the total project cost.</span><span class="tier-pill t1" id="tierPill">— tier —</span></div>
+        <div class="custom-notes-box">
+          <label>Custom Notes — Project Cost Section</label>
+          <textarea data-key="customNote_cost" placeholder="Any specific basis, escalation assumption or contingency rationale you want recorded..."></textarea>
+        </div>
       </div>
       <div class="wizard-nav"><button class="btn btn-outline" data-prev="3">← Previous</button><button class="btn btn-gold" data-next="5">Next Step →</button></div>
     </div>
@@ -496,6 +555,14 @@ footer a{color:var(--gold);text-decoration:none}
           <div><label>Project Complexity (1=Simple, 3=Complex)</label><select data-key="complexityLevel"><option value="1">1 — Simple</option><option value="2" selected>2 — Medium</option><option value="3">3 — Complex</option></select></div>
           <div><label>Customization Level</label><select data-key="customizationLevel"><option value="1">1 — Template</option><option value="2" selected>2 — Customized</option><option value="3">3 — Bespoke</option></select></div>
           <div><label>Urgency</label><select data-key="urgencyLevel"><option value="1">1 — Standard</option><option value="2" selected>2 — Normal</option><option value="3">3 — Urgent</option></select></div>
+        </div>
+        <div class="custom-notes-box">
+          <label>Custom Notes — Exec Summary</label>
+          <textarea data-key="customNote_exec" placeholder="A 2-3 line special note for the Executive Summary if needed..."></textarea>
+          <label style="margin-top:10px">Custom Notes — Promoter Section</label>
+          <textarea data-key="customNote_promoter" placeholder="Any family background / group narrative / relationship with bankers worth calling out..."></textarea>
+          <label style="margin-top:10px">Custom Notes — Risk Section</label>
+          <textarea data-key="customNote_risk" placeholder="Project-specific risks and mitigations to append to the risk matrix..."></textarea>
         </div>
       </div>
       <div class="wizard-nav"><button class="btn btn-outline" data-prev="5">← Previous</button><button class="btn btn-gold" data-next="7">Next Step →</button></div>
@@ -767,6 +834,10 @@ footer a{color:var(--gold);text-decoration:none}
       location:"", industry:"manufacturing",
       promoterExperience:5, promoterNetWorth:0, promoterCibil:"", promoterEducation:"",
       promoterExistingRevenue:0,
+      // Multi-promoter array (up to 8)
+      promoters: [],
+      // Sister / group concerns (up to 6)
+      sisterConcerns: [],
       projectRationale:"", productName:"", sellingPrice:0, productSpecs:"", productEnduse:"", productDiff:"",
       capacityYr1:0, powerKVA:0, landArea:0, landStatus:"Owned",
       techRoute:"", rawMaterialSources:"",
@@ -774,13 +845,20 @@ footer a{color:var(--gold);text-decoration:none}
       directJobs:0, indirectJobs:0,
       costLand:0, costBuilding:0, costMachinery:0, costMiscAssets:0,
       costPreop:0, costContingency:0, costWCMargin:0, capexTotal:0,
-      promoterContrib:0, termLoan:0, otherSources:0, workingCapital:0, collateralValue:0,
+      promoterContrib:0, termLoan:0, otherSources:0, workingCapital:0, collateralValue:0, subsidyAmount:0,
       interestRate:11, loanYears:7, moratoriumMonths:6,
       variableCostPct:62, fixedCostYr1:0, fixedCostGrowth:5,
       depreciationPct:12, taxRate:25, years:7,
       inventoryDays:30, debtorDays:45, creditorDays:30,
       machineryList:[],
       complexityLevel:2, customizationLevel:2, urgencyLevel:2,
+      // Per-section custom notes
+      customNote_exec:"", customNote_promoter:"", customNote_concept:"", customNote_product:"",
+      customNote_market:"", customNote_technical:"", customNote_components:"", customNote_raw:"",
+      customNote_machinery:"", customNote_process:"", customNote_marketing:"", customNote_regulatory:"",
+      customNote_cost:"", customNote_projections:"", customNote_cma:"", customNote_ratios:"",
+      customNote_sensitivity:"", customNote_schemes:"", customNote_schedule:"", customNote_risk:"",
+      customNote_final:""
     };
   }
   function bindInputs(){
@@ -791,21 +869,151 @@ footer a{color:var(--gold);text-decoration:none}
         if(el.type==="number") v = v===""?0:+v;
         currentProject[el.dataset.key] = v;
         if(el.dataset.key==="industry") updateCapacityHint();
+        if(el.dataset.key==="capexTotal") updateTierPill();
       });
     });
     updateCapacityHint();
+    updateTierPill();
   }
   function loadInputs(){
     document.querySelectorAll("[data-key]").forEach(el=>{
       el.value = currentProject[el.dataset.key] ?? "";
     });
     renderMachineryList();
+    renderPromoterList();
+    renderSisterList();
     updateCapacityHint();
+    updateTierPill();
   }
   function updateCapacityHint(){
     const ind = E.INDUSTRY_BENCHMARKS[currentProject.industry] || E.INDUSTRY_BENCHMARKS.manufacturing;
     const h = document.getElementById("capUnitHint");
     if(h) h.textContent = "(" + ind.capacityUnit + ")";
+  }
+  function updateTierPill(){
+    const el = document.getElementById("tierPill");
+    const box = document.getElementById("tierLive");
+    if(!el || !box) return;
+    const t = E.classifyTier(+currentProject.capexTotal || 0);
+    el.className = "tier-pill " + t.code.toLowerCase();
+    el.textContent = t.code + " · " + t.name + " · " + t.targetPages + " pp · " + t.horizon + " yrs";
+    box.querySelector("span:first-child").innerHTML =
+      "Capex <b>" + E.INR(currentProject.capexTotal) + "</b> falls in <b>" + t.label + "</b> — DPR will be built to match this tier's depth and horizon.";
+  }
+
+  /* --- Promoter list UI --- */
+  function renderPromoterList(){
+    const h = document.getElementById("promoterHolder");
+    if(!h) return;
+    h.innerHTML = "";
+    (currentProject.promoters || []).forEach((m, i) => {
+      const card = document.createElement("div");
+      card.className = "entity-card";
+      card.innerHTML = `
+        <div class="entity-head">
+          <span class="entity-label">Promoter ${i+1}</span>
+          <button class="entity-del" data-delp="${i}">× Remove</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-full"><label>Full Name <span class="req">*</span></label><input type="text" data-pk="name" data-pi="${i}" value="${T.esc(m.name||'')}" placeholder="Mr / Ms ..."></div>
+          <div><label>Role</label>
+            <select data-pk="role" data-pi="${i}">
+              <option ${m.role==='Managing Director'?'selected':''}>Managing Director</option>
+              <option ${m.role==='Director'?'selected':''}>Director</option>
+              <option ${m.role==='Proprietor'?'selected':''}>Proprietor</option>
+              <option ${m.role==='Partner'?'selected':''}>Partner</option>
+              <option ${m.role==='Designated Partner'?'selected':''}>Designated Partner</option>
+              <option ${m.role==='Whole-time Director'?'selected':''}>Whole-time Director</option>
+              <option ${m.role==='Chairman'?'selected':''}>Chairman</option>
+              <option ${m.role==='CEO'?'selected':''}>CEO</option>
+            </select>
+          </div>
+          <div><label>Date of Birth</label><input type="date" data-pk="dob" data-pi="${i}" value="${T.esc(m.dob||'')}"></div>
+          <div><label>Gender</label>
+            <select data-pk="gender" data-pi="${i}">
+              <option value="">—</option>
+              <option ${m.gender==='Male'?'selected':''}>Male</option>
+              <option ${m.gender==='Female'?'selected':''}>Female</option>
+              <option ${m.gender==='Other'?'selected':''}>Other</option>
+            </select>
+          </div>
+          <div><label>Shareholding %</label><input type="number" data-pk="shareholding" data-pi="${i}" value="${m.shareholding||0}" min="0" max="100"></div>
+          <div><label>PAN</label><input type="text" data-pk="pan" data-pi="${i}" value="${T.esc(m.pan||'')}" placeholder="AAAAA0000A" style="text-transform:uppercase"></div>
+          <div><label>Aadhaar (12 digits)</label><input type="text" data-pk="aadhaar" data-pi="${i}" value="${T.esc(m.aadhaar||'')}" placeholder="XXXX XXXX XXXX"></div>
+          <div class="form-full"><label>Education</label><input type="text" data-pk="education" data-pi="${i}" value="${T.esc(m.education||'')}" placeholder="B.Tech, MBA, CA, PhD etc."></div>
+          <div><label>Experience (years)</label><input type="number" data-pk="experience" data-pi="${i}" value="${m.experience||0}" min="0"></div>
+          <div><label>Net Worth (₹)</label><input type="number" data-pk="netWorth" data-pi="${i}" value="${m.netWorth||0}"></div>
+          <div class="form-full"><label>Key Skills / Specialisations</label><input type="text" data-pk="skill" data-pi="${i}" value="${T.esc(m.skill||'')}" placeholder="Manufacturing ops, finance, sales, technology..."></div>
+          <div><label>ITR Income Yr-1 (₹)</label><input type="number" data-pk="itrY1" data-pi="${i}" value="${m.itrY1||0}"></div>
+          <div><label>ITR Income Yr-2 (₹)</label><input type="number" data-pk="itrY2" data-pi="${i}" value="${m.itrY2||0}"></div>
+          <div><label>ITR Income Yr-3 (₹)</label><input type="number" data-pk="itrY3" data-pi="${i}" value="${m.itrY3||0}"></div>
+        </div>`;
+      h.appendChild(card);
+    });
+    h.querySelectorAll("[data-pk]").forEach(el=>{
+      el.addEventListener("input",()=>{
+        const i=+el.dataset.pi, k=el.dataset.pk;
+        const v = el.type==="number" ? (el.value===""?0:+el.value) : el.value;
+        currentProject.promoters[i][k] = v;
+      });
+    });
+    h.querySelectorAll("[data-delp]").forEach(b=>{
+      b.addEventListener("click",()=>{
+        currentProject.promoters.splice(+b.dataset.delp,1);
+        renderPromoterList();
+      });
+    });
+  }
+
+  /* --- Sister concerns list UI --- */
+  function renderSisterList(){
+    const h = document.getElementById("sisterHolder");
+    if(!h) return;
+    h.innerHTML = "";
+    (currentProject.sisterConcerns || []).forEach((m, i) => {
+      const card = document.createElement("div");
+      card.className = "entity-card";
+      card.innerHTML = `
+        <div class="entity-head">
+          <span class="entity-label">Sister Concern ${i+1}</span>
+          <button class="entity-del" data-dels="${i}">× Remove</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-full"><label>Entity Name <span class="req">*</span></label><input type="text" data-sk="name" data-si="${i}" value="${T.esc(m.name||'')}" placeholder="M/s ..."></div>
+          <div><label>Constitution</label>
+            <select data-sk="constitution" data-si="${i}">
+              <option ${m.constitution==='Proprietorship'?'selected':''}>Proprietorship</option>
+              <option ${m.constitution==='Partnership'?'selected':''}>Partnership</option>
+              <option ${m.constitution==='LLP'?'selected':''}>LLP</option>
+              <option ${m.constitution==='Private Limited'?'selected':''}>Private Limited</option>
+              <option ${m.constitution==='Public Limited'?'selected':''}>Public Limited</option>
+              <option ${m.constitution==='HUF'?'selected':''}>HUF</option>
+              <option ${m.constitution==='Trust / Society'?'selected':''}>Trust / Society</option>
+            </select>
+          </div>
+          <div><label>Year of Incorporation</label><input type="number" data-sk="yearInc" data-si="${i}" value="${m.yearInc||''}" min="1900" max="2100"></div>
+          <div><label>Incorporation / Reg No</label><input type="text" data-sk="incorpNo" data-si="${i}" value="${T.esc(m.incorpNo||'')}" placeholder="CIN / URN / Partnership Reg No"></div>
+          <div><label>PAN</label><input type="text" data-sk="pan" data-si="${i}" value="${T.esc(m.pan||'')}" placeholder="AAAAA0000A" style="text-transform:uppercase"></div>
+          <div class="form-full"><label>Principal Activity</label><input type="text" data-sk="activity" data-si="${i}" value="${T.esc(m.activity||'')}" placeholder="e.g. Textile Trading / Food Manufacturing"></div>
+          <div><label>Last FY Sales (₹)</label><input type="number" data-sk="lastSales" data-si="${i}" value="${m.lastSales||0}"></div>
+          <div><label>Net Worth (₹)</label><input type="number" data-sk="netWorth" data-si="${i}" value="${m.netWorth||0}"></div>
+          <div class="form-full"><label>Banking Relationship (if any)</label><input type="text" data-sk="banking" data-si="${i}" value="${T.esc(m.banking||'')}" placeholder="SBI / HDFC — CC ₹50L, TL ₹1Cr"></div>
+        </div>`;
+      h.appendChild(card);
+    });
+    h.querySelectorAll("[data-sk]").forEach(el=>{
+      el.addEventListener("input",()=>{
+        const i=+el.dataset.si, k=el.dataset.sk;
+        const v = el.type==="number" ? (el.value===""?0:+el.value) : el.value;
+        currentProject.sisterConcerns[i][k] = v;
+      });
+    });
+    h.querySelectorAll("[data-dels]").forEach(b=>{
+      b.addEventListener("click",()=>{
+        currentProject.sisterConcerns.splice(+b.dataset.dels,1);
+        renderSisterList();
+      });
+    });
   }
 
   /* Wizard steps */
@@ -828,6 +1036,7 @@ footer a{color:var(--gold);text-decoration:none}
     keys.forEach(k=>sum += +currentProject[k]||0);
     currentProject.capexTotal = sum;
     document.getElementById("capexTotal").value = sum;
+    updateTierPill();
     toast("Total project cost = " + E.INR(sum),"success");
   });
 
@@ -866,6 +1075,25 @@ footer a{color:var(--gold);text-decoration:none}
     currentProject.machineryList = currentProject.machineryList || [];
     currentProject.machineryList.push({name:"",make:"",qty:"",cost:0});
     renderMachineryList();
+  });
+  document.getElementById("btn-add-promoter").addEventListener("click",()=>{
+    currentProject.promoters = currentProject.promoters || [];
+    if(currentProject.promoters.length >= 8){ toast("Maximum 8 promoters","error"); return; }
+    currentProject.promoters.push({
+      name:"", role:"Director", dob:"", gender:"", pan:"", aadhaar:"",
+      education:"", experience:0, skill:"", netWorth:0,
+      itrY1:0, itrY2:0, itrY3:0, shareholding:0
+    });
+    renderPromoterList();
+  });
+  document.getElementById("btn-add-sister").addEventListener("click",()=>{
+    currentProject.sisterConcerns = currentProject.sisterConcerns || [];
+    if(currentProject.sisterConcerns.length >= 6){ toast("Maximum 6 sister concerns","error"); return; }
+    currentProject.sisterConcerns.push({
+      name:"", constitution:"Private Limited", yearInc:"", incorpNo:"",
+      pan:"", activity:"", lastSales:0, netWorth:0, banking:""
+    });
+    renderSisterList();
   });
 
   /* Demo data seeder */
@@ -906,6 +1134,35 @@ footer a{color:var(--gold);text-decoration:none}
         {name:"CIP / Utilities",make:"GEA India",qty:"1 lot",cost:2500000},
         {name:"Cold storage",make:"Voltas",qty:"1",cost:1500000},
       ],
+      promoters:[
+        {name:"Rakesh Kumar Jha", role:"Managing Director", dob:"1978-05-12", gender:"Male",
+         pan:"AAXPJ1234C", aadhaar:"123412341234",
+         education:"B.Tech (Food Technology), MBA — IIM Indore",
+         experience:18, skill:"Operations, Supply Chain, Finance, Bank Relationships",
+         netWorth:12000000, itrY1:1800000, itrY2:2100000, itrY3:2400000, shareholding:55},
+        {name:"Priya Sharma Jha", role:"Director", dob:"1982-09-25", gender:"Female",
+         pan:"AAXPJ5678D", aadhaar:"567856785678",
+         education:"M.Sc (Food Chemistry), PhD — BITS Pilani",
+         experience:12, skill:"Product Development, QA/QC, Regulatory Affairs",
+         netWorth:4500000, itrY1:1200000, itrY2:1400000, itrY3:1650000, shareholding:30},
+        {name:"Amit Verma", role:"Whole-time Director", dob:"1985-03-08", gender:"Male",
+         pan:"AVPPM9012K", aadhaar:"901290129012",
+         education:"B.Com (Hons), CA",
+         experience:10, skill:"Finance, Taxation, Compliance, Reporting",
+         netWorth:2500000, itrY1:1000000, itrY2:1150000, itrY3:1300000, shareholding:15},
+      ],
+      sisterConcerns:[
+        {name:"M/s Shiva Trading Co", constitution:"Partnership", yearInc:2015, incorpNo:"PART-GJ-2015-0112",
+         pan:"AAHFS4567J", activity:"Agri-commodity trading (Gujarat)",
+         lastSales:45000000, netWorth:8500000, banking:"SBI — CC ₹50 L"},
+        {name:"Shiva Cold Storage LLP", constitution:"LLP", yearInc:2019, incorpNo:"AAB-2341",
+         pan:"AAFFS7890M", activity:"Cold storage & warehouse (3000 MT)",
+         lastSales:18000000, netWorth:12000000, banking:"BoB — TL ₹2 Cr"},
+      ],
+      customNote_concept:"The project integrates backward into FPO-driven contract farming across 500 acres — this ensures raw material traceability, price stability, and supports 800+ farmer households directly linked to the supply chain.",
+      customNote_market:"Three anchor buyer MoUs already in hand with leading FMCG brands ensuring 55% of Yr-1 capacity is pre-contracted.",
+      customNote_technical:"Equipment shortlist is based on 3 OEM evaluations; final selection favours reference installations in Maharashtra & Karnataka with comparable throughput.",
+      customNote_cost:"Contingency kept at 4% — higher than typical 3% due to pending utility connection quote finalisation.",
       complexityLevel:2, customizationLevel:2, urgencyLevel:2,
     };
     loadInputs();
@@ -923,7 +1180,11 @@ footer a{color:var(--gold);text-decoration:none}
     if(!currentProject.capexTotal){ toast("Enter Total Project Cost (Step 4)","error"); return; }
     if(!currentProject.sellingPrice || !currentProject.capacityYr1){ toast("Capacity & Selling Price required (Steps 2/3)","error"); return; }
 
-    // Compute
+    // Compute tier first — tier always drives the projection horizon
+    const tier  = E.classifyTier(+currentProject.capexTotal || 0);
+    currentProject.years = tier.projectionYears;
+    const yearsEl = document.querySelector('[data-key="years"]');
+    if(yearsEl) yearsEl.value = tier.projectionYears;
     const proj  = E.buildProjections(currentProject);
     const sens  = E.sensitivity(proj, currentProject);
     const risks = E.buildRiskMatrix(currentProject, proj);
@@ -948,8 +1209,8 @@ footer a{color:var(--gold);text-decoration:none}
         <div class="score-breakup">${score.breakup.map(r=>`<div class="row"><span>${r.k} (${r.v})</span><b>${r.pts}/${r.max}</b></div>`).join("")}</div>
       </div>`;
 
-    // Full 21-section content
-    const sectionsHTML = T.renderAll(currentProject, proj, score, sens, risks, priceQ);
+    // Full 21-section content (tier-aware)
+    const sectionsHTML = T.renderAll(currentProject, proj, score, sens, risks, priceQ, tier);
 
     const footerHTML = `
       <div class="report-footer">
@@ -969,11 +1230,13 @@ footer a{color:var(--gold);text-decoration:none}
     currentProject.recommendation = score.recommendation;
     currentProject.projectIRR = proj.ratios.projectIRR;
     currentProject.avgDSCR = proj.ratios.avgDSCR;
+    currentProject.tierCode = tier.code;
+    currentProject.tierLabel = tier.label;
     await saveProject({...currentProject});
-    logAudit("GENERATE", currentProject.id + " · " + currentProject.projectName);
+    logAudit("GENERATE", currentProject.id + " · " + currentProject.projectName + " · " + tier.code);
 
-    latestResult = { project: {...currentProject}, proj, sens, risks, score, priceQ, html: finalHTML };
-    toast("DPR generated · Score " + score.score + "/100","success");
+    latestResult = { project: {...currentProject}, proj, sens, risks, score, priceQ, tier, html: finalHTML };
+    toast("DPR generated · " + tier.code + " · Score " + score.score + "/100","success");
     loadProjects();
     document.querySelector('.nav-tabs a[data-tab="report"]').click();
   }
@@ -1030,12 +1293,14 @@ footer a{color:var(--gold);text-decoration:none}
       `<span class="bank-badge" style="background:${p.bankabilityScore>=65?'rgba(74,154,60,.2);color:#7ed56f':p.bankabilityScore>=50?'rgba(230,169,58,.2);color:#ffc66d':'rgba(217,83,79,.2);color:#ff8a85'}">${p.bankabilityScore}/100</span>` :
       `<span class="bank-badge" style="background:rgba(255,255,255,.08);color:var(--text-muted)">DRAFT</span>`;
     const ind = E.INDUSTRY_BENCHMARKS[p.industry] || E.INDUSTRY_BENCHMARKS.manufacturing;
+    const tier = p.tierCode ? p.tierCode : E.classifyTier(+p.capexTotal||0).code;
+    const tierPill = `<span class="tier-pill ${tier.toLowerCase()}" style="margin-right:6px;font-size:.58rem;padding:2px 8px">${tier}</span>`;
     return `
       <div class="proj-card" data-proj-id="${p.id}">
         <div class="proj-name">${T.esc(p.projectName||"Untitled DPR")}</div>
         <div class="proj-sub">${T.esc(ind.label)} · ${T.esc(p.location||"—")}</div>
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-size:.76rem;color:var(--text-mid)">Capex: <b style="color:#fff">${E.INR(p.capexTotal)}</b></div>
+          <div style="font-size:.76rem;color:var(--text-mid)">${tierPill}Capex: <b style="color:#fff">${E.INR(p.capexTotal)}</b></div>
           ${badge}
         </div>
         <div class="proj-meta">
@@ -1267,6 +1532,8 @@ footer a{color:var(--gold);text-decoration:none}
       await openDB();
       bindInputs();
       renderMachineryList();
+      renderPromoterList();
+      renderSisterList();
       initSchemes();
       await loadProjects();
     }catch(e){ console.error(e); toast("DB init error — check console","error"); }
